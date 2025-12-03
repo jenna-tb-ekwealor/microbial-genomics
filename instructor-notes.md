@@ -19,6 +19,27 @@ already somewhat familiar with the bash shell, the earlier episodes can be conde
 
 This lesson uses data hosted on an Amazon Machine Instance (AMI). Instructors will be sent information on how to log-in to the AMI by the workshop coordinator a few days before the workshop. If you are running a self-organized workshop, register the workshop with our [self-organized workshop form](https://amy.carpentries.org/forms/workshop/) and send us an email at [mailto:team@datacarpentry.org](mailto:team@datacarpentry.org) with information on how many people you expect to have at the workshop, and we'll start instances for you to use in the workshop. The day before the workshop, we'll send you the login information for your learners.
 
+## Workshop Structure
+
+### Timing per episode
+- 01 Computing Concepts — 15 + 0
+- 02 Introducing the Shell — 20 + 10
+- 03 The Filesystem — 20 + 10
+- 04 Working with Files — 20 + 10
+- 05 Tidiness — 10 + 5
+- 06 Project Planning — 10 + 0
+- 07 Background — 15 + 5
+- 08 Quality Control — 20 + 10
+- 09 Trimming — 15 + 10
+- 10 Assembly with SPAdes — 25 + 20
+- 11 Annotation with Prokka — 25 + 15
+
+## Tips
+- Keep shell lessons very tight.
+- Allow time for in-person paper assembly activity before SPAdes.
+- Expect delays during QC and trimming.
+
+
 ## Technical tips and tricks
 
 ### Etherpad template
@@ -41,11 +62,16 @@ Resetting the command prompt is not currently included in the lesson materials, 
 
 ## Common problems
 
-Learners will work through an Amazon Web Service (AWS) instance for this lesson. The workshop coordinator will set up AWS instances for
-your workshop a few days ahead of time. Put the links for all instances on your workshop Etherpad and have learners put their name next
-to the instance they will use. This prevents learners from accidentally messing up another learner's filesystem.
+This workshop introduces an analysis pipeline, where each step in that pipeline is dependent on the previous step.
+If a learner gets behind, or one of the steps doesn't work for them, they may not be able to catch up with the rest of the class.
+To help ensure that all learners are able to work through the whole process, we provide the solution files. This includes all
+of the output files for each step in the data processing pipeline, as well as the scripts that the learners write collaboratively
+with the Instructors throughout the workshop. These files are available on the AMI in `dcuser/.solutions`.
 
-The workshop coordinator usually sets up more AWS instances than needed for the registered learners.
-If a learner accidentally deletes or overwrites data files, you can have them change to a different AWS instance.
+Similarly, if the learners aren't able to pull the data files that are pulled in the lesson directly from the SRA (e.g. due to
+unstable internet), those files are available in the hidden backup directory (`dcuser/.backup`).
+
+Make sure to tell your helpers about the `.solutions` and `.backup` directories so that they can use these resources to help
+learners catch up during the workshop.
 
 

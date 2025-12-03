@@ -1,8 +1,8 @@
 ---
-title: 'Glossary'
+title: 'Reference'
 ---
 
-## Glossary
+# Glossary
 
 [absolute path]{#absolute-path}
 :   A [path](#path) that refers to a particular location in a file system.
@@ -195,7 +195,131 @@ In the Unix shell,
 the wildcard `*` matches zero or more characters,
 so that `*.txt` matches all files whose names end in `.txt`.
 
-## External references
+---
+
+
+# Command-Line Cheat Sheet
+
+This page summarizes the main shell commands used in:
+
+- 07: Sequencing Data Background  
+- 08: Assessing Read Quality (FastQC)  
+- 09: Trimming Reads (fastp)  
+- 10: De Novo Assembly with SPAdes  
+- 11: Genome Annotation with Prokka  
+
+## General navigation
+
+```bash
+cd ~/microbial_project          # go to project root
+ls                              # list files in current directory
+ls data/raw                     # list raw FASTQ files
+ls data/trimmed                 # list trimmed FASTQ files
+ls qc                           # list QC reports
+ls assembly                     # list assembly outputs
+ls annotation                   # list annotation outputs
+```
+
+## Sequencing data locations (Episode 07)
+
+```bash
+cd ~/microbial_project
+ls data/raw                     # check raw FASTQ files
+```
+
+(Conceptual) Counting lines/reads in a FASTQ file:
+
+```bash
+zcat data/raw/sample_R1.fastq.gz | wc -l   # number of lines
+# number of reads = (lines / 4)
+```
+
+## Running FastQC (Episode 08)
+
+```bash
+cd ~/microbial_project
+mkdir -p qc
+fastqc data/raw/*.fastq.gz -o qc
+ls qc
+```
+
+FastQC reports are HTML files such as:
+
+- `sample_R1_fastqc.html`
+- `sample_R2_fastqc.html`
+
+You can download these to your local machine and view them in a browser.
+
+## Running fastp for trimming (Episode 09)
+
+```bash
+cd ~/microbial_project
+mkdir -p data/trimmed
+
+fastp   -i data/raw/sample_R1.fastq.gz   -I data/raw/sample_R2.fastq.gz   -o data/trimmed/sample_R1.trimmed.fastq.gz   -O data/trimmed/sample_R2.trimmed.fastq.gz   -h qc/fastp_sample.html   -j qc/fastp_sample.json
+```
+
+Comparing raw vs trimmed (conceptual):
+
+```bash
+ls data/raw
+ls data/trimmed
+
+zcat data/raw/sample_R1.fastq.gz | wc -l
+zcat data/trimmed/sample_R1.trimmed.fastq.gz | wc -l
+```
+
+## Running SPAdes (Episode 10)
+
+```bash
+cd ~/microbial_project
+mkdir -p assembly
+
+spades.py   -1 data/trimmed/sample_R1.trimmed.fastq.gz   -2 data/trimmed/sample_R2.trimmed.fastq.gz   -o assembly/spades_sample
+```
+
+Inspecting assembly output:
+
+```bash
+ls assembly/spades_sample                          # list SPAdes outputs
+grep -c "^>" assembly/spades_sample/contigs.fasta  # count contigs
+head -n 20 assembly/spades_sample/contigs.fasta    # preview first contig
+```
+
+If `seqkit` is available:
+
+```bash
+seqkit stats assembly/spades_sample/contigs.fasta
+```
+
+## Running Prokka (Episode 11)
+
+```bash
+cd ~/microbial_project
+mkdir -p annotation
+
+prokka   --outdir annotation/sample   --prefix sample   assembly/spades_sample/contigs.fasta
+```
+
+Inspecting Prokka outputs:
+
+```bash
+ls annotation/sample
+
+grep -c "\tCDS\t" annotation/sample/sample.gff   # count CDS features
+less annotation/sample/sample.txt                  # summary of annotation
+head annotation/sample/sample.faa                  # preview protein sequences
+```
+
+## Tips
+
+- Use `Tab` to auto-complete filenames and directories.
+- Use the up arrow to repeat and edit previous commands.
+- Keep commands that worked well in a text file or shell script for reuse.
+
+---
+
+# External references
 
 ### Opening a terminal
 
@@ -222,5 +346,4 @@ so that `*.txt` matches all files whose names end in `.txt`.
 ### High-throughput sequencing
 
 - Illumina Sequencing Technology [YouTube video](https://www.youtube.com/watch?v=womKfikWlxM)
-
 
