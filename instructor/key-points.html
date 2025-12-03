@@ -427,10 +427,58 @@
         
         
 <section id="01-why-cloud-computing"><h2 class="section-heading"><a href="01-why-cloud-computing.html">Computing Concepts &amp; Servers</a></h2>
-<hr class="half-width"></section><section id="02-introduction-to-shell"><h2 class="section-heading"><a href="02-introduction-to-shell.html">Introducing the Shell</a></h2>
-<hr class="half-width"></section><section id="03-the-filesystem"><h2 class="section-heading"><a href="03-the-filesystem.html">Navigating the Filesystem</a></h2>
-<hr class="half-width"></section><section id="04-working-with-files"><h2 class="section-heading"><a href="04-working-with-files.html">Working with Files and Scripts</a></h2>
-<hr class="half-width"></section><section id="05-tidiness"><h2 class="section-heading"><a href="05-tidiness.html">Project Tidiness</a></h2>
+<hr class="half-width">
+<ul>
+<li>We use a <strong>remote server</strong> for genomics because it has
+more CPU, RAM, and storage than a typical laptop.</li>
+<li>You connect to the server using an <strong>SSH client</strong>
+(Terminal, PuTTY, MobaXterm, etc.).</li>
+<li>After logging in, you type commands at a <strong>shell
+prompt</strong> that is running on the <strong>remote</strong>
+machine.</li>
+<li>Simple commands like <code>whoami</code>, <code>hostname</code>, and
+<code>pwd</code> help you confirm where you are and who you are logged
+in as.</li>
+</ul></section><section id="02-introduction-to-shell"><h2 class="section-heading"><a href="02-introduction-to-shell.html">Introducing the Shell</a></h2>
+<hr class="half-width">
+<ul>
+<li>The <strong>shell</strong> lets you control a computer by typing
+commands instead of using a graphical interface.</li>
+<li>A typical command has the form
+<code>command [options] [arguments]</code>.</li>
+<li>
+<code>whoami</code>, <code>pwd</code>, and <code>ls</code> are
+useful first commands to confirm where you are and what is in a
+directory.</li>
+<li>Use <code>--help</code> or <code>man</code> to get basic information
+about most commands.</li>
+<li>Command history and tab completion save time and reduce typing
+errors.</li>
+</ul></section><section id="03-the-filesystem"><h2 class="section-heading"><a href="03-the-filesystem.html">Navigating the Filesystem</a></h2>
+<hr class="half-width">
+<ul>
+<li>The filesystem is organized as a <strong>tree</strong> of
+directories and files.</li>
+<li>
+<code>pwd</code> tells you where you are; <code>ls</code> shows what
+is in a directory; <code>cd</code> changes your location.</li>
+<li>
+<strong>Absolute paths</strong> start from <code>/</code>;
+<strong>relative paths</strong> start from your current directory.</li>
+<li>Shortcuts like <code>.</code>, <code>..</code>, and <code>~</code>
+make it easier to specify paths.</li>
+</ul></section><section id="04-working-with-files"><h2 class="section-heading"><a href="04-working-with-files.html">Working with Files and Scripts</a></h2>
+<hr class="half-width">
+<ul>
+<li>Use <code>head</code>, <code>tail</code>, and <code>less</code> to
+inspect text files on the command line.</li>
+<li>Use <code>mkdir</code>, <code>cp</code>, <code>mv</code>, and
+<code>rm</code> to manage files and directories.</li>
+<li>A <strong>shell script</strong> is a text file containing commands
+that can be run together with <code>bash scriptname.sh</code>.</li>
+<li>Scripts help automate repetitive tasks and make your work more
+reproducible.</li>
+</ul></section><section id="05-tidiness"><h2 class="section-heading"><a href="05-tidiness.html">Project Tidiness</a></h2>
 <hr class="half-width">
 <ul>
 <li>Keep raw data immutable.</li>
@@ -439,11 +487,61 @@
 <ul>
 <li>Genome size expectations help interpret the assembly.</li>
 </ul></section><section id="07-background"><h2 class="section-heading"><a href="07-background.html">Sequencing Data Background</a></h2>
-<hr class="half-width"></section><section id="08-quality-control"><h2 class="section-heading"><a href="08-quality-control.html">Assessing Read Quality (FastQC)</a></h2>
-<hr class="half-width"></section><section id="09-trimming"><h2 class="section-heading"><a href="09-trimming.html">Trimming Reads (fastp)</a></h2>
-<hr class="half-width"></section><section id="10-assembly-spades"><h2 class="section-heading"><a href="10-assembly-spades.html">De Novo Assembly with SPAdes</a></h2>
-<hr class="half-width"></section><section id="11-annotation-prokka"><h2 class="section-heading"><a href="11-annotation-prokka.html">Genome Annotation with Prokka</a></h2>
-<hr class="half-width"></section>
+<hr class="half-width">
+<ul>
+<li>FASTA stores <strong>sequence only</strong>; FASTQ stores
+<strong>sequence plus quality</strong>.</li>
+<li>Each FASTQ read uses four lines: identifier, sequence, separator,
+qualities.</li>
+<li>Illumina paired-end data is stored as <code>R1</code> and
+<code>R2</code> FASTQ files.</li>
+<li>We keep raw reads in <code>~/microbial_project/data/raw</code> on
+the rampers server.</li>
+</ul></section><section id="08-quality-control"><h2 class="section-heading"><a href="08-quality-control.html">Assessing Read Quality (FastQC)</a></h2>
+<hr class="half-width">
+<ul>
+<li>FastQC provides a quick overview of sequencing read quality.</li>
+<li>We store FastQC reports in a <code>qc/</code> directory inside the
+project.</li>
+<li>Key plots show base quality, sequence quality distribution, and
+adapter content.</li>
+<li>FastQC helps us decide how aggressively to trim reads before
+assembly.</li>
+</ul></section><section id="09-trimming"><h2 class="section-heading"><a href="09-trimming.html">Trimming Reads (fastp)</a></h2>
+<hr class="half-width">
+<ul>
+<li>Trimming removes low-quality bases and adapters, improving
+downstream assembly.</li>
+<li>We keep trimmed reads in <code>data/trimmed/</code> and trimming
+reports in <code>qc/</code>.</li>
+<li>
+<code>fastp</code> can handle paired-end trimming and produce
+summary reports.</li>
+<li>Comparing raw and trimmed statistics helps ensure trimming is
+reasonable.</li>
+</ul></section><section id="10-assembly-spades"><h2 class="section-heading"><a href="10-assembly-spades.html">De Novo Assembly with SPAdes</a></h2>
+<hr class="half-width">
+<ul>
+<li>Assemblers like SPAdes reconstruct genomes from overlapping short
+reads, producing <strong>contigs</strong>.</li>
+<li>N50 summarizes assembly contiguity: larger N50 usually means a more
+contiguous assembly.</li>
+<li>We run SPAdes on trimmed reads and store outputs in
+<code>assembly/</code>.</li>
+<li>
+<code>contigs.fasta</code> is the main file we use for downstream
+annotation.</li>
+</ul></section><section id="11-annotation-prokka"><h2 class="section-heading"><a href="11-annotation-prokka.html">Genome Annotation with Prokka</a></h2>
+<hr class="half-width">
+<ul>
+<li>Annotation adds biological meaning to an assembly by predicting
+genes and other features.</li>
+<li>Prokka is a rapid pipeline for annotating microbial genomes.</li>
+<li>Key outputs include GFF (features + coordinates) and FAA (protein
+sequences).</li>
+<li>We run Prokka on <code>contigs.fasta</code> from SPAdes and store
+results in <code>annotation/</code> for downstream analysis.</li>
+</ul></section>
 </div>
     </main>
 </div>
