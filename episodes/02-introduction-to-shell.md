@@ -172,8 +172,6 @@ Discuss your answers with a neighbor.
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - The **shell** lets you control a computer by typing commands instead of using
   a graphical interface.
 - A typical command has the form `command [options] [arguments]`.

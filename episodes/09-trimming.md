@@ -131,8 +131,6 @@ were your own project.
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - Trimming removes low-quality bases and adapters, improving downstream assembly.
 - We keep trimmed reads in `data/trimmed/` and trimming reports in `qc/`.
 - `fastp` can handle paired-end trimming and produce summary reports.

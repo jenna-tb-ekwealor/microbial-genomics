@@ -157,8 +157,6 @@ Discuss why it matters where each thing is happening.
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - We use a **remote server** for genomics because it has more CPU, RAM, and
   storage than a typical laptop.
 - You connect to the server using an **SSH client** (Terminal, PuTTY,

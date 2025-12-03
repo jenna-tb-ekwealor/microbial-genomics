@@ -158,8 +158,6 @@ Compare answers with your neighbor. Did you find the same paths?
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - The filesystem is organized as a **tree** of directories and files.
 - `pwd` tells you where you are; `ls` shows what is in a directory; `cd`
   changes your location.

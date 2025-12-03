@@ -131,8 +131,6 @@ annotation.
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - Assemblers like SPAdes reconstruct genomes from overlapping short reads,
   producing **contigs**.
 - N50 summarizes assembly contiguity: larger N50 usually means a more contiguous
