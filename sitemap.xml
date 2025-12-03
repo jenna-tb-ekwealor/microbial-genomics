@@ -1,117 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/01-introduction.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/01-introduction.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/02-the-filesystem.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/01-why-cloud-computing.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/03-working-with-files.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/02-introduction-to-shell.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/04-redirection.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/02-the-filesystem.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/05-writing-scripts.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/03-the-filesystem.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/06-organization.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/03-working-with-files.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/404.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/04-redirection.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/CODE_OF_CONDUCT.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/04-working-with-files.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/Extra_lesson.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/05-tidiness.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/LICENSE.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/05-writing-scripts.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/aio.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/06-organization.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/discuss.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/06-project-planning.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/etherpad_template.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/07-background.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/images.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/08-quality-control.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/index.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/09-trimming.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/01-introduction.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/10-assembly-spades.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/02-the-filesystem.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/11-annotation-prokka.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/03-working-with-files.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/404.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/04-redirection.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/05-writing-scripts.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/Extra_lesson.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/06-organization.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/404.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/aio.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/CODE_OF_CONDUCT.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/citation.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/Extra_lesson.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/discuss.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/LICENSE.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/etherpad_template.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/aio.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/images.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/discuss.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/index.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/etherpad_template.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/01-introduction.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/images.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/01-why-cloud-computing.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/index.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/02-introduction-to-shell.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/instructor-notes.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/02-the-filesystem.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/key-points.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/03-the-filesystem.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/profiles.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/03-working-with-files.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor/reference.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/04-redirection.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/instructor-notes.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/04-working-with-files.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/key-points.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/05-tidiness.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/profiles.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/05-writing-scripts.html</loc>
   </url>
   <url>
-    <loc>https://datacarpentry.github.io/shell-genomics/reference.html</loc>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/06-organization.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/06-project-planning.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/07-background.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/08-quality-control.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/09-trimming.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/10-assembly-spades.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/11-annotation-prokka.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/404.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/Extra_lesson.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/aio.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/citation.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/discuss.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/etherpad_template.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/images.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/index.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/profiles.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/reference.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/profiles.html</loc>
+  </url>
+  <url>
+    <loc>https://jenna-tb-ekwealor.github.io/microbial-genomics/reference.html</loc>
   </url>
 </urlset>
