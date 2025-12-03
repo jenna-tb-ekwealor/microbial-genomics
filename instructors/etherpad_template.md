@@ -3,7 +3,7 @@ title: Etherpad template
 subtitle: Template text to paste into a collaborative document, such as Etherpad.
 
 ---
-
+```
 # Welcome to The Carpentries Etherpad!
 
 This pad is synchronized as you type, so that everyone viewing this page sees the same text. This allows you to collaborate seamlessly on documents.
@@ -82,3 +82,4 @@ Remind students that their feedback is valuable as it helps instructors and less
 #### Please list another thing you found less useful, or that could be improved
 
 - - - - - 
+```
