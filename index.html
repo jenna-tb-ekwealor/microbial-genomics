@@ -541,10 +541,118 @@ the workshop server and do not need to be downloaded separately.</p>
 </div>
 
 
-      <section id="setup"><p>This workshop is designed to be run on pre-imaged Amazon Web Services
-(AWS) instances. For information about how to use the workshop
-materials, see the <a href="https://datacarpentry.org/genomics-workshop/index.html#setup" class="external-link">setup
-instructions</a> on the main workshop page.</p>
+      <section id="setup"><div class="section level3">
+<h3 id="connect-to-the-server">Connect to the Server<a class="anchor" aria-label="anchor" href="#connect-to-the-server"></a></h3>
+<p>In this workshop, you will run commands and analysis tools on a
+<strong>remote Linux server</strong> that your instructors have prepared
+for you. This server already has all required software installed:</p>
+<ul><li>FastQC<br></li>
+<li>fastp<br></li>
+<li>SPAdes<br></li>
+<li>Prokka<br></li>
+<li>seqkit (optional utilities)</li>
+</ul><p>Your instructors will provide:</p>
+<ul><li>the <strong>server address</strong> (e.g.,
+<code>server.address.edu</code>)</li>
+<li>your <strong>username</strong>
+</li>
+<li>your <strong>password</strong>
+</li>
+</ul><p>You do <em>not</em> need to create an account, launch cloud
+instances, or configure AWS. Everything you need is already prepared for
+you.</p>
+<hr></div>
+<div class="section level3">
+<h3 id="connecting-to-the-server">Connecting to the Server<a class="anchor" aria-label="anchor" href="#connecting-to-the-server"></a></h3>
+<div class="section level4">
+<h4 id="macos-and-linux-users">macOS and Linux Users<a class="anchor" aria-label="anchor" href="#macos-and-linux-users"></a></h4>
+<ol style="list-style-type: decimal"><li><p>Open the <strong>Terminal</strong> application.</p></li>
+<li>
+<p>Connect using:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">ssh</span> USERNAME@SERVER_ADDRESS</span></code></pre>
+</div>
+<p>Example (your values will differ):</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ssh</span> workshopuser@server.address.edu</span></code></pre>
+</div>
+</li>
+<li>
+<p>When asked about host authenticity, type:</p>
+<pre><code><span><span class="va">yes</span></span></code></pre>
+</li>
+<li><p>Enter your password when prompted.</p></li>
+</ol><p>You are now logged in. Verify with:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">whoami</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+</div>
+<hr></div>
+<div class="section level4">
+<h4 id="windows-users-using-putty">Windows Users (Using PuTTY)<a class="anchor" aria-label="anchor" href="#windows-users-using-putty"></a></h4>
+<ol style="list-style-type: decimal"><li>Install PuTTY: <a href="https://www.putty.org" class="external-link uri">https://www.putty.org</a>
+</li>
+<li>Open PuTTY.</li>
+<li>In <strong>Host Name</strong>, enter the server address (e.g.,
+<code>server.address.edu</code>).</li>
+<li>Click <strong>Open</strong>.</li>
+<li>Log in using the username and password provided by instructors.</li>
+</ol><p>Verify login with:</p>
+<pre><code><span><span class="va">whoami</span></span>
+<span><span class="va">pwd</span></span></code></pre>
+<hr></div>
+</div>
+<div class="section level3">
+<h3 id="testing-your-setup">Testing Your Setup<a class="anchor" aria-label="anchor" href="#testing-your-setup"></a></h3>
+<p>Once logged in:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="bu">pwd</span>              <span class="co"># shows your working directory</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">ls</span>               <span class="co"># lists files</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">mkdir</span> testdir    <span class="co"># make a directory</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="bu">cd</span> testdir       <span class="co"># move into it</span></span></code></pre>
+</div>
+<p>If these commands run without error, your connection is
+successful.</p>
+<hr></div>
+<div class="section level3">
+<h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a></h3>
+<div id="common-issues" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="common-issues" class="callout-inner">
+<h3 class="callout-title">Common Issues</h3>
+<div class="callout-content">
+<ul><li><p><strong>Connection timed out</strong><br>
+→ Double-check server address and your wifi connection.</p></li>
+<li><p><strong>Permission denied</strong><br>
+→ Username or password is incorrect. Re-enter carefully.</p></li>
+<li><p><strong>Host authenticity warning</strong><br>
+→ Type <code>yes</code> — this is expected the first time you
+connect.</p></li>
+<li><p><strong>Terminal freezes after password</strong><br>
+→ Try typing password manually instead of pasting.</p></li>
+</ul><p>If none of these work, notify your instructor.</p>
+</div>
+</div>
+</div>
+<hr></div>
+<div class="section level3">
+<h3 id="youre-ready">You’re Ready!<a class="anchor" aria-label="anchor" href="#youre-ready"></a></h3>
+<p>Once connected, you will be able to follow all workshop episodes
+directly on the server. Proceed to the first lesson: <a href="01-why-cloud-computing.html"><strong>Computing Concepts &amp;
+Servers</strong></a>.</p>
+</div>
+
 
       </section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link float-end" href="01-why-cloud-computing.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
