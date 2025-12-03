@@ -135,8 +135,6 @@ Your instructor may demonstrate this on the rampers server.
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - FASTA stores **sequence only**; FASTQ stores **sequence plus quality**.
 - Each FASTQ read uses four lines: identifier, sequence, separator, qualities.
 - Illumina paired-end data is stored as `R1` and `R2` FASTQ files.

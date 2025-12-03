@@ -126,8 +126,6 @@ Discuss your answers with a neighbor.
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - FastQC provides a quick overview of sequencing read quality.
 - We store FastQC reports in a `qc/` directory inside the project.
 - Key plots show base quality, sequence quality distribution, and adapter content.

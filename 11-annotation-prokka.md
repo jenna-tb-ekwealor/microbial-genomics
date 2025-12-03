@@ -134,8 +134,6 @@ for specific genes, building a phylogenetic tree).
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - Annotation adds biological meaning to an assembly by predicting genes and
   other features.
 - Prokka is a rapid pipeline for annotating microbial genomes.

@@ -166,8 +166,6 @@ Now you can run it directly with `./hello.sh`.
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-## Key Points
-
 - Use `head`, `tail`, and `less` to inspect text files on the command line.
 - Use `mkdir`, `cp`, `mv`, and `rm` to manage files and directories.
 - A **shell script** is a text file containing commands that can be run
