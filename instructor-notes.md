@@ -21,18 +21,19 @@ This lesson uses data hosted on an Amazon Machine Instance (AMI). Instructors wi
 
 ## Workshop Structure
 
-### Timing per episode
-- 01 Computing Concepts — 15 + 0
-- 02 Introducing the Shell — 20 + 10
-- 03 The Filesystem — 20 + 10
-- 04 Working with Files — 20 + 10
-- 05 Tidiness — 10 + 5
-- 06 Project Planning — 10 + 0
-- 07 Background — 15 + 5
-- 08 Quality Control — 20 + 10
-- 09 Trimming — 15 + 10
-- 10 Assembly with SPAdes — 25 + 20
-- 11 Annotation with Prokka — 25 + 15
+### Timing per episode (draft 1)
+- 01 Computing Concepts — 20 + 5
+- 02 Introducing the Shell — 25 + 10
+- 03 The Filesystem — 25 + 10
+- 04 Working with Files — 25 + 15
+- 05 Tidiness & Project Setup — 15 + 5
+- 06 Project Planning — 15 + 5
+- 07 Background: Sequencing & Genomics — 20 + 10
+- 08 Quality Control — 25 + 15
+- 09 Trimming — 20 + 10
+- 10 Assembly with SPAdes — 30 + 25
+- 11 Annotation with Prokka — 30 + 20
+- 12 Review, Interpretation & Next Steps — 10 + 0 (optional capstone)
 
 ## Tips
 - Keep shell lessons very tight.
