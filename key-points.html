@@ -332,7 +332,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="09-trimming.html">9. Trimming and Cleaning Reads</a>
+        <a href="09-trimming.html">9. Trimming Reads</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -516,17 +516,16 @@ overrepresented sequences.</li>
 HTML reports for review.</li>
 <li>QC results guide trimming choices and help interpret assembly
 quality.</li>
-</ul></section><section id="09-trimming"><h2 class="section-heading"><a href="09-trimming.html">Trimming and Cleaning ReadsExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
+</ul></section><section id="09-trimming"><h2 class="section-heading"><a href="09-trimming.html">Trimming ReadsExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>
-<li>Trimming removes low-quality bases and adapters that can interfere
-with assembly.</li>
-<li>Trimmed reads should be saved in a separate <code>trimmed/</code>
-directory; raw data must not be overwritten.</li>
-<li>QC (FastQC) guides trimming decisions and can be rerun afterward to
-confirm improvements.</li>
-<li>Trimmed FASTQ files will be used as inputs to SPAdes in the genome
-assembly step.</li>
+<li>Trimming removes adapters and low-quality bases that interfere with
+assembly.</li>
+<li>Always keep raw reads untouched; trimmed reads belong in a separate
+directory.</li>
+<li>QC results guide trimming choices.</li>
+<li>Good trimming improves SPAdes assembly quality and reduces noise in
+annotation.</li>
 </ul></section><section id="10-assembly-spades"><h2 class="section-heading"><a href="10-assembly-spades.html">Genome Assembly with SPAdesExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>
