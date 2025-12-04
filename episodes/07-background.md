@@ -1,5 +1,5 @@
 ---
-title: Background: Sequence File Formats
+title: Sequence File Formats
 teaching: 30
 exercises: 20
 ---
