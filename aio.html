@@ -489,6 +489,31 @@ problems include:</p>
 <li>Analyses taking many hours or failing entirely.</li>
 </ul>
 <p>A remote server solves these issues!</p>
+</section><section><h2 class="section-heading" id="practical-limitations-of-remote-servers-what-to-expect">Practical limitations of remote servers (what to expect)<a class="anchor" aria-label="anchor" href="#practical-limitations-of-remote-servers-what-to-expect"></a>
+</h2>
+<hr class="half-width">
+<p>While cloud and HPC servers provide the resources needed for
+microbial genomics, they also come with a few practical constraints:</p>
+<ul>
+<li>
+<strong>Shared resources</strong> – CPU and RAM may be used by many
+users at once.</li>
+<li>
+<strong>Storage quotas</strong> – You may run out of disk space and
+need to clean up or request more.</li>
+<li>
+<strong>Internet dependence</strong> – If your connection drops,
+your terminal session may disconnect.</li>
+<li>
+<strong>Software environments</strong> – Module versions or paths
+may differ from tutorials online.</li>
+<li>
+<strong>Login nodes vs compute nodes</strong> – Heavy jobs should
+not be run on login nodes on some HPC systems.</li>
+</ul>
+<p>These constraints are normal in scientific computing.<br>
+One goal of this workshop is learning how to work effectively within
+them.</p>
 <div id="vocabulary" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -517,6 +542,20 @@ accessed via SSH.</li>
 </div>
 </div>
 </div>
+</section><section><h2 class="section-heading" id="checking-your-available-resources">Checking your available resources<a class="anchor" aria-label="anchor" href="#checking-your-available-resources"></a>
+</h2>
+<hr class="half-width">
+<p>Before running heavy tools later (FastQC, trimming, SPAdes, Prokka),
+it is useful to know how to check:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">df</span> <span class="at">-h</span> .          <span class="co"># check available disk space</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">free</span> <span class="at">-h</span>          <span class="co"># check memory (RAM)</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">nproc</span>            <span class="co"># check number of CPU cores</span></span></code></pre>
+</div>
+<p>These commands help you understand what the server can handle and
+avoid failed runs due to insufficient resources.</p>
 </section><section><h2 class="section-heading" id="why-cloud-or-hpc-systems-excel-at-microbial-genomics">Why cloud or HPC systems excel at microbial genomics<a class="anchor" aria-label="anchor" href="#why-cloud-or-hpc-systems-excel-at-microbial-genomics"></a>
 </h2>
 <hr class="half-width">
@@ -526,10 +565,10 @@ accessed via SSH.</li>
 <p>Later, we’ll use the assembly softwsre SPAdes. SPAdes supports
 threading, which means it can do multiple tasks (or pieces of the task)
 simultaneously:</p>
-<div class="codewrapper sourceCode" id="cb1">
+<div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">spades.py</span> <span class="at">--threads</span> 10</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">spades.py</span> <span class="at">--threads</span> 10</span></code></pre>
 </div>
 <p>More threads = faster graph construction and contig generation (i.e.,
 faster assembly).</p>
@@ -550,13 +589,13 @@ avoids the “No space left on device” errors common on laptops.</p>
 <h3 id="reproducibility">4. Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
 </h3>
 <p>Shared environments load consistent versions:</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">fastqc</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">trimmomatic</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="ex">spades.py</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="ex">prokka</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">fastqc</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">trimmomatic</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">spades.py</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="ex">prokka</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -565,6 +604,21 @@ avoids the “No space left on device” errors common on laptops.</p>
 <p>Jobs can run for <strong>hours</strong> without interruption using
 <code>screen</code> or <code>tmux</code>.</p>
 </div>
+</section><section><h2 class="section-heading" id="remote-server-etiquette-best-practices">Remote server etiquette &amp; best practices<a class="anchor" aria-label="anchor" href="#remote-server-etiquette-best-practices"></a>
+</h2>
+<hr class="half-width">
+<p>When working on shared servers:</p>
+<ul>
+<li>Keep file organization tidy (later episodes show how).</li>
+<li>Do not run heavy jobs in your home directory if a
+<code>scratch/</code> or <code>work/</code> space is provided.</li>
+<li>Avoid running long jobs in a normal SSH session — use
+<code>screen</code> or <code>tmux</code>.</li>
+<li>Delete large temporary files when no longer needed.</li>
+<li>Be mindful that other learners are using the same machine.</li>
+</ul>
+<p>Following these practices ensures that everyone can complete the
+workshop successfully.</p>
 </section><section><h2 class="section-heading" id="logging-into-the-remote-system">Logging into the remote system<a class="anchor" aria-label="anchor" href="#logging-into-the-remote-system"></a>
 </h2>
 <hr class="half-width">
@@ -577,10 +631,10 @@ avoids the “No space left on device” errors common on laptops.</p>
 <li>temporary password</li>
 </ul>
 <p>Connect using SSH:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ssh</span> <span class="op">&lt;</span>username<span class="op">&gt;</span>@<span class="op">&lt;</span>server-address<span class="op">&gt;</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">ssh</span> <span class="op">&lt;</span>username<span class="op">&gt;</span>@<span class="op">&lt;</span>server-address<span class="op">&gt;</span></span></code></pre>
 </div>
 <p>On macOS/Linux, use:</p>
 <ul>
@@ -597,20 +651,59 @@ avoids the “No space left on device” errors common on laptops.</p>
 <li>MobaXterm</li>
 </ul>
 <p>Once connected, you will see a shell prompt:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">learner01@genomics-server:~$</span></span></code></pre>
-</div>
-<p>Try:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">hostname</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">learner01@genomics-server:~$</span></span></code></pre>
+</div>
+</section><section><h2 class="section-heading" id="useful-commands-for-orientation">Useful commands for orientation<a class="anchor" aria-label="anchor" href="#useful-commands-for-orientation"></a>
+</h2>
+<hr class="half-width">
+<p>Here are a few commands you will use repeatedly throughout the
+workshop:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">whoami</span>      <span class="co"># confirm your user name on the server</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">hostname</span>    <span class="co"># confirm which machine you are on</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="bu">pwd</span>         <span class="co"># print your current directory</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span>      <span class="co"># list files with readable sizes</span></span></code></pre>
+</div>
+<p>We will lean heavily on these in every subsequent episode.</p>
+<div id="exercise-orient-yourself-on-the-server" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-orient-yourself-on-the-server" class="callout-inner">
+<h3 class="callout-title">Exercise: Orient Yourself on the Server</h3>
+<div class="callout-content">
+<p>Run the above commands to learn about your current session:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
 </div>
 <p>These confirm you are on the <strong>remote</strong> machine.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="how-this-episode-fits-into-the-whole-workflow">How this episode fits into the whole workflow<a class="anchor" aria-label="anchor" href="#how-this-episode-fits-into-the-whole-workflow"></a>
+</h2>
+<hr class="half-width">
+<p>In later episodes, you will:</p>
+<ol style="list-style-type: decimal">
+<li>Use the shell to move, inspect, and organize FASTQ files.<br>
+</li>
+<li>Run FastQC to diagnose read quality.</li>
+<li>Trim low-quality bases and adapters.</li>
+<li>Assemble the genome using SPAdes (requires high RAM).</li>
+<li>Annotate genes using Prokka (requires many CPUs).</li>
+<li>Interpret assembly and annotation results.</li>
+</ol>
+<p>Understanding <strong>why</strong> we use a remote server now will
+make the computational steps in the rest of the workshop much
+smoother.</p>
 <div id="exercise-why-cant-we-run-spades-on-a-laptop" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -641,10 +734,10 @@ run?</li>
 <div class="callout-content">
 <p>Later in the workshop you will work with FASTQ files. Before
 assembly, check their sizes:</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> reads/</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> reads/</span></code></pre>
 </div>
 <p><strong>Questions:</strong></p>
 <ul>
