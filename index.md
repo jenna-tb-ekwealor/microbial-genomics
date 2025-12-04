@@ -58,10 +58,10 @@ and server environment.
 
 | Lesson | Episodes | Overview |
 |-------------------------------------|-------------------------------|-------------------------------------|
-| **Getting Started: Computing & Shell** | [Computing Concepts & Servers](episodes/01-why-cloud-computing.md)<br>[Introducing the Shell](episodes/02-introduction-to-shell.md)<br>[Navigating the Filesystem](episodes/03-the-filesystem.md)<br>[Working with Files and Scripts](episodes/04-working-with-files.md) | Learn what a server is, why we use remote computing for genomics, and how to use the Unix shell to navigate directories, inspect files, and run basic commands and scripts. |
-| **Project Organization for Microbial Genomics** | [Project Tidiness](episodes/05-tidiness.md)<br>[Planning a Genomics Project](episodes/06-project-planning.md) | Organize a microbial genomics project with a clear directory structure, separation of raw vs processed data, and a plan based on organism, genome size, sequencing, and analysis goals. |
-| **Sequencing Reads & Quality Control** | [Sequencing Data Background](episodes/07-background.md)<br>[Assessing Read Quality](episodes/08-quality-control.md)<br>[Trimming Reads](episodes/09-trimming.md) | Understand FASTA/FASTQ formats and paired-end reads, then use FastQC and fastp to inspect read quality, remove adapters and low-quality bases, and produce cleaned reads for assembly. |
-| **Genome Assembly & Annotation** | [De Novo Assembly with SPAdes](episodes/10-assembly-spades.md)<br>[Genome Annotation with Prokka](episodes/11-annotation-prokka.md) | Assemble trimmed reads into contigs with SPAdes, interpret basic assembly statistics (contig counts, total length, N50), and annotate the resulting genome with Prokka to predict genes and functional features. |
+| **Getting Started: Computing & Shell** | [Computing Concepts & Servers](episodes/01-why-cloud-computing.md)<br>[Introducing the Shell](episodes/02-introduction-to-shell.md)<br>[The Filesystem](episodes/03-the-filesystem.md)<br>[Working with Files](episodes/04-working-with-files.md) | Learn what a server is, why we use remote computing for genomics, and how to use the Unix shell to navigate directories, inspect files, and manipulate files safely. |
+| **Project Organization for Microbial Genomics** | [Tidiness & Project Organization](episodes/05-tidiness.md)<br>[Project Planning](episodes/06-project-planning.md) | Organize a microbial genomics project with a clear directory structure, separation of raw vs processed data, and a plan based on organism, genome size, sequencing, and analysis goals. |
+| **Sequencing Reads & Quality Control** | [Background: Sequence File Formats](episodes/07-background.md)<br>[Quality Control of Reads](episodes/08-quality-control.md)<br>[Trimming and Cleaning Reads](episodes/09-trimming.md) | Understand FASTA/FASTQ formats and paired-end reads, then use FastQC and a trimming tool to inspect read quality, remove adapters and low-quality bases, and produce cleaned reads for assembly. |
+| **Genome Assembly & Annotation** | [Genome Assembly with SPAdes](episodes/10-assembly-spades.md)<br>[Genome Annotation with Prokka](episodes/11-annotation-prokka.md) | Assemble trimmed reads into contigs with SPAdes, interpret basic assembly statistics (contig counts, total length, N50), and annotate the resulting genome with Prokka to predict genes and functional features. |
 
 ## Optional Additional Lesson
 
@@ -93,15 +93,15 @@ Learners connect via SSH (Terminal, PuTTY, or similar).
 
 - [Computing concepts & servers](episodes/01-why-cloud-computing.md)  
 - [Introducing the shell](episodes/02-introduction-to-shell.md)  
-- [Navigating the filesystem](episodes/03-the-filesystem.md)  
-- [Working with files and scripts](episodes/04-working-with-files.md)  
-- [Project tidiness](episodes/05-tidiness.md) and [Planning a genomics project](episodes/06-project-planning.md)  
+- [The filesystem](episodes/03-the-filesystem.md)  
+- [Working with files](episodes/04-working-with-files.md)  
+- [Tidiness & project organization](episodes/05-tidiness.md) and [Project planning](episodes/06-project-planning.md)  
 
 ### Half-Day 2
 
-- [Sequencing data background](episodes/07-background.md)  
-- [Assessing read quality](episodes/08-quality-control.md)  
-- [Trimming reads](episodes/09-trimming.md)  
+- [Background: sequence file formats](episodes/07-background.md)  
+- [Quality control of reads](episodes/08-quality-control.md)  
+- [Trimming and cleaning reads](episodes/09-trimming.md)  
 - [Genome assembly with SPAdes](episodes/10-assembly-spades.md)  
 - [Genome annotation with Prokka](episodes/11-annotation-prokka.md)  
 
@@ -127,4 +127,3 @@ If you are teaching this lesson in a workshop, please see the
 This workshop uses a small example dataset of microbial Illumina paired-end reads 
 suitable for rapid assembly. These data are provided on the workshop server and do 
 not need to be downloaded separately.
-
