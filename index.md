@@ -47,7 +47,7 @@ Participants should bring their own laptops and be prepared to work on a **remot
 Linux server**.  
 
 To get started, please follow the directions on the 
-[Setup page](#setup) to ensure you have access to the required software 
+[Setup page](https://www.jenna-tb-ekwealor.io/genomics-workshop/#setup) to ensure you have access to the required software 
 and server environment.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
