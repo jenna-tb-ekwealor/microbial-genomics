@@ -6,63 +6,59 @@ exercises: 15
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- How should I plan a microbial genomics analysis before touching the data?
-- What directories, files, and metadata should I set up ahead of time?
-- How do I structure a workflow so QC, trimming, assembly, and annotation run smoothly?
+- How do we plan a microbial genomics workflow before touching the data?
+- What directories, metadata, and decisions must be made before QC, trimming, assembly, and annotation?
+- How does thoughtful planning support reproducibility and reduce errors?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Anticipate the workflow steps in a microbial genomics project.
-- Plan a directory layout suitable for QC, trimming, assembly, and annotation workflows.
-- Identify metadata you must collect before running tools.
-- Understand how planning improves reproducibility and avoids downstream errors.
+- Anticipate each stage of the microbial genomics workflow.
+- Identify what information (metadata) must be collected before beginning analysis.
+- Create a project structure that supports reproducible, traceable computation.
+- Understand how planning prevents mistakes and accelerates downstream work.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode prepares learners for the workflow used in Episodes 7–11 by building
-> the project plan and directory structure needed for quality control, trimming,
-> assembly (SPAdes), and annotation (Prokka).  
-> It draws on concepts from the Unix tutorial and best practices for genome analysis,
-> but does **not** yet introduce FASTQ or tool-specific PDF content.
+> This episode prepares learners for the complete workflow used in Episodes 7–11:
+> sequence formats → QC → trimming → assembly → annotation.
+> Good planning prevents downstream confusion and supports transparent, reproducible bioinformatics.
 
 ## Why planning matters
 
-Microbial genomics workflows involve multiple steps:
+Microbial genomics workflows involve many sequential steps:
 
-1. **Quality control** (FastQC)
-2. **Trimming**
-3. **Genome assembly** (SPAdes)
-4. **Assembly evaluation & filtering**
-5. **Annotation** (Prokka)
-6. **Archiving results & documenting methods**
+1. **Quality control** (FastQC)  
+2. **Trimming** (removing adapters and low-quality bases)  
+3. **Assembly** (SPAdes)  
+4. **Contig filtering & evaluation**  
+5. **Annotation** (Prokka)  
 
-Each step produces files, logs, and subdirectories. Without planning:
+Each step generates multiple files, and each depends on the previous step being correct.
 
-- files become scattered across your home directory,
-- output overwrites previous results,
-- commands reference the wrong paths,
-- reproducibility becomes impossible.
+Good planning ensures that:
 
-A simple, thoughtful plan prevents all of this.
+- raw data stays untouched,
+- workflows are traceable and reproducible,
+- directories and filenames are predictable,
+- you avoid wasting compute time on mis‑labeled or misplaced files.
 
-## Anticipating the workflow
+Reproducibility begins **before** you run your first command.
 
-Before analyzing data, ask:
+## Planning your project structure
 
-- Where will I store raw FASTQ files?
-- Where will QC reports go?
-- Where will trimmed reads go?
-- Where should the SPAdes assembly output live?
-- Where should I store annotation results?
-- Where will scripts or notes be kept?
+You created a tidy project layout in Episode 5.  
+Now we expand the rationale behind it.
 
-This planning mirrors the Unix skills covered in Episodes 1–5—especially filesystem navigation and working with files.
+A clean directory layout enables:
 
-## Recommended directory skeleton
+- clear separation of raw vs processed data,
+- predictable paths for running tools,
+- easy troubleshooting when something fails,
+- transparency for collaborators or future you.
 
-You can create a clean starting layout:
+A typical workflow structure:
 
 ```
 myproject/
@@ -75,94 +71,122 @@ myproject/
 └── scripts/
 ```
 
-Purpose of each:
+## What metadata do you need?
 
-- **metadata/**: sample sheets, run notes  
-- **raw_reads/**: original FASTQ files  
-- **qc/**: FastQC or other QC outputs  
-- **trimmed/**: files after trimming  
-- **assembly/**: SPAdes output folders  
-- **annotation/**: Prokka output  
-- **scripts/**: shell scripts, helper commands  
+Before analysis begins, record:
 
-This structure mirrors the layout used throughout the workshop and is consistent with good practice in microbial genomics research.
+- **sample IDs**  
+- **R1 and R2 filenames**  
+- **sequencing platform**  
+- **expected genome size**  
+- **notes about conditions or treatments**  
+- **date of sequencing and provider**  
+
+Place metadata in a file inside your project:
+
+```bash
+cd myproject/metadata
+echo -e "sample_id	read1	read2
+sample01	sample01_R1.fastq.gz	sample01_R2.fastq.gz" > samples.tsv
+```
+
+Metadata supports:
+
+- reproducibility,
+- automation,
+- correct input selection,
+- downstream interpretation of assembly and annotation.
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
-### Planning tip
+## Good planning reduces errors
 
-Never mix **raw data** with **processed data**.  
-Raw FASTQ files should remain untouched and stored in their own directory.  
-All processing steps should write outputs into new directories.
+Most failures in QC, trimming, SPAdes, and Prokka come from:
+- wrong file paths,
+- inconsistent sample names,
+- missing metadata,
+- unclear project structure.
+
+Planning ahead prevents these issues and saves significant time.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Metadata planning
+## Thinking ahead to QC, trimming, and assembly
 
-Before running any tool, you should prepare:
+Before beginning analysis, confirm:
 
-- sample names  
-- read file names (R1, R2)  
-- sequencing platform  
-- expected genome size (helps anticipate memory needs)  
-- notes on experimental conditions  
+- Are your raw FASTQ names consistent (`sample01_R1.fastq.gz`, `sample01_R2.fastq.gz`)?  
+- Do you know where FastQC outputs will go (`qc/`)?  
+- Will trimmed reads be written to (`trimmed/`)?  
+- Do you have enough disk space for SPAdes output?  
+- Where will Prokka results be saved (`annotation/`)?  
 
-A simple spreadsheet often works best.  
-This metadata informs file naming and makes SPAdes/Prokka outputs easier to interpret.
+These decisions prevent workflow bottlenecks and unexpected errors mid‑analysis.
 
-## Planning for tool inputs & outputs
+## Planning for reproducibility
 
-This episode does **not** invoke SPAdes or Prokka directly, but prepares for their behavior:
+A reproducible project includes:
 
-- SPAdes produces an output directory with many files (logs, contigs, scaffolds, temporary files).
-- Prokka outputs multiple files (`.gff`, `.faa`, `.ffn`, `.tbl`, etc.).
+- a clear directory tree,
+- a metadata file,
+- saved scripts or command logs,
+- documented decisions (e.g., trimming parameters, SPAdes settings),
+- no overwritten raw data,
+- version information for tools (FastQC, SPAdes, Prokka).
 
-Ensuring you already have dedicated directories avoids clutter and accidental overwriting.
+This ensures others can verify, repeat, or extend your analysis.
+
+# Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Create your project layout
+## Exercise: Build a planning checklist
 
-Make the directory skeleton:
+Make a short checklist for your project:
+
+- What directories will you need?
+- What metadata must be recorded?
+- What filenames will you use?
+- Where will QC, trimming, assembly, and annotation outputs go?
+
+Compare with a partner.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Create or update your metadata file
 
 ```bash
-mkdir -p myproject/{metadata,raw_reads,qc,trimmed,assembly,annotation,scripts}
+cd myproject/metadata
+echo -e "sample_id	read1	read2
+sample01	sample01_R1.fastq.gz	sample01_R2.fastq.gz" > samples.tsv
 ```
 
 **Questions:**
 
-- Which folder will contain raw FASTQ files?
-- Where will SPAdes output go?
-- Where should your Prokka annotation end up?
+- What additional fields might help future users of this dataset?
+- How could you document SPAdes or Prokka parameters here?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Plan metadata for one sample
+## Exercise: Anticipate downstream needs
 
-Create a text file in the `metadata/` directory:
+Discuss:
 
-```bash
-echo -e "sample_id\tread1\tread2\nsample01\tsample01_R1.fastq.gz\tsample01_R2.fastq.gz" > metadata/samples.tsv
-```
-
-Then inspect it:
-
-```bash
-cat metadata/samples.tsv
-```
-
-**Question:**  
-Why is it helpful to prepare metadata before running analysis tools?
+- What problems might arise if trimmed reads overwrite raw reads?
+- Why do we avoid storing large SPAdes outputs inside random directories?
+- How does planning help when teaching or collaborating?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Planning your project structure prevents mistakes during multi-step analysis.
-- Separate raw data, QC results, trimmed reads, assemblies, and annotations.
-- Metadata prepared early improves reproducibility and keeps analyses organized.
-- This planning sets the stage for handling FASTQ files starting in Episode 7.
+- Good planning prevents errors and supports reproducibility across the workflow.
+- Metadata is essential for tracking sample names, files, and decisions.
+- A consistent directory structure allows QC → trimming → assembly → annotation to progress smoothly.
+- Reproducible science begins before data processing starts.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
