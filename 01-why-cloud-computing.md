@@ -1,169 +1,158 @@
 ---
-title: Computing Concepts & Servers
+title: Why Cloud Computing for Microbial Genomics
 teaching: 20
 exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- Why do we use a remote server for microbial genomics?
-- How is a server different from my laptop?
-- How will I connect to and work on the workshop server?
+- Why is cloud/HPC computing necessary for microbial genomics?
+- What limitations do laptops have for assembly and annotation?
+- How does using a remote Unix server improve reproducibility and workflow stability?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Describe the difference between local and remote computing.
-- Identify the main hardware resources on a server (CPU, RAM, storage).
-- Interpret the basic information shown when you log in to a Linux server.
-- Connect to the workshop server using `ssh` or a terminal program.
+- Explain why genomics workflows require more RAM/CPU than personal computers provide.
+- Describe the benefits of using a remote server for QC, trimming, assembly, and annotation.
+- Recognize how compute resources (CPUs, RAM, storage) impact SPAdes and Prokka.
+- Interpret server resource information and understand why it matters for microbial genomics.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode is adapted from the Data Carpentry *Introduction to Cloud Computing
-> for Genomics* and *Introduction to the Command Line for Genomics* lessons.
+> This episode integrates core concepts from the Unix tutorial, genome assembly workflow,
+> and annotation workflow to explain *why* we rely on powerful remote systems.
 
-## Local vs remote computing
+## Why local machines aren’t enough
 
-Most people are used to working on a **local computer**: a laptop or desktop they
-can see and touch. For genomics, local machines are often not enough:
+Microbial genomics data are large:
 
-- Sequencing data files can be *many gigabytes* in size.
-- Assembly and mapping tools can use *tens of gigabytes of RAM*.
-- Analyses may run for *hours* or *days*.
+- Illumina paired-end datasets often exceed **5–20 GB**.
+- Each FASTQ file may contain **millions of reads**.
+- Assembly tools like **SPAdes** can require **16–120 GB of RAM**.
+- Annotation tools like **Prokka** load large databases into memory.
 
-A **server** (or *remote machine*) is just a more powerful computer that you log
-into over the network. In this workshop, everyone will use the **same type of
-remote Linux server**, pre-configured with the tools and data we need.
+Most laptops cannot handle these resource requirements. Typical problems include:
+
+- Programs freezing due to insufficient memory.
+- Disk space running out during assembly.
+- Analyses taking many hours or failing entirely.
+
+A remote server solves these issues.
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
 ## Vocabulary
 
-- **Local machine** – the computer in front of you.
-- **Remote server** – a computer in a different physical location that you
-  connect to over the network.
-- **Client** – the program on your local machine that talks to the server
-  (Terminal, PuTTY, Windows Terminal, etc.).
+- **CPU / core** — A processing unit that executes instructions.
+- **RAM** — Memory used by running programs; a key limiter for assembly.
+- **Disk storage** — Where FASTQ, FASTA, output files, and logs live.
+- **Network filesystem** — Shared storage accessible to all users.
+- **Remote server** — A powerful, multi-user machine accessed via SSH.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## What resources does a server have?
+## Why cloud or HPC systems excel at microbial genomics
 
-Just like your laptop, a server has:
+### 1. More CPUs → Faster assembly  
+SPAdes supports threading:
+```bash
+spades.py --threads 10
+```
+More threads = faster graph construction and contig generation.
 
-- **CPUs** (cores): do the actual calculations.
-- **RAM** (memory): holds data and code *while* programs are running.
-- **Disk storage**: where files live long-term (reads, assemblies, scripts).
-- **Network connection**: lets you log in and transfer data.
+### 2. More RAM → Successful assembly  
+If SPAdes runs out of memory, it crashes.  
+Servers commonly provide **32–256 GB RAM**, or more.
 
-Genomics workloads tend to be limited by **RAM** and **disk**. It is useful to
-know that:
+### 3. High-throughput storage  
+Assemblies generate many large temporary files.  
+A server’s storage avoids the “No space left on device” errors common on laptops.
 
-- If you run out of RAM, programs may crash or become very slow.
-- If you run out of disk space, tools may refuse to run or fail with
-  messages like *No space left on device*.
+### 4. Reproducibility  
+Shared environments load consistent versions:
+```bash
+fastqc
+trimmomatic
+spades.py
+prokka
+```
 
-Your instructor or local sysadmin can tell you typical limits on the system you
-are using.
+### 5. Stability  
+Jobs can run for **hours** without interruption using `screen` or `tmux`.
 
-## Connecting to the workshop server
+## Logging into the remote system
 
 Your instructor will provide:
 
-- a **host name** (something like `genomics-server.university.edu`), and
-- a **username** and **password** for your workshop account.
+- server hostname  
+- username  
+- temporary password  
 
-### macOS and Linux
-
-On macOS and Linux, we use the built-in **Terminal** application and the
-`ssh` command.
-
-Open a terminal and type (replacing the pieces in angle brackets with the
-values your instructor gives you):
-
+Connect using SSH (macOS/Linux):
 ```bash
 ssh <username>@<server-address>
 ```
 
-For example:
+On Windows, use:
 
-```bash
-ssh learner01@genomics-server.university.edu
-```
+- Windows Terminal  
+- PowerShell  
+- PuTTY  
+- MobaXterm  
 
-The first time you connect, you may see a security question about the
-host key; answer `yes`. Then enter the password when prompted. Note that
-the cursor will not move while you type the password – this is normal.
-
-### Windows
-
-On Windows, you can use a terminal program such as:
-
-- **Windows Terminal** or **PowerShell** (on recent Windows 10/11),
-- **PuTTY**, or
-- **MobaXterm**.
-
-Your instructor will demonstrate the recommended option for this workshop.
-In all cases you will enter the **host name**, **username**, and **password**
-that were provided.
-
-## First look at the shell prompt
-
-After you log in, you will see a message of the day followed by a line
-that ends with a **prompt**, often something like:
-
+Once connected, you will see a shell prompt:
 ```bash
 learner01@genomics-server:~$
 ```
 
-This usually shows:
-
-- your **username**,
-- the **server name**, and
-- your current location in the filesystem (`~` means your home directory).
-
-Everything you type from now on will be interpreted as **commands** to the
-server, not your local machine.
-
-Try the following commands to verify where you are:
-
+Try:
 ```bash
 whoami
 hostname
 pwd
 ```
 
-- `whoami` prints your username on the remote server.
-- `hostname` prints the name of the computer you are logged into.
-- `pwd` prints the present working directory (your current folder).
+These confirm you are on the **remote** machine.
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Local or remote?
+## Exercise: Why can’t we run SPAdes on a laptop?
 
-With a partner, decide whether each of the following is running on your **local
-machine** or the **remote server**:
+Discuss:
 
-1. The browser window showing these lesson pages.
-2. The terminal or SSH client you are using.
-3. The `whoami` and `pwd` commands you just ran.
-4. The FastQC and SPAdes runs we will do later.
+1. Why does SPAdes need so much RAM?
+2. How large are typical FASTQ input files?
+3. What happens if your laptop suspends or sleeps during a long run?
+4. How would cloud/HPC resources solve these problems?
 
-Discuss why it matters where each thing is happening.
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Estimate your dataset size
+
+Later in the workshop you will download real FASTQ files.  
+Before assembly, check their sizes:
+
+```bash
+du -h reads/
+```
+
+**Questions:**
+
+- How large are they?
+- Would your laptop have enough free disk space?
+- Would you feel confident running SPAdes locally?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- We use a **remote server** for genomics because it has more CPU, RAM, and
-  storage than a typical laptop.
-- You connect to the server using an **SSH client** (Terminal, PuTTY,
-  MobaXterm, etc.).
-- After logging in, you type commands at a **shell prompt** that is running on
-  the **remote** machine.
-- Simple commands like `whoami`, `hostname`, and `pwd` help you confirm where
-  you are and who you are logged in as.
+- Sequencing data are large and computationally expensive to assemble.
+- Cloud/HPC computing provides the RAM, CPUs, and disk space needed for assembly and annotation.
+- You access the remote system through SSH and run all commands *on the server*, not locally.
+- Tools like FastQC, Trimmomatic, SPAdes, and Prokka all benefit from shared, stable compute environments.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
