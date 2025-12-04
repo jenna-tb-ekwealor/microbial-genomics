@@ -671,7 +671,7 @@ shared, stable compute environments.</li>
 </div>
 </section></section><section id="aio-02-introduction-to-shell"><p>Content from <a href="02-introduction-to-shell.html">Introducing the Shell</a></p>
 <hr>
-<p>Last updated on 2025-12-03 |
+<p>Last updated on 2025-12-04 |
 
         <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/02-introduction-to-shell.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -686,8 +686,8 @@ shared, stable compute environments.</li>
 <h3 class="card-title">Questions</h3>
 <ul>
 <li>What is the Unix shell?</li>
-<li>How do I run basic commands on the remote server?</li>
-<li>How do I find help for a command?</li>
+<li>How do I run commands on the workshop server?</li>
+<li>How do I navigate files and folders using basic Unix commands?</li>
 </ul>
 </div>
 </div>
@@ -697,15 +697,13 @@ shared, stable compute environments.</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Explain what the shell is and why genomics workflows rely on
-it.</li>
-<li>Run basic commands such as <code>whoami</code>, <code>pwd</code>,
-and <code>ls</code>.</li>
-<li>Describe the general structure of a shell command.</li>
-<li>Use tab completion and command history to work more
-efficiently.</li>
-<li>Use <code>--help</code> and <code>man</code> to find basic usage
-information.</li>
+<li>Explain what the shell is and why it is essential for microbial
+genomics workflows.</li>
+<li>Run simple shell commands (<code>whoami</code>, <code>pwd</code>,
+<code>ls</code>) on a remote server.</li>
+<li>Navigate the directory structure using <code>cd</code>, absolute
+paths, and relative paths.</li>
+<li>Understand how commands, arguments, and options fit together.</li>
 </ul>
 </div>
 </div>
@@ -714,193 +712,242 @@ information.</li>
 </div>
 <blockquote>
 <p>This episode is adapted from the Data Carpentry <em>Introduction to
-the Command Line for Genomics</em> lesson.</p>
+the Command Line for Genomics</em> lesson and enhanced with concepts
+needed for microbial genome QC, trimming, assembly, and annotation
+workflows.</p>
 </blockquote>
 <section><h2 class="section-heading" id="what-is-the-shell">What is the shell?<a class="anchor" aria-label="anchor" href="#what-is-the-shell"></a>
 </h2>
 <hr class="half-width">
-<p>The <strong>shell</strong> is a program that takes the commands you
-type and asks the operating system to run them. Instead of pointing and
-clicking in a graphical interface, you work by typing <strong>text
-commands</strong>.</p>
-<p>For genomics work:</p>
+<p>The <strong>shell</strong> is a program that interprets your commands
+and runs other programs.<br>
+Rather than clicking through folders, you <strong>type commands</strong>
+that give you precise control over:</p>
 <ul>
-<li>Many bioinformatics tools are only available on the command
-line.</li>
-<li>Many tasks involve many files or samples, which are easier to handle
-with scripts.</li>
-<li>Remote servers often only provide a text interface.</li>
-</ul></section><section><h2 class="section-heading" id="the-shell-prompt">The shell prompt<a class="anchor" aria-label="anchor" href="#the-shell-prompt"></a>
-</h2>
-<hr class="half-width">
-<p>On our server, your prompt will look something like:</p>
+<li>navigating files,</li>
+<li>running tools (FastQC, SPAdes, Prokka),</li>
+<li>organizing sequencing data,</li>
+<li>automating workflows.</li>
+</ul>
+<p>Because genome-scale tools run on <strong>remote Linux
+servers</strong>, learning the shell is essential.</p>
+<p>When you log in via SSH, you land at a prompt that looks something
+like:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">learner01@genomics-server:~$</span></span></code></pre>
 </div>
-<p>We will write commands in the lesson like this:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
-</div>
-<p>You should <strong>type only what appears after the
-<code>$</code></strong> and then press <kbd>Enter</kbd>.</p>
+<p>Everything typed after this prompt is a command sent to the remote
+machine.</p>
 </section><section><h2 class="section-heading" id="your-first-commands">Your first commands<a class="anchor" aria-label="anchor" href="#your-first-commands"></a>
 </h2>
 <hr class="half-width">
-<p>Try these commands on the server:</p>
+<p>Try these:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">whoami</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">hostname</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+</div>
+<ul>
+<li>
+<code>whoami</code> shows your username (on the <strong>remote
+server</strong>, not your laptop).</li>
+<li>
+<code>hostname</code> tells you which machine you’re logged
+into.</li>
+<li>
+<code>pwd</code> prints your <strong>present working
+directory</strong>, letting you confirm where you are.</li>
+</ul>
+<p>These help ensure you’re operating on the server—not your local
+machine.</p>
+</section><section><h2 class="section-heading" id="listing-files-with-ls">Listing files with <code>ls</code>
+<a class="anchor" aria-label="anchor" href="#listing-files-with-ls"></a>
+</h2>
+<hr class="half-width">
+<p>Use <code>ls</code> to see what’s in your current directory:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="bu">pwd</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
 </div>
+<p>Variants:</p>
 <ul>
 <li>
-<code>whoami</code> shows your username.</li>
+<code>ls -l</code> – long listing</li>
 <li>
-<code>pwd</code> (<em>print working directory</em>) shows where you
-are in the filesystem.</li>
+<code>ls -a</code> – show hidden files (those beginning with
+<code>.</code>)</li>
 <li>
-<code>ls</code> lists files and directories in your current
-location.</li>
+<code>ls -lh</code> – human-readable file sizes</li>
 </ul>
-<p>Run <code>ls</code> a few times in a row – nothing changes, but this
-is a good way to get used to the cycle of <strong>type → Enter → see
-output</strong>.</p>
-</section><section><h2 class="section-heading" id="the-structure-of-a-command">The structure of a command<a class="anchor" aria-label="anchor" href="#the-structure-of-a-command"></a>
+<p>This is how you inspect data directories like:</p>
+<pre><code>reads/
+trimmed/
+assembly/
+annotation/</code></pre>
+<p>as the workshop progresses.</p>
+</section><section><h2 class="section-heading" id="moving-around-with-cd">Moving around with <code>cd</code>
+<a class="anchor" aria-label="anchor" href="#moving-around-with-cd"></a>
 </h2>
 <hr class="half-width">
-<p>Most shell commands follow this pattern:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">command</span>  <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span>  <span class="pp">[</span><span class="ss">arguments</span><span class="pp">]</span></span></code></pre>
-</div>
-<ul>
-<li>
-<strong>command</strong> – the program you are running
-(e.g. <code>ls</code>)</li>
-<li>
-<strong>options</strong> – extra flags that change behavior (usually
-start with <code>-</code>)</li>
-<li>
-<strong>arguments</strong> – what the command should act on (files,
-directories, etc.)</li>
-</ul>
-<p>For example:</p>
+<p>You will move between directories constantly during QC, trimming,
+assembly, and annotation.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> shell_data</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">cd</span> directoryname</span></code></pre>
 </div>
-<ul>
-<li>
-<code>ls</code> – list files</li>
-<li>
-<code>-lh</code> – options: <code>-l</code> (long format) and
-<code>-h</code> (human-readable sizes)</li>
-<li>
-<code>shell_data</code> – argument: which directory to list</li>
-</ul></section><section><h2 class="section-heading" id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
-</h2>
-<hr class="half-width">
-<p>Most commands provide some form of help. Two common patterns:</p>
+<p>To go <strong>home</strong>:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">--help</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="bu">cd</span> ~</span></code></pre>
 </div>
-<p>Many programs print a short usage message with <code>--help</code> or
-<code>-h</code>.</p>
-<p>You can also use manual pages:</p>
+<p>To go <strong>up one level</strong>:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">man</span> ls</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre>
 </div>
-<ul>
-<li>Use the arrow keys or <kbd>Space</kbd> to scroll.</li>
-<li>Press <kbd>q</kbd> to quit the manual page.</li>
-</ul>
-<p>Not every command has a man page, but many core tools do.</p>
-</section><section><h2 class="section-heading" id="working-more-efficiently-history-and-tab-completion">Working more efficiently: history and tab completion<a class="anchor" aria-label="anchor" href="#working-more-efficiently-history-and-tab-completion"></a>
-</h2>
-<hr class="half-width">
-<p>The shell keeps a <strong>history</strong> of commands you have
-typed.</p>
-<ul>
-<li>Press the <strong>up arrow</strong> to cycle backwards through
-previous commands.</li>
-<li>Press the <strong>down arrow</strong> to move forward again.</li>
-</ul>
-<p>You can also use <strong>tab completion</strong>:</p>
-<ol style="list-style-type: decimal">
-<li>Type <code>ls she</code> and then press <kbd>Tab</kbd>.</li>
-<li>If there is only one match (e.g. <code>shell_data</code>), the shell
-completes it.</li>
-<li>If there are multiple matches, press <kbd>Tab</kbd> twice to see
-them.</li>
-</ol>
-<p>Tab completion works for:</p>
-<ul>
-<li>command names,</li>
-<li>directory names, and</li>
-<li>file names.</li>
-</ul>
-<div id="exercise-inspecting-the-environment" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-inspecting-the-environment" class="callout-inner">
-<h3 class="callout-title">Exercise: Inspecting the environment</h3>
-<div class="callout-content">
-<p>On the remote server, run the following commands:</p>
+<p>To move multiple levels:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">hostname</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="bu">pwd</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">ls</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="bu">cd</span> ../../</span></code></pre>
 </div>
-<ol style="list-style-type: decimal">
-<li>What does each command tell you?</li>
-<li>What do you think the <code>-h</code> option to <code>ls</code>
-does?</li>
-<li>Try typing <code>ls -l</code> and then press the up arrow and edit
-the command to add <code>h</code> (so it becomes
-<code>ls -lh</code>).</li>
-</ol>
-<p>Discuss your answers with a neighbor.</p>
+<p>To go to a specific path:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="bu">cd</span> /home/learner01/mydata/</span></code></pre>
+</div>
+<p>Understanding paths is critical when feeding files to tools like
+FastQC or SPAdes.</p>
+<div id="absolute-vs-relative-paths" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="absolute-vs-relative-paths" class="callout-inner">
+<h3 class="callout-title">Absolute vs relative paths</h3>
+<div class="callout-content">
+<ul>
+<li><p><strong>Absolute path:</strong> starts from the root
+(<code>/</code>), e.g.<br><code>/home/learner01/mydata/reads/ERR435025_R1.fastq.gz</code></p></li>
+<li><p><strong>Relative path:</strong> starts from your current
+directory, e.g.<br><code>reads/ERR435025_R1.fastq.gz</code></p></li>
+</ul>
+<p>SPAdes, FastQC, and Prokka all accept either — but incorrect paths
+are a <em>very</em> common beginner error.</p>
 </div>
 </div>
 </div>
-<div id="exercise-getting-help" class="callout discussion">
+</section><section><h2 class="section-heading" id="command-structure">Command structure<a class="anchor" aria-label="anchor" href="#command-structure"></a>
+</h2>
+<hr class="half-width">
+<p>Commands often look like this:</p>
+<pre><code>command -option argument</code></pre>
+<p>Example:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> /home/learner01/</span></code></pre>
+</div>
+<p>Later, when you run SPAdes, you’ll see the same structure:</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="ex">spades.py</span> <span class="at">-1</span> reads/R1.fastq.gz <span class="at">-2</span> reads/R2.fastq.gz <span class="at">--threads</span> 10 <span class="at">--memory</span> 120</span></code></pre>
+</div>
+<p>The shell simply interprets the command, options, and arguments you
+provide.</p>
+<div id="exercise-where-are-you" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-getting-help" class="callout-inner">
-<h3 class="callout-title">Exercise: Getting help</h3>
+<div id="exercise-where-are-you" class="callout-inner">
+<h3 class="callout-title">Exercise: Where are you?</h3>
+<div class="callout-content">
+<p>Run:</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+</div>
+<ul>
+<li>What directory are you in?</li>
+<li>Is it your home directory?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-navigate-with-cd" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-navigate-with-cd" class="callout-inner">
+<h3 class="callout-title">Exercise: Navigate with <code>cd</code>
+</h3>
 <div class="callout-content">
 <ol style="list-style-type: decimal">
 <li>
-<p>Use <code>--help</code> and/or <code>man</code> to answer these
-questions:</p>
-<ul>
-<li>Which option to <code>ls</code> shows hidden files (those whose
-names start with <code>.</code>)?</li>
-<li>Which option sorts files by size?</li>
-</ul>
+<p>Create a directory:</p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">mkdir</span> practice</span></code></pre>
+</div>
 </li>
-<li><p>Try out your answers on the command line.</p></li>
+<li>
+<p>Move into it:</p>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="bu">cd</span> practice</span></code></pre>
+</div>
+</li>
+<li>
+<p>Verify location using:</p>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+</div>
+</li>
 </ol>
+</div>
+</div>
+</div>
+<div id="exercise-inspect-files-with-ls" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-inspect-files-with-ls" class="callout-inner">
+<h3 class="callout-title">Exercise: Inspect files with
+<code>ls</code>
+</h3>
+<div class="callout-content">
+<p>In your home directory, run:</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span></span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Which files are hidden?</li>
+<li>Which items are directories?</li>
+<li>What do the permission strings (like <code>drwxr-xr-x</code>)
+represent?</li>
+</ul>
 </div>
 </div>
 </div>
@@ -912,18 +959,17 @@ names start with <code>.</code>)?</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>The <strong>shell</strong> lets you control a computer by typing
-commands instead of using a graphical interface.</li>
-<li>A typical command has the form
-<code>command [options] [arguments]</code>.</li>
+<li>The <strong>shell</strong> is the primary interface for microbial
+genomics workflows.</li>
+<li>Commands like <code>whoami</code>, <code>hostname</code>, and
+<code>pwd</code> confirm where you are working.</li>
 <li>
-<code>whoami</code>, <code>pwd</code>, and <code>ls</code> are
-useful first commands to confirm where you are and what is in a
-directory.</li>
-<li>Use <code>--help</code> or <code>man</code> to get basic information
-about most commands.</li>
-<li>Command history and tab completion save time and reduce typing
-errors.</li>
+<code>ls</code> lists files; <code>cd</code> moves between
+directories.</li>
+<li>Understanding paths is essential for running tools like FastQC,
+SPAdes, and Prokka.</li>
+<li>All commands run on the <strong>remote server</strong>, not your
+local machine.</li>
 </ul>
 </div>
 </div>
