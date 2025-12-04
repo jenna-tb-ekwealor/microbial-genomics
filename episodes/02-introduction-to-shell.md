@@ -15,8 +15,8 @@ exercises: 15
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
 - Explain what the shell is and why it is essential for microbial genomics workflows.
-- Run simple shell commands (`whoami`, `pwd`, `ls`) on a remote server.
-- Navigate the directory structure using `cd`, absolute paths, and relative paths.
+- Use `pwd`, `ls`, and `cd` to navigate the directory structure.
+- Distinguish between absolute and relative paths.
 - Understand how commands, arguments, and options fit together.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -41,23 +41,17 @@ When you log in via SSH, you land at a prompt that looks something like:
 learner01@genomics-server:~$
 ```
 
-Everything typed after this prompt is a command sent to the remote machine.
+Everything typed after this prompt is interpreted *by the remote machine*.
 
-## Your first commands
+## Confirming your location
 
-Try these:
+You can check where you are using:
 
 ```bash
-whoami
-hostname
 pwd
 ```
 
-- `whoami` shows your username (on the **remote server**, not your laptop).
-- `hostname` tells you which machine you're logged into.
-- `pwd` prints your **present working directory**, letting you confirm where you are.
-
-These help ensure you're operating on the server—not your local machine.
+This prints the **present working directory**, which will usually be your home directory when you first log in.
 
 ## Listing files with `ls`
 
@@ -67,26 +61,15 @@ Use `ls` to see what’s in your current directory:
 ls
 ```
 
-Variants:
+Common useful variations:
 
-- `ls -l` – long listing
-- `ls -a` – show hidden files (those beginning with `.`)
-- `ls -lh` – human-readable file sizes
-
-This is how you inspect data directories like:
-
-```
-reads/
-trimmed/
-assembly/
-annotation/
-```
-
-as the workshop progresses.
+- `ls -l` – long listing with details  
+- `ls -a` – show hidden files (those beginning with `.`)  
+- `ls -lh` – human-readable sizes  
 
 ## Moving around with `cd`
 
-You will move between directories constantly during QC, trimming, assembly, and annotation.
+You will move between directories throughout the workshop:
 
 ```bash
 cd directoryname
@@ -113,22 +96,18 @@ cd ../../
 To go to a specific path:
 
 ```bash
-cd /home/learner01/mydata/
+cd /home/learner01/myproject/
 ```
-
-Understanding paths is critical when feeding files to tools like FastQC or SPAdes.
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
 ## Absolute vs relative paths
 
 - **Absolute path:** starts from the root (`/`), e.g.  
-  `/home/learner01/mydata/reads/ERR435025_R1.fastq.gz`
+  `/home/learner01/myproject/raw_reads/`
 
-- **Relative path:** starts from your current directory, e.g.  
-  `reads/ERR435025_R1.fastq.gz`
-
-SPAdes, FastQC, and Prokka all accept either — but incorrect paths are a *very* common beginner error.
+- **Relative path:** starts from your *current* directory, e.g.  
+  `raw_reads/ERR435025_R1.fastq.gz`
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -146,13 +125,19 @@ Example:
 ls -lh /home/learner01/
 ```
 
-Later, when you run SPAdes, you'll see the same structure:
+:::::::::::::::::::::::::::::::::::::::::::::: callout  
+### Common beginner mistakes
 
-```bash
-spades.py -1 reads/R1.fastq.gz -2 reads/R2.fastq.gz --threads 10 --memory 120
-```
+| Mistake | What to check / avoid |
+|--------|----------------------|
+| Running commands in the wrong directory | Always run `pwd` to confirm location |
+| Using relative paths carelessly | Prefer absolute paths for important commands |
+| Overwriting or deleting files by accident | Double-check filenames; avoid spaces in names |
+| Confusing local vs remote context | After SSH login, all commands run on the **remote server** |
 
-The shell simply interprets the command, options, and arguments you provide.
+::::::::::::::::::::::::::::::::::::::::::::::::  
+
+# Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
@@ -164,27 +149,17 @@ Run:
 pwd
 ```
 
-- What directory are you in?
-- Is it your home directory?
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
 ## Exercise: Navigate with `cd`
 
-1. Create a directory:
-   ```bash
-   mkdir practice
-   ```
-2. Move into it:
-   ```bash
-   cd practice
-   ```
-3. Verify location using:
-   ```bash
-   pwd
-   ```
+```bash
+mkdir practice
+cd practice
+pwd
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -192,27 +167,34 @@ pwd
 
 ## Exercise: Inspect files with `ls`
 
-In your home directory, run:
-
 ```bash
 ls -l
 ls -a
 ```
 
-**Questions:**
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
-- Which files are hidden?
-- Which items are directories?
-- What do the permission strings (like `drwxr-xr-x`) represent?
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Practice navigation and paths  
+
+1. Use `pwd` to confirm your current directory.  
+2. Create a directory named `practice1`.  
+3. Change into it.  
+4. Create and move into a subdirectory:
+```bash
+mkdir subdir
+cd subdir
+```
+5. Navigate back to your home directory in one command.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
 - The **shell** is the primary interface for microbial genomics workflows.
-- Commands like `whoami`, `hostname`, and `pwd` confirm where you are working.
-- `ls` lists files; `cd` moves between directories.
-- Understanding paths is essential for running tools like FastQC, SPAdes, and Prokka.
+- `pwd`, `ls`, and `cd` are essential tools for navigation.
+- Understanding paths is critical for running tools like FastQC, SPAdes, and Prokka.
 - All commands run on the **remote server**, not your local machine.
 
-::::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::

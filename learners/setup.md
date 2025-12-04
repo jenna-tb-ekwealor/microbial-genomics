@@ -120,15 +120,13 @@ For Windows, you will also need to install either Git Bash, PuTTY, or the Ubuntu
 
 :::::::::::::::::::::::::
 
-## Option A (**Recommended**): Using the lessons with the remote server
+## Option A (**Recommended**): Doing the lessons on the remote server
 
 Instructors will provide a remote server option that includes software and data you will need for this workshop. 
 
-## Option B: Using the lessons on your local machine
+## Option B: Doing the lessons on your local machine
 
-While not recommended, it is possible to work through the lessons on your local machine (i.e. without using the remote server).
-To do this, you will need to install all of the software used in the workshop and obtain a copy of the dataset.
-Instructions for doing this are listed below.
+While not recommended, it is possible to work through the lessons on your local machine (i.e. without using the remote server). To do this, you will need to install all of the software used in the workshop and obtain a copy of the dataset. 
 
 ---
 

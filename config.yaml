@@ -35,7 +35,7 @@ branch: 'main'
 # Who to contact if there are any issues
 contact: 'ekwealor@sfsu.edu'
 
-disable_sidebar_numbering: true
+disable_sidebar_numbering: false
 
 # Navigation ------------------------------------------------
 #

@@ -1,204 +1,190 @@
 ---
 title: The Filesystem
-teaching: 30
-exercises: 20
+teaching: 25
+exercises: 15
 ---
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- How is the Unix filesystem organized?
-- How do I check where I am in the directory structure?
-- How do I move between directories using paths?
-- What is the difference between absolute and relative paths?
+- What is the directory (folder) structure on a Linux server, and why should you care?
+- How do you create, navigate, and manage directories in the shell?
+- What are hidden files, and how can you view them?
+- Why does a consistent project directory structure matter for microbial genomics?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Describe how the Unix filesystem is structured.
-- Use `pwd` to confirm your current location.
-- Navigate into and out of directories using `cd`.
-- Distinguish between absolute and relative paths.
-- Understand how paths matter for genomic workflows later on.
+- Understand the root filesystem and the concept of a home directory.
+- Navigate directories using absolute and relative paths.
+- Create, remove, move, and rename files and directories.
+- View hidden files and interpret file permissions.
+- Apply good directory organization for microbial genomics workflows.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode draws directly from the Unix tutorial PDF (Exercises 2–5) to teach the
-> filesystem concepts required before handling FASTQ files, assemblies, or annotations.
+## What is the Linux filesystem?
 
-## What is the filesystem?
-
-The Unix filesystem is a **tree-like structure** of directories (folders). At the very top is the root:
+On the server, all files live under the root directory `/`.  
+As a learner, you will mainly work in your **home directory**, for example:
 
 ```
-/
+/home/learner01/
 ```
 
-Below this, you will find directories such as `/home`, `/usr`, `/etc`, etc.
+This is where all your project files — raw reads, QC results, assemblies, and annotations — should live.
 
-When you log into the workshop server, you start in **your home directory**, represented by:
+## Why directory structure matters for genomics
+
+A microbial genomics project generates many files (FASTQ, QC outputs, trimmed reads, assembly files, annotation outputs). A clear structure prevents confusion and supports reproducibility.
+
+A recommended layout:
 
 ```
-~
+myproject/
+├── metadata/
+├── raw_reads/
+├── qc/
+├── trimmed/
+├── assembly/
+├── annotation/
+└── scripts/
 ```
 
-You can confirm this using:
+## Navigating directories with `pwd`, `ls`, and `cd`
+
+Check where you are:
 
 ```bash
 pwd
 ```
 
-This prints your **present working directory** — your current location.
-
-## Listing the contents of a directory
-
-Use `ls` to see what is inside your current directory:
+List files:
 
 ```bash
 ls
+ls -l      # long format
+ls -a      # include hidden files
+ls -lh     # human-readable sizes
 ```
 
-To view more details:
+Move between directories:
 
 ```bash
-ls -l
-ls -lh
-ls -la
+cd directoryname
+cd ~        # home
+cd ..       # up one level
+cd ../../   # up two levels
+cd /home/learner01/myproject/
 ```
-
-- `-l` shows long format
-- `-h` shows sizes in human-readable units
-- `-a` includes hidden files (names beginning with `.`)
-
-## Moving between directories with `cd`
-
-The command `cd` (**change directory**) moves you into a different folder.
-
-Example:
-
-```bash
-cd ~
-cd mydata
-cd ..
-```
-
-### Special directories
-
-- `~` — your home directory  
-- `.` — the current directory  
-- `..` — the parent directory (one level up)
-
-From the Unix tutorial PDF (Exercise 5), you can chain these together:
-
-```bash
-cd ~/temp/stuff/things
-cd ../../..
-```
-
-## Absolute vs relative paths
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
-### Absolute paths
-Start with `/` and specify the full path from the root.
+## Absolute vs relative paths
 
-Example:
-
-```
-/home/learner01/mydata/reads/
-```
-
-### Relative paths
-Start from your current directory.
-
-Example (from within `mydata`):
+**Absolute paths** start from `/`. Example:
 
 ```
-reads/
+/home/learner01/myproject/raw_reads/
 ```
 
-Understanding this distinction prevents mistakes later when running tools like
-FastQC, SPAdes, and Prokka, all of which require accurate file paths.
+**Relative paths** depend on where you currently are:
+
+```
+raw_reads/sample.fastq.gz
+```
+
+Understanding paths is essential later when running FastQC, SPAdes, and Prokka.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Combining `pwd`, `cd`, and `ls`
-
-These commands form the navigation toolkit you will use throughout the entire workshop:
+## Creating, moving, copying, and deleting files
 
 ```bash
-pwd      # where am I?
-ls       # what is here?
-cd dir   # go somewhere else
-cd ..    # go up one level
-cd ~     # return home
+mkdir newdir
+cp file1 file2
+cp -r dir1 dir2     # copy directories
+mv old new
+rm file
+rm -r directory     # remove directory and contents (dangerous!)
 ```
 
-You will use them constantly once you begin working with:
+:::::::::::::::::::::::::::::::::::::::::::::: callout
 
-- `reads/` directories,
-- `trimmed/` sequence folders,
-- SPAdes output directories,
-- Prokka annotation folders.
+### Permissions basics
+
+`ls -l` shows file permissions:
+
+- `r` = read  
+- `w` = write  
+- `x` = execute  
+
+Directories need `x` permission to be entered.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+# Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
 ## Exercise: Explore your home directory
 
-Run:
+1. Run `pwd` — where are you?  
+2. Use `ls -l` — what files or directories do you see?  
+3. Use `ls -a` — what hidden files appear?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Create your project skeleton
 
 ```bash
-pwd
-ls -l
+mkdir myproject
+cd myproject
+mkdir metadata raw_reads qc trimmed assembly annotation scripts
 ```
 
-**Questions:**
-
-1. Which files or directories do you see?
-2. Which items are directories?
-3. Are any hidden files present?
+Run `ls -l`.  
+What permissions and sizes do you see?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Practice moving around
+## Exercise: Copy, move, and delete files
 
-1. Create a small directory structure:
-   ```bash
-   mkdir -p practice/level1/level2
-   ```
-2. Navigate into the deepest level:
-   ```bash
-   cd practice/level1/level2
-   ```
-3. Use `pwd` — what path do you see?
-4. Navigate back to your home directory in **one command**.
+```bash
+echo "example" > testfile.txt
+cp testfile.txt copy_testfile.txt
+mv copy_testfile.txt renamed_testfile.txt
+rm testfile.txt
+```
+
+Use `ls -l` to confirm results.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Absolute or relative?
+## Exercise: Clean up & reflect
 
-For each path below, decide whether it is absolute or relative:
+Return to your home directory:
 
-1. `/home/learner01`
-2. `reads/ERR435025_R1.fastq.gz`
-3. `../trimmed/`
-4. `/usr/bin/`
-5. `./scripts/run_spades.sh`
+```bash
+cd ~
+```
 
-Discuss why absolute paths are often safer when running long workflows.
+Why is it important that all genomics work stays inside a dedicated project directory?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- The Unix filesystem is a tree with `/` at the root and `~` as your home.
-- `pwd` tells you where you are; `ls` shows what is in a directory.
-- `cd` moves you between directories using absolute or relative paths.
-- Understanding paths is essential for accessing sequencing files and running genomics tools.
-- Good navigation skills reduce errors when working with large datasets.
+- Linux uses a hierarchical filesystem with `/` at the root.
+- `pwd`, `ls`, and `cd` are essential tools for navigating the shell.
+- Good file organization is critical for genomic workflows.
+- Absolute paths are reliable; relative paths depend on your current location.
+- Use caution with `rm -r`.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -47,7 +47,7 @@ Participants should bring their own laptops and be prepared to work on a **remot
 Linux server**.  
 
 To get started, please follow the directions on the 
-[Setup page](https://www.jenna-tb-ekwealor.io/genomics-workshop/index.html#setup) to ensure you have access to the required software 
+[Setup page](https://www.jenna-tb-ekwealor.io/genomics-workshop/#setup) to ensure you have access to the required software 
 and server environment.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -69,7 +69,7 @@ and server environment.
 | ------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [Intro to R and RStudio for Genomics](https://datacarpentry.org/genomics-r-intro/) | Use R to analyze and visualize between-sample variation. |
 
-**Please note that lesson [Intro to R and RStudio for Genomics](https://datacarpentry.org/genomics-r-intro/) is in "beta" development, which means that it is currently being piloted by instructors, but is not yet part of The Carpentries' official lesson offerings.**    
+**PLEASE NOTE:** The lesson *Intro to R and RStudio for Genomics* is in "beta" development, which means that it is currently being piloted by instructors, but is not yet part of The Carpentries' official lesson offerings.    
 
 ---
 
