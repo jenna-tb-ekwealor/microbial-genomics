@@ -1,141 +1,241 @@
 ---
-title: De Novo Assembly with SPAdes
-teaching: 25
+title: Genome Assembly with SPAdes
+teaching: 40
 exercises: 20
 ---
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- How do short reads become longer contigs in an assembly?
-- What are contigs, scaffolds, and N50?
-- How do we run SPAdes on the rampers server using trimmed reads?
-- How can we quickly inspect the assembly output?
+- How do we assemble microbial genomes from paired-end reads?
+- How do we run SPAdes on the command line?
+- What are the key SPAdes options we need to set (input files, threads, memory, output directory)?
+- What files does SPAdes produce and which ones are most important?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Describe at a high level how de novo assembly reconstructs genomes from reads.
-- Define contigs, scaffolds, and N50 in the context of assemblies.
-- Run SPAdes on trimmed paired-end reads to generate an assembly.
-- Inspect the resulting `contigs.fasta` file and basic assembly statistics.
+- Describe the role of de novo assembly in microbial genomics.
+- Run SPAdes on paired-end reads using appropriate options.
+- Locate SPAdes output files (especially `contigs.fasta` and `scaffolds.fasta`).
+- Perform a basic first inspection of the assembly output.
+- Connect assembly results to later annotation with Prokka.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode is adapted from short microbial assembly teaching materials and
-> the SPAdes documentation, customized for the rampers server project layout.
+> This episode uses the microbial genome assembly activity you provided and adapts the
+> SPAdes workflow for a Carpentries-style lesson. It assumes reads have already been
+> organized, QC'd, and optionally trimmed in earlier episodes.
 
-## From reads to contigs
+## What is genome assembly?
 
-Illumina reads are typically 100–300 bases long, while microbial genomes have
-millions of bases. An **assembler**:
+In **de novo genome assembly**, we reconstruct a genome from many short reads:
 
-- finds overlaps between reads,
-- builds a graph of how reads connect,
-- collapses paths through that graph into longer sequences called **contigs**.
+- Raw reads (FASTQ) → overlap / k-mer graph → contigs → scaffolds.
+- For bacterial genomes, final sizes are often **2–6 Mb**.
+- Assemblers like **SPAdes** are optimized for microbial genomes.
 
-Key terms:
+Our workflow:
 
-- **contig** – a contiguous stretch of assembled sequence.
-- **scaffold** – a set of contigs ordered and oriented with gaps (Ns) between
-  them.
-- **N50** – the contig length such that 50% of the assembly lies in contigs of
-  that length or longer.
+1. Ensure reads are available in a project directory.
+2. Run SPAdes with paired-end inputs.
+3. Inspect key output files (especially the assembly FASTA).
+4. Filter or post-process the assembly (covered here at a basic level).
 
-Larger N50 and fewer contigs usually mean a more contiguous assembly, but
-context (genome size, repeats, coverage) matters.
+## Setting up the assembly directory
 
-## In-person assembly activity (offline)
-
-Before running SPAdes, we will do a **paper-based assembly**:
-
-- You will receive strips of paper with short “reads” from a simple story.
-- Your task is to find overlaps and reconstruct the original story.
-- You will notice challenges like repeats and ambiguous joins.
-
-This activity builds intuition for what assemblies are doing behind the scenes.
-
-## Running SPAdes on the rampers server
-
-We will run SPAdes using the trimmed reads in `data/trimmed/` and write all
-output to an `assembly/` directory.
-
-From your project root:
+Following the earlier project structure, we will work in the `assembly/` directory:
 
 ```bash
-cd ~/microbial_project
-mkdir -p assembly
-
-spades.py   -1 data/trimmed/sample_R1.trimmed.fastq.gz   -2 data/trimmed/sample_R2.trimmed.fastq.gz   -o assembly/spades_sample
+cd myproject
+cd assembly
+pwd
 ```
 
-Notes:
+You should see that your **current working directory** is `.../myproject/assembly`.
 
-- `-1` and `-2` specify the paired-end read files.
-- `-o` sets the output directory.
-- SPAdes may take several minutes depending on data size and server load.
+Make sure your reads are accessible, for example:
 
-Your instructor may provide a script that runs SPAdes with the correct sample
-names for the workshop dataset.
+- `../trimmed/sample01_R1.trimmed.fastq.gz`
+- `../trimmed/sample01_R2.trimmed.fastq.gz`
 
-## Inspecting `contigs.fasta`
+or, if trimming was skipped in this run:
 
-When SPAdes finishes, list the output directory:
+- `../raw_reads/sample01_R1.fastq.gz`
+- `../raw_reads/sample01_R2.fastq.gz`
+
+## Running SPAdes
+
+SPAdes is run with a command that specifies:
+
+- `-1` – path to R1 FASTQ,
+- `-2` – path to R2 FASTQ,
+- `--threads` – number of CPU cores,
+- `--memory` – maximum RAM (in GB),
+- `-k` – list of k-mer sizes,
+- `-o` – output directory.
+
+A typical command, adapted from your assembly activity, looks like:
 
 ```bash
-ls assembly/spades_sample
+spades.py \
+  -1 ../raw_reads/ERR435025_R1.fastq.gz \
+  -2 ../raw_reads/ERR435025_R2.fastq.gz \
+  --threads 10 \
+  --memory 120 \
+  -k 21,33,55,77,99,127 \
+  -o ERR435025_assembly
 ```
 
-You should see files including `contigs.fasta` and `scaffolds.fasta` (we will
-focus on `contigs.fasta`).
+Adjust:
 
-To count the number of contigs:
+- input paths (`-1`, `-2`) to match your dataset,
+- `--threads` based on the number of cores available,
+- `--memory` based on server limits,
+- `-k` if needed (these k-mers are typical for Illumina reads).
+
+:::::::::::::::::::::::::::::::::::::::::::::: callout
+
+### Running SPAdes in a long session
+
+Genome assembly can take **many minutes to hours**, depending on:
+
+- read depth,
+- genome size,
+- server load,
+- number of threads and memory.
+
+On shared systems, it is common to run SPAdes inside a session manager like `screen`
+or `tmux` so that the process keeps running even if your SSH connection drops.
+
+Your instructor may demonstrate this, or the run may be pre-computed.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Inspecting SPAdes output
+
+Once SPAdes finishes, you should have an output directory (for example `ERR435025_assembly/`):
 
 ```bash
-grep -c "^>" assembly/spades_sample/contigs.fasta
+ls ERR435025_assembly
 ```
 
-To look at the first contig:
+Common files and directories include:
+
+- `contigs.fasta` – assembled contigs
+- `scaffolds.fasta` – assembled scaffolds (contigs linked by paired-end information)
+- `spades.log` – log file describing the run
+- `params.txt` – parameters used
+- other intermediate files and reports
+
+We will usually use **`scaffolds.fasta`** (or sometimes `contigs.fasta`) as the input for downstream steps.
+
+Copy the scaffold file into a convenient location:
 
 ```bash
-head -n 20 assembly/spades_sample/contigs.fasta
+cp ERR435025_assembly/scaffolds.fasta .
+ls
 ```
 
-If `seqkit` is available on the rampers server, we can get quick stats:
+You should now see `scaffolds.fasta` in your `assembly/` directory.
+
+## First look at the assembly
+
+Use commands from earlier Unix episodes to inspect the assembly:
 
 ```bash
-seqkit stats assembly/spades_sample/contigs.fasta
+head scaffolds.fasta
+grep -c '^>' scaffolds.fasta
 ```
 
-This will report total length, N50, and other metrics. Compare the total length
-to the expected genome size for the organism.
+- `head` shows the first few contigs.
+- `grep -c '^>'` counts how many contigs are present (each header starts with `>`).
 
-If `seqkit` is not available, your instructor may provide precomputed assembly
-statistics for discussion.
+If helper scripts are available (as in your assembly notes), you can compute stats such as:
+
+```bash
+seqstat scaffolds.fasta
+N50_count.pl scaffolds.fasta
+```
+
+These provide:
+
+- total assembly length,
+- number of contigs,
+- N50 (a measure of contig length distribution).
+
+Later, you may want to filter contigs by length (for example keeping only those ≥ 1,000 bp) before annotation, but the basic SPAdes assembly output is already enough to proceed to Prokka.
+
+---
+
+# Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Interpreting assembly metrics
+## Exercise: Run SPAdes (or examine a prepared run)
 
-Using the stats shown by your instructor (or from `seqkit stats`), answer:
+If computing resources allow, run SPAdes on your sample:
 
-1. Approximately how large is the assembly (total length)?
-2. How many contigs are there?
-3. What is the N50 value?
-4. Does the total length seem reasonable for a microbial genome of this type?
+```bash
+cd myproject/assembly
 
-Discuss whether you would consider this assembly “good enough” for basic
-annotation.
+spades.py \
+  -1 ../raw_reads/sample01_R1.fastq.gz \
+  -2 ../raw_reads/sample01_R2.fastq.gz \
+  --threads 8 \
+  --memory 32 \
+  -k 21,33,55,77,99,127 \
+  -o sample01_assembly
+```
+
+If SPAdes has been pre-run for you, skip directly to examining the output directory.
+
+**Questions:**
+
+- How long did the run take?
+- Did SPAdes report any warnings or errors in `spades.log`?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Count contigs and inspect the assembly
+
+After SPAdes finishes (or using a provided assembly):
+
+```bash
+cd myproject/assembly
+cp sample01_assembly/scaffolds.fasta .
+grep -c '^>' scaffolds.fasta
+head scaffolds.fasta
+```
+
+**Questions:**
+
+- How many contigs are present?
+- What does the first header line look like?
+- How might you identify the length of a specific contig?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Think ahead to annotation
+
+Discuss with a partner:
+
+1. Why might we want to filter out very short contigs before annotation?
+2. Which file from the SPAdes output will we give to Prokka in the next episode?
+3. What information about the assembly might be important to record in your project metadata?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Assemblers like SPAdes reconstruct genomes from overlapping short reads,
-  producing **contigs**.
-- N50 summarizes assembly contiguity: larger N50 usually means a more contiguous
-  assembly.
-- We run SPAdes on trimmed reads and store outputs in `assembly/`.
-- `contigs.fasta` is the main file we use for downstream annotation.
+- SPAdes performs de novo genome assembly from paired-end reads.
+- You must provide paths to R1 and R2 reads, thread count, memory limit, and an output directory.
+- SPAdes produces many files; `contigs.fasta` and `scaffolds.fasta` are the most important for downstream analysis.
+- Basic inspection of the assembly (number of contigs, total size, N50) helps assess quality.
+- The assembly FASTA file will be the input to Prokka for genome annotation.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -1,143 +1,210 @@
 ---
-title: Sequencing Data Background
-teaching: 15
-exercises: 5
+title: Background: Sequence File Formats
+teaching: 30
+exercises: 20
 ---
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- What is the difference between FASTA and FASTQ files?
-- What information is stored in a sequencing read?
-- What are paired-end reads, and why do we use them?
-- Where will our sequencing files live on the rampers server?
+- What are FASTA, FASTQ, and SAM/BAM file formats?
+- How are sequence, identifiers, and quality scores stored?
+- Why are many sequence files compressed, and what does `.gz` mean?
+- How do these formats fit into the microbial genome assembly and annotation workflow?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Distinguish between FASTA and FASTQ formats.
-- Describe the four lines that make up a single FASTQ record.
-- Explain what paired-end reads are and how they are named.
-- Locate the raw FASTQ files for this workshop in your project directory.
+- Recognize and describe the structure of FASTA and FASTQ files.
+- Understand how quality scores are represented in FASTQ.
+- Explain the role of SAM/BAM files in mapping reads to references.
+- Identify common filename extensions used in microbial genomics.
+- Connect file formats to later workflow steps: QC, trimming, assembly, and annotation.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode is adapted from the Data Carpentry **Wrangling Genomics** 
-> background lesson and a short sequence file formats overview, condensed for
-> microbial assembly.
+> This episode incorporates concepts from the *Sequence File Formats* notes (FASTA, FASTQ, SAM/BAM)
+> and prepares learners to interpret the files used in later episodes for QC, assembly, and annotation.
 
-## Sequences, reads, and genomes
+## Overview of common file types
 
-- A **genome** is the complete DNA sequence of an organism.
-- A **read** is a short piece of DNA sequence produced by a sequencer.
-- To reconstruct a genome, we need many overlapping reads.
+In microbial genomics, you will frequently encounter:
 
-In this workshop, we work with **Illumina paired-end reads** from a single
-microbial genome. The goal is to assemble these reads into **contigs** and then
-annotate genes.
+- **FASTA** – sequence and identifier(s) only  
+- **FASTQ** – sequence *and* per-base quality scores  
+- **SAM/BAM** – alignments of reads to a reference  
 
-## FASTA vs FASTQ
+File extensions help you keep track:
 
-Both FASTA and FASTQ are text formats used to store sequences.
+- `.fasta`, `.fa`, `.fna`, `.faa`, `.ffn`, `.frn`
+- `.fastq`, `.fq`, `.fastq.gz`
+- `.sam`, `.bam`
 
-- **FASTA** stores only the **sequence**.
-- **FASTQ** stores the **sequence plus a quality score** for each base.
+:::::::::::::::::::::::::::::::::::::::::::::: callout
 
-A FASTA record looks like:
+### Plain text vs binary
+
+- FASTA, FASTQ, and SAM are **plain text** (you can read them with `less`).
+- BAM is a **binary** version of SAM (smaller and faster to process, not human-readable).
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## FASTA format
+
+FASTA files store sequence(s) with headers. From your sequence formats notes:
+
+- Header lines start with `>`  
+- The header is followed by one or more lines of sequence
+
+Example:
 
 ```text
->sequence_id
-ACGTACGTACGT...
+>gi|212499741|ref|YP_002308549.1| DNA polymerase [Bacteriophage APSE-2]
+MQNLLFCDLETYSDIPINCGTHRYAENAEILLFAYAYNHAPVKVWDVTQDKTMPADLKAYFDDSEILTVW
+HNGGMFDTVILKRVLNIDLPLSRVHDTLVQALAHGLPGALGLLCDIFNVNSDKAKDKEGKALISLLCKPR
 ```
 
-A FASTQ record always has **four lines per read**:
+Key points:
 
-1. `@` + sequence identifier  
-2. DNA sequence  
-3. `+` (optionally followed by the identifier again)  
-4. Quality string (one character per base)
+- A FASTA file often contains **many** sequences, one after another.
+- FASTA is used for genomes, contigs, proteins, etc.
+- Later, SPAdes assemblies and Prokka annotations will use FASTA-formatted files.
 
-For example:
+## FASTQ format
+
+FASTQ is a **high-density format for short reads** (≤300 nt) that stores both sequence and quality.
+
+Each record has **four lines**:
+
+1. `@` plus an identifier  
+2. the raw sequence  
+3. `+` (optionally followed by the identifier)  
+4. ASCII-encoded quality string  
+
+Example (adapted from your notes):
 
 ```text
-@read0001
-ACGTACGTACGT
+@DBRHHJN1:387:H89AEADXX:2:1101:1811:1988 1:N:0:TCCTGAGCCTCTCTAT
+GTATTGGATATGTCCTCTATTAAACCTTGTGATGAGGAAGCTGTCTGTCTCTTATACACATCTCCGAGCCCACGAGACTCCTGAGCA
 +
-IIIIHHHFFFEE
+BB@FFFFFHHHHHJJJJJJJJJJJJJJJJIJJJJJJJJJIJJJIJJJIIIJJJJIJIJJJJJJJJIJHIJJJHHFFDDEEEDDCDDD
 ```
 
-The quality string encodes how confident the sequencer is about each base
-(higher characters = better quality). We will not decode the exact scores in
-this workshop, but we will look at **quality profiles** with FastQC.
+- Line 1: read name, including run, lane, tile, x/y position, etc.
+- Line 2: sequence (A/C/G/T/N).
+- Line 4: quality scores encoded as ASCII characters.
 
-## Compressed FASTQ files
+These FASTQ files are the **starting point** for QC, trimming, and assembly.
 
-On the rampers server, sequencing reads are usually stored in compressed
-files with the `.fastq.gz` extension. These are FASTQ files that have been
-compressed with `gzip` to save disk space.
+:::::::::::::::::::::::::::::::::::::::::::::: callout
 
-Example filenames:
+### Why `.fastq.gz`?
 
-- `sample_R1.fastq.gz` – forward reads  
-- `sample_R2.fastq.gz` – reverse reads  
+FASTQ files are large.  
+They are often compressed with **gzip**, resulting in `.fastq.gz` files.
 
-The `R1` and `R2` indicate the two **ends** of the same DNA fragment.
+Most tools (FastQC, trimmers, SPAdes) can read gzipped FASTQ directly, so you rarely need to decompress them manually.
 
-## Paired-end reads
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
-In **paired-end sequencing**, the machine reads from both ends of each DNA
-fragment, producing two reads per fragment:
+## SAM and BAM formats
 
-- `R1` – read from one end
-- `R2` – read from the other end
+After assembling or mapping reads to a reference, alignments are often stored in **SAM** (text) or **BAM** (binary) format.
 
-These pairs:
+A (simplified) SAM snippet from your notes:
 
-- improve mapping and assembly,
-- help resolve small repeats,
-- give more confidence about insert size.
-
-Assemblers like SPAdes expect these reads to be provided as matching `R1` and
-`R2` FASTQ files.
-
-## Where are our reads on the rampers server?
-
-For this workshop we will keep raw data in:
-
-```bash
-~/microbial_project/data/raw
+```text
+@HD VN:1.3 SO:coordinate
+@SQ SN:ref LN:45
+r001 163 ref 7 30 8M2I4M1D3M = 37 39 TTAGATAAAGGATACTG *
+r002 0 ref 9 30 3S6M1P1I4M * 0 0 AAAAGATAAGGATA *
 ```
 
-Check that directory now:
+Each line after the header contains:
 
-```bash
-cd ~/microbial_project
-ls data/raw
-```
+- read name
+- flags
+- reference name
+- position
+- CIGAR string (match/mismatch/insertions/deletions)
+- sequence and quality
 
-You should see one or more pairs of FASTQ files (e.g. `sample_R1.fastq.gz` and
-`sample_R2.fastq.gz`). Your instructor will describe the specific dataset.
+Although this workshop focuses on **de novo assembly** and annotation, you may still encounter SAM/BAM when evaluating assemblies or mapping reads back to contigs.
+
+## Where formats fit into the workflow
+
+- **FASTQ** – raw reads → input to QC and trimming  
+- **FASTQ (trimmed)** – input to SPAdes  
+- **FASTA** – contigs/scaffolds from assembly → input to annotation (Prokka)  
+- **FASTA (proteins, CDS)** – output from Prokka  
+- **SAM/BAM** – optional, for read mapping to references or assemblies  
+
+Understanding these formats now will make later steps much less mysterious.
+
+---
+
+# Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Counting reads (conceptual)
+## Exercise: Identify format by eye
 
-The total number of reads in a FASTQ file is the number of lines divided by 4.
+Your instructor will show you several short text snippets (or files).  
+For each one, decide whether it is:
 
-Without actually running the commands, answer:
+- FASTA
+- FASTQ
+- SAM
 
-1. Which command would show you the number of lines in a compressed FASTQ?
-2. How would you compute the approximate number of reads from that?
+**Questions:**
 
-Your instructor may demonstrate this on the rampers server.
+- What clues tell you the format?
+- How many lines per record can you see?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Inspect a FASTQ file
+
+On the server, navigate to where a small sample FASTQ file is stored and run:
+
+```bash
+zcat sample.fastq.gz | head -n 8
+```
+
+**Questions:**
+
+- How many complete records are shown in 8 lines?
+- Which lines are the sequences?
+- Which lines are the quality scores?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Inspect an assembly FASTA file
+
+Later, after running SPAdes, you will have a scaffolds FASTA file.  
+Practice on a small example (or instructor-provided file):
+
+```bash
+head scaffolds.fasta
+```
+
+**Questions:**
+
+- What does each header look like?
+- Can you tell how many contigs are in the file (`grep -c '^>' scaffolds.fasta`)?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- FASTA stores **sequence only**; FASTQ stores **sequence plus quality**.
-- Each FASTQ read uses four lines: identifier, sequence, separator, qualities.
-- Illumina paired-end data is stored as `R1` and `R2` FASTQ files.
-- We keep raw reads in `~/microbial_project/data/raw` on the rampers server.
+- FASTA stores sequence(s) with header lines starting with `>`.
+- FASTQ stores reads with **four lines per record**, including quality scores.
+- Many FASTQ files are compressed as `.fastq.gz` to save space.
+- SAM/BAM store read alignments to a reference genome or assembly.
+- Understanding these formats is essential for QC, trimming, assembly, and annotation.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
