@@ -1,134 +1,120 @@
 ---
-title: Trimming and Cleaning Reads
+title: Trimming Reads
 teaching: 30
 exercises: 20
 ---
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- Why do we trim and filter raw reads before assembly?
-- What kinds of problems can trimming fix?
-- How do we run a typical trimming tool on paired-end FASTQ files?
-- How do trimmed reads fit into the downstream SPAdes and Prokka workflow?
+- Why do we trim raw sequencing reads?
+- What kinds of issues can trimming fix?
+- How do we run a trimming tool on paired-end FASTQ files?
+- How does trimming improve downstream assembly with SPAdes?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain why adapter and quality trimming are important for microbial genome assembly.
-- Describe common trimming operations (adapter removal, quality trimming, length filtering).
+- Explain why trimming is an important preprocessing step.
+- Describe common trimming tasks (adapter removal, quality trimming, length filtering).
 - Run a representative trimming command on paired-end FASTQ files.
-- Verify that trimmed reads are created and understand where they should be stored.
-- Connect trimming decisions to FastQC results and assembly quality.
+- Verify trimmed outputs and understand how they feed into SPAdes assembly.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode builds on the QC step from Episode 8 and the sequencing file formats from Episode 7.
-> While your assembly PDF focuses on QC and assembly, trimming is a common intermediate step that
-> improves assembly performance and quality, so we discuss it explicitly here.
+> Raw FASTQ files often contain adapters and low-quality base calls.  
+> Trimming cleans the data so assembly (Episode 10) and annotation (Episode 11) perform better.
 
 ## Why trim reads?
 
-After QC with FastQC, you may discover:
+FastQC (Episode 8) may show:
 
-- low-quality bases at the **3′ ends** of reads,
-- **adapter sequences** still present,
-- very short or poor-quality reads.
+- low-quality tails at the 3′ end,
+- adapter contamination,
+- overrepresented sequences,
+- poor-quality cycles.
 
-Leaving these issues uncorrected can lead to:
+If left untrimmed, these issues can lead to:
 
 - fragmented assemblies,
 - misassemblies,
-- wasted compute and storage.
+- wasted compute time,
+- misleading gene predictions during annotation.
 
-Trimming tools remove or correct problematic parts of reads before assembly.
+Trimming improves read quality and reduces noise before assembly.
 
-Common trimming goals:
+## What does trimming do?
 
-- remove adapters,
-- trim low-quality bases from ends,
-- discard reads that become too short.
+Most trimming tools perform one or more of these steps:
 
-## Typical trimming workflow
+1. **Remove adapters**  
+2. **Trim low-quality bases** from the ends  
+3. **Filter short reads** below a given length  
+4. **Remove unpaired reads** or keep them separately  
 
-A trimming tool will:
+In this workshop, trimming is demonstrated with a representative command pattern that applies to tools like `fastp`, `cutadapt`, or `Trimmomatic`.
 
-- take **paired-end FASTQ** files as input,
-- write new **trimmed** FASTQ files to a different directory,
-- optionally produce a log summarizing how many reads were kept or discarded.
+## Running a trimming tool
 
-A generic command-line pattern looks like:
+A generic trimming command looks like:
 
 ```bash
-trimmer   -i raw_reads/sample01_R1.fastq.gz   -I raw_reads/sample01_R2.fastq.gz   -o trimmed/sample01_R1.trimmed.fastq.gz   -O trimmed/sample01_R2.trimmed.fastq.gz   [options...]
+trimmer   -i raw_reads/sample01_R1.fastq.gz   -I raw_reads/sample01_R2.fastq.gz   -o trimmed/sample01_R1.trimmed.fastq.gz   -O trimmed/sample01_R2.trimmed.fastq.gz   [additional options...]
 ```
 
-The exact options and flags vary by tool (e.g., Trimmomatic, fastp, Cutadapt), but this pattern is common:
+Replace `trimmer` with your tool of choice (e.g., `fastp`, `cutadapt`, etc.).
 
-- **input reads** → raw FASTQ files,
-- **output reads** → trimmed FASTQ files in a separate directory.
+Key arguments:
+
+- `-i` / `-I` → input R1 and R2  
+- `-o` / `-O` → output trimmed reads  
+- quality, adapter, or length options  
+
+Always write trimmed reads into a **separate directory**, not over raw reads.
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
-### Directory layout reminder
+## Protect your raw data
 
-From Episode 6 (Project Planning), trimmed reads should go in a dedicated directory, e.g.:
+Never overwrite your raw FASTQ files.  
+Raw reads are considered archival.  
+Always place trimmed reads in a new directory:
 
 ```
-myproject/
-├── raw_reads/
-├── qc/
-├── trimmed/
-├── assembly/
-└── annotation/
+trimmed/sample01_R1.trimmed.fastq.gz
 ```
-
-Never overwrite your raw FASTQ files when trimming.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Connecting QC to trimming choices
+## Checking trimmed outputs
 
-FastQC reports from Episode 8 help answer:
-
-- Are per-base quality scores dropping sharply at the end of reads?
-- Do we see clear evidence of adapter contamination?
-- Are there overrepresented sequences that look like adapters?
-
-Based on these findings, you might choose to:
-
-- trim the last **10–20 bases** of each read,
-- remove known adapter sequences,
-- filter out reads below a certain minimum length.
-
-You don’t need to memorize specific thresholds, but you should understand:
-
-- QC → informs trimming  
-- Trimming → improves assembly input
-
-## After trimming: checking results
-
-After trimming, you should:
-
-1. Confirm that the new files exist:
+After trimming:
 
 ```bash
 ls trimmed/
 ```
 
-2. Optionally, run FastQC again on the trimmed reads:
+Confirm:
 
-```bash
-fastqc -o qc trimmed/sample01_R1.trimmed.fastq.gz trimmed/sample01_R2.trimmed.fastq.gz
-```
+- both `R1` and `R2` trimmed FASTQ files exist,
+- their sizes may be smaller than the originals,
+- record counts may change depending on trimming parameters.
 
-3. Compare QC reports **before** and **after** trimming:
+Optional: run FastQC again to confirm improvements (Episode 8).
 
-- Are low-quality tails reduced?
-- Are adapter sequences gone or reduced?
-- Are length distributions as expected?
+## How trimming improves assembly
 
-The trimmed FASTQ files will be the inputs to **SPAdes** in Episode 10.
+Cleaner reads → cleaner assembly graph.
+
+Trimming helps:
+
+- reduce ambiguous connections,
+- increase contig length,
+- reduce memory usage,
+- reduce adapter contamination in nodes,
+- improve downstream Prokka gene calls.
+
+This prepares your dataset for SPAdes (Episode 10).
 
 ---
 
@@ -136,44 +122,34 @@ The trimmed FASTQ files will be the inputs to **SPAdes** in Episode 10.
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Plan your trimming command
+## Exercise: Plan your trimming parameters
 
-Working with a partner and based on your FastQC results:
+Based on FastQC:
 
-1. Decide:
-   - Do you need adapter trimming?
-   - Do you need to cut low-quality bases from the ends?
-   - What should your minimum read length be?
+- Do your reads have low-quality tails?
+- Are adapters present?
+- What minimum read length makes sense?
 
-2. Draft a pseudocode command (not necessarily using a specific tool yet), e.g.:
-
-```bash
-trimmer \
-  -i raw_reads/sample01_R1.fastq.gz \
-  -I raw_reads/sample01_R2.fastq.gz \
-  -o trimmed/sample01_R1.trimmed.fastq.gz \
-  -O trimmed/sample01_R2.trimmed.fastq.gz \
-  [quality and adapter options...]
-```
+Draft a trimming command with options you would use.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Check your trimmed files
+## Exercise: Run a trimming tool
 
-After running a trimming tool (demonstrated by the instructor):
+Your instructor will demonstrate a trimming command.  
+Then:
 
 ```bash
 ls trimmed/
-zcat trimmed/sample01_R1.trimmed.fastq.gz | head -n 4
 ```
 
 **Questions:**
 
-- Does the file name clearly indicate that the reads are trimmed?
-- Can you see that the sequences have been shortened relative to the raw reads?
-- How many records remain compared to the original file (`zgrep -c '^@'`)?
+- Did trimmed files appear?
+- Are they smaller than raw files?
+- How many reads remain versus the original files?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -181,27 +157,25 @@ zcat trimmed/sample01_R1.trimmed.fastq.gz | head -n 4
 
 ## Exercise: QC after trimming
 
-If time permits, run FastQC on the trimmed reads:
+Run FastQC again (optional):
 
 ```bash
-fastqc -o qc trimmed/sample01_R1.trimmed.fastq.gz trimmed/sample01_R2.trimmed.fastq.gz
+fastqc -o qc trimmed/sample01_R1.trimmed.fastq.gz               trimmed/sample01_R2.trimmed.fastq.gz
 ```
 
-Compare:
+**Questions:**
 
-- Per-base quality profiles before vs after trimming.
-- Overrepresented sequences in both reports.
-
-**Question:**  
-Do you think the data are now ready to be used as input to SPAdes?
+- Did 3′ quality improve?
+- Are adapters still detected?
+- Are the reads ready for SPAdes?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Trimming removes low-quality bases and adapters that can interfere with assembly.
-- Trimmed reads should be saved in a separate `trimmed/` directory; raw data must not be overwritten.
-- QC (FastQC) guides trimming decisions and can be rerun afterward to confirm improvements.
-- Trimmed FASTQ files will be used as inputs to SPAdes in the genome assembly step.
+- Trimming removes adapters and low-quality bases that interfere with assembly.
+- Always keep raw reads untouched; trimmed reads belong in a separate directory.
+- QC results guide trimming choices.
+- Good trimming improves SPAdes assembly quality and reduces noise in annotation.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
