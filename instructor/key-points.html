@@ -239,7 +239,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="01-why-cloud-computing.html">1. Computing Concepts &amp; Servers</a>
+        <a href="01-why-cloud-computing.html">1. Why Cloud Computing for Microbial Genomics</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -426,19 +426,17 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         
         
-<section id="01-why-cloud-computing"><h2 class="section-heading"><a href="01-why-cloud-computing.html">Computing Concepts &amp; Servers</a></h2>
+<section id="01-why-cloud-computing"><h2 class="section-heading"><a href="01-why-cloud-computing.html">Why Cloud Computing for Microbial Genomics</a></h2>
 <hr class="half-width">
 <ul>
-<li>We use a <strong>remote server</strong> for genomics because it has
-more CPU, RAM, and storage than a typical laptop.</li>
-<li>You connect to the server using an <strong>SSH client</strong>
-(Terminal, PuTTY, MobaXterm, etc.).</li>
-<li>After logging in, you type commands at a <strong>shell
-prompt</strong> that is running on the <strong>remote</strong>
-machine.</li>
-<li>Simple commands like <code>whoami</code>, <code>hostname</code>, and
-<code>pwd</code> help you confirm where you are and who you are logged
-in as.</li>
+<li>Sequencing data are large and computationally expensive to
+assemble.</li>
+<li>Cloud/HPC computing provides the RAM, CPUs, and disk space needed
+for assembly and annotation.</li>
+<li>You access the remote system through SSH and run all commands <em>on
+the server</em>, not locally.</li>
+<li>Tools like FastQC, Trimmomatic, SPAdes, and Prokka all benefit from
+shared, stable compute environments.</li>
 </ul></section><section id="02-introduction-to-shell"><h2 class="section-heading"><a href="02-introduction-to-shell.html">Introducing the Shell</a></h2>
 <hr class="half-width">
 <ul>
