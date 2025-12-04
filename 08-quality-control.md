@@ -7,144 +7,120 @@ exercises: 20
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
 - Why do we perform quality control (QC) on raw sequencing reads?
-- What kinds of issues can QC reveal in microbial genomics datasets?
-- How do we run FastQC on the command line and interpret its basic outputs?
+- What problems can QC reveal in microbial genomics datasets?
+- How do we run FastQC on the command line and interpret its key outputs?
+- How does QC inform trimming and assembly decisions?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain why QC is a critical first step before trimming and assembly.
-- Run FastQC on compressed FASTQ files using the command line.
-- Locate and view FastQC HTML reports.
-- Identify major QC metrics: per-base quality, sequence length, overrepresented sequences, adapters.
-- Connect QC findings to downstream decisions (trimming, filtering, assembly).
+- Explain why QC is essential before trimming and assembly.
+- Run FastQC on compressed FASTQ files.
+- Interpret key FastQC metrics (per-base quality, GC content, adapters, sequence duplication).
+- Connect QC results to trimming choices and assembly quality.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode incorporates the FastQC step described in the *Assembling a Microbial Genome*
-> activity and connects it to the sequence file formats from Episode 7. We focus on command‑line
-> usage and interpretation of key metrics, even if full QC is abbreviated in class.
+> This episode prepares learners for trimming (Episode 9) and assembly (Episode 10)
+> by teaching how to evaluate FASTQ read quality using FastQC.
 
 ## Why quality control?
 
-Raw Illumina reads may contain:
+Illumina reads may contain:
 
-- low‑quality bases at the ends of reads,
+- low-quality bases at the 3′ end,
 - leftover adapter sequences,
-- duplicated reads,
-- unexpected sequence content.
+- duplicated reads or biased sequence content,
+- poor-quality cycles or lanes.
 
 These issues can:
 
-- decrease assembly quality,
-- increase misassemblies,
-- waste computational resources.
+- reduce assembly contiguity,
+- inflate error rates,
+- produce misleading downstream analyses.
 
-Quality control with tools like **FastQC** helps you decide:
+QC helps you evaluate whether your sequencing run is suitable for assembly and what trimming steps are needed.
 
-- whether trimming is necessary,
-- which trimming parameters to use,
-- whether your data looks as expected.
+## Running FastQC
 
-## FastQC overview
+FastQC accepts `.fastq` and `.fastq.gz` files.
 
-FastQC can be run:
-
-- through a **graphical user interface (GUI)**, or
-- on the **command line**.
-
-For a remote server / cloud workflow, the **command‑line approach** is most practical, as described in your assembly activity.
-
-FastQC accepts **FASTQ** (and `.fastq.gz`) files and produces:
-
-- an `.html` report (interactive)
-- a `.zip` file containing detailed data
-
-## Running FastQC on the command line
-
-From your assembly exercise, a typical command is:
-
-```bash
-fastqc reads/ERR435025_R1.fastq.gz reads/ERR435025_R2.fastq.gz
-```
-
-This:
-
-- reads compressed FASTQ files from the `reads/` directory,
-- writes HTML and ZIP output files in the current directory.
-
-You can choose an output directory with `-o`:
+We recommend placing outputs in a dedicated directory:
 
 ```bash
 mkdir -p qc
-fastqc -o qc reads/ERR435025_R1.fastq.gz reads/ERR435025_R2.fastq.gz
+fastqc -o qc raw_reads/sample01_R1.fastq.gz raw_reads/sample01_R2.fastq.gz
 ```
 
-After running, list the QC directory:
+After running:
 
 ```bash
 ls qc
 ```
 
-You should see files like:
+You should see:
 
-- `ERR435025_R1_fastqc.html`
-- `ERR435025_R2_fastqc.html`
-- matching `.zip` files
+- `sample01_R1_fastqc.html`
+- `sample01_R1_fastqc.zip`
+- `sample01_R2_fastqc.html`
+- `sample01_R2_fastqc.zip`
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
 ### Viewing FastQC reports
 
-On a remote server, you have two main options:
+Most learners **download the HTML files** to their local machine and open them in a browser.
 
-1. **Download the HTML files** to your local machine (via `scp`, SFTP, or a client like Cyberduck) and open them in a browser.
-2. If available, open them directly in a remote browser session (e.g. `firefox` or similar), as suggested in your assembly notes.
-
-In most workshops, downloading and viewing locally is simplest.
+Some servers also allow opening them via a remote browser session.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Key FastQC modules
 
-Some important panels in the FastQC HTML report include:
+Below are the most important FastQC panels for microbial genomics:
 
-- **Per base sequence quality**  
-  - Boxplots of quality at each position in the read.  
-  - Low quality at the 3′ end often suggests the need for trimming.
+### **Per base sequence quality**
+- Boxplots representing quality at each base.
+- Declining quality at the 3′ ends usually indicates the need for trimming.
 
-- **Per sequence quality scores**  
-  - Distribution of average quality per read.
+### **Per sequence quality scores**
+- Shows the distribution of average read quality.
+- Ideally, most reads should fall into high‑quality ranges.
 
-- **Per base sequence content**  
-  - Proportions of A/C/G/T at each base position.
+### **Per base sequence content**
+- Early cycles often show imbalance; significant deviation across the read is concerning.
 
-- **Per sequence GC content**  
-  - Deviations may indicate contamination.
+### **Per sequence GC content**
+- Should approximate a normal distribution.
+- A multimodal distribution may indicate contamination or mixed populations.
 
-- **Overrepresented sequences**  
-  - May reveal adapters or other technical artifacts.
+### **Overrepresented sequences**
+- Often indicates adapters, primers, or contamination.
+- Will guide which adapter sequences to remove in trimming.
 
-Your goal is not to memorize every module but to recognize:
+### **Sequence duplication levels**
+- Can indicate library prep issues or PCR artifacts.
 
-- whether data quality looks generally **good** or **poor**, and
-- whether adapters or other contaminants are present.
+## Connecting QC → trimming → assembly
 
-## QC in the genome assembly workflow
+QC findings determine trimming strategy (Episode 9):
 
-In the assembly activity, QC is described as an early step, even if it is sometimes skipped in class to save time.
+- Low 3′ quality → trim ends  
+- Adapter contamination → remove adapters  
+- Short reads after trimming → adjust length filters  
 
-The typical real‑world workflow is:
+This improves assembly quality in Episode 10.
 
-1. Run **FastQC** on raw FASTQ files.
-2. Use the reports to:
-   - decide on trimming parameters,
-   - confirm read length and quality.
-3. Perform **trimming** (next episode).
-4. Optionally, run FastQC again on trimmed reads.
+## Optional: QC on trimmed reads
 
-Even when abbreviated, understanding the QC step helps interpret downstream assembly quality and potential problems.
+After trimming:
+
+```bash
+fastqc -o qc trimmed/sample01_R1.trimmed.fastq.gz trimmed/sample01_R2.trimmed.fastq.gz
+```
+
+Compare trimmed and untrimmed reports to assess improvements.
 
 ---
 
@@ -152,64 +128,53 @@ Even when abbreviated, understanding the QC step helps interpret downstream asse
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Run FastQC on one read file
+## Exercise: Run FastQC
 
-Assuming your raw reads are in `raw_reads/` or `reads/`, run:
+Run FastQC on one FASTQ file:
 
 ```bash
 mkdir -p qc
 fastqc -o qc raw_reads/sample01_R1.fastq.gz
 ```
 
-Then:
-
-```bash
-ls qc
-```
-
 **Questions:**
 
-- What output files were created?
-- How can you transfer the HTML file to your local machine for viewing?
+- What output files appeared in the `qc/` directory?
+- How will you view the HTML report?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Interpret a FastQC report
+## Exercise: Interpret FastQC metrics
 
-Working from an instructor‑provided FastQC HTML report:
+With an instructor-provided FastQC report:
 
-- Examine the **Per base sequence quality** module.
-- Check whether most bases are in the green (high quality) zone.
-- Look at the **Overrepresented sequences** module.
-
-**Questions:**
-
-- Would you recommend trimming this dataset? Why or why not?
-- Do you see evidence of adapter contamination?
+- What does the **Per base sequence quality** panel show?
+- Are there adapters in the **Overrepresented sequences** panel?
+- Would you recommend trimming? Why?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Connect QC to downstream steps
+## Exercise: QC after trimming
 
-Discuss with a partner:
+Compare QC before and after trimming.
 
-1. How could poor QC (low quality, many adapters) affect:
-   - genome assembly with SPAdes?
-   - annotation with Prokka?
+**Questions:**
 
-2. How might good QC save time and avoid misleading results?
+- Did quality scores improve?
+- Were adapters removed?
+- Are the reads ready for SPAdes assembly?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- QC is a critical first step before trimming and assembly in microbial genomics.
-- FastQC summarizes read quality, sequence content, GC content, and overrepresented sequences.
-- FastQC can read compressed `.fastq.gz` files and produces HTML reports for review.
-- QC results guide trimming choices and help interpret assembly quality.
+- QC is essential before trimming and assembly.
+- FastQC summarizes read quality, bias, GC content, and possible contaminants.
+- QC results guide trimming decisions.
+- Improved trimmed reads lead to better assemblies.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
