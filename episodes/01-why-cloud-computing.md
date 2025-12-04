@@ -175,6 +175,8 @@ pwd
 
 These confirm you are on the **remote** machine.
 
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 ## How this episode fits into the whole workflow
 
 In later episodes, you will:
