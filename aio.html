@@ -2518,10 +2518,10 @@ and annotation.</li>
 <h3 class="card-title">Questions</h3>
 <ul>
 <li>Why do we perform quality control (QC) on raw sequencing reads?</li>
-<li>What kinds of issues can QC reveal in microbial genomics
-datasets?</li>
-<li>How do we run FastQC on the command line and interpret its basic
+<li>What problems can QC reveal in microbial genomics datasets?</li>
+<li>How do we run FastQC on the command line and interpret its key
 outputs?</li>
+<li>How does QC inform trimming and assembly decisions?</li>
 </ul>
 </div>
 </div>
@@ -2531,14 +2531,11 @@ outputs?</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Explain why QC is a critical first step before trimming and
-assembly.</li>
-<li>Run FastQC on compressed FASTQ files using the command line.</li>
-<li>Locate and view FastQC HTML reports.</li>
-<li>Identify major QC metrics: per-base quality, sequence length,
-overrepresented sequences, adapters.</li>
-<li>Connect QC findings to downstream decisions (trimming, filtering,
-assembly).</li>
+<li>Explain why QC is essential before trimming and assembly.</li>
+<li>Run FastQC on compressed FASTQ files.</li>
+<li>Interpret key FastQC metrics (per-base quality, GC content,
+adapters, sequence duplication).</li>
+<li>Connect QC results to trimming choices and assembly quality.</li>
 </ul>
 </div>
 </div>
@@ -2546,83 +2543,52 @@ assembly).</li>
 </div>
 </div>
 <blockquote>
-<p>This episode incorporates the FastQC step described in the
-<em>Assembling a Microbial Genome</em> activity and connects it to the
-sequence file formats from Episode 7. We focus on command‑line usage and
-interpretation of key metrics, even if full QC is abbreviated in
-class.</p>
+<p>This episode prepares learners for trimming (Episode 9) and assembly
+(Episode 10) by teaching how to evaluate FASTQ read quality using
+FastQC.</p>
 </blockquote>
 <section><h2 class="section-heading" id="why-quality-control">Why quality control?<a class="anchor" aria-label="anchor" href="#why-quality-control"></a>
 </h2>
 <hr class="half-width">
-<p>Raw Illumina reads may contain:</p>
+<p>Illumina reads may contain:</p>
 <ul>
-<li>low‑quality bases at the ends of reads,</li>
+<li>low-quality bases at the 3′ end,</li>
 <li>leftover adapter sequences,</li>
-<li>duplicated reads,</li>
-<li>unexpected sequence content.</li>
+<li>duplicated reads or biased sequence content,</li>
+<li>poor-quality cycles or lanes.</li>
 </ul>
 <p>These issues can:</p>
 <ul>
-<li>decrease assembly quality,</li>
-<li>increase misassemblies,</li>
-<li>waste computational resources.</li>
+<li>reduce assembly contiguity,</li>
+<li>inflate error rates,</li>
+<li>produce misleading downstream analyses.</li>
 </ul>
-<p>Quality control with tools like <strong>FastQC</strong> helps you
-decide:</p>
-<ul>
-<li>whether trimming is necessary,</li>
-<li>which trimming parameters to use,</li>
-<li>whether your data looks as expected.</li>
-</ul></section><section><h2 class="section-heading" id="fastqc-overview">FastQC overview<a class="anchor" aria-label="anchor" href="#fastqc-overview"></a>
+<p>QC helps you evaluate whether your sequencing run is suitable for
+assembly and what trimming steps are needed.</p>
+</section><section><h2 class="section-heading" id="running-fastqc">Running FastQC<a class="anchor" aria-label="anchor" href="#running-fastqc"></a>
 </h2>
 <hr class="half-width">
-<p>FastQC can be run:</p>
-<ul>
-<li>through a <strong>graphical user interface (GUI)</strong>, or</li>
-<li>on the <strong>command line</strong>.</li>
-</ul>
-<p>For a remote server / cloud workflow, the <strong>command‑line
-approach</strong> is most practical, as described in your assembly
-activity.</p>
-<p>FastQC accepts <strong>FASTQ</strong> (and <code>.fastq.gz</code>)
-files and produces:</p>
-<ul>
-<li>an <code>.html</code> report (interactive)</li>
-<li>a <code>.zip</code> file containing detailed data</li>
-</ul></section><section><h2 class="section-heading" id="running-fastqc-on-the-command-line">Running FastQC on the command line<a class="anchor" aria-label="anchor" href="#running-fastqc-on-the-command-line"></a>
-</h2>
-<hr class="half-width">
-<p>From your assembly exercise, a typical command is:</p>
+<p>FastQC accepts <code>.fastq</code> and <code>.fastq.gz</code>
+files.</p>
+<p>We recommend placing outputs in a dedicated directory:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">fastqc</span> reads/ERR435025_R1.fastq.gz reads/ERR435025_R2.fastq.gz</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> qc</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc raw_reads/sample01_R1.fastq.gz raw_reads/sample01_R2.fastq.gz</span></code></pre>
 </div>
-<p>This:</p>
-<ul>
-<li>reads compressed FASTQ files from the <code>reads/</code>
-directory,</li>
-<li>writes HTML and ZIP output files in the current directory.</li>
-</ul>
-<p>You can choose an output directory with <code>-o</code>:</p>
+<p>After running:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> qc</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc reads/ERR435025_R1.fastq.gz reads/ERR435025_R2.fastq.gz</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span> qc</span></code></pre>
 </div>
-<p>After running, list the QC directory:</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ls</span> qc</span></code></pre>
-</div>
-<p>You should see files like:</p>
+<p>You should see:</p>
 <ul>
-<li><code>ERR435025_R1_fastqc.html</code></li>
-<li><code>ERR435025_R2_fastqc.html</code></li>
-<li>matching <code>.zip</code> files</li>
+<li><code>sample01_R1_fastqc.html</code></li>
+<li><code>sample01_R1_fastqc.zip</code></li>
+<li><code>sample01_R2_fastqc.html</code></li>
+<li><code>sample01_R2_fastqc.zip</code></li>
 </ul>
 <div id="viewing-fastqc-reports" class="callout">
 <div class="callout-square">
@@ -2632,156 +2598,155 @@ directory,</li>
 <div id="viewing-fastqc-reports" class="callout-inner">
 <h3 class="callout-title">Viewing FastQC reports</h3>
 <div class="callout-content">
-<p>On a remote server, you have two main options:</p>
-<ol style="list-style-type: decimal">
-<li>
-<strong>Download the HTML files</strong> to your local machine (via
-<code>scp</code>, SFTP, or a client like Cyberduck) and open them in a
-browser.</li>
-<li>If available, open them directly in a remote browser session
-(e.g. <code>firefox</code> or similar), as suggested in your assembly
-notes.</li>
-</ol>
-<p>In most workshops, downloading and viewing locally is simplest.</p>
+<p>Most learners <strong>download the HTML files</strong> to their local
+machine and open them in a browser.</p>
+<p>Some servers also allow opening them via a remote browser
+session.</p>
 </div>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="key-fastqc-modules">Key FastQC modules<a class="anchor" aria-label="anchor" href="#key-fastqc-modules"></a>
 </h2>
 <hr class="half-width">
-<p>Some important panels in the FastQC HTML report include:</p>
+<p>Below are the most important FastQC panels for microbial
+genomics:</p>
+<div class="section level3">
+<h3 id="per-base-sequence-quality">
+<strong>Per base sequence quality</strong><a class="anchor" aria-label="anchor" href="#per-base-sequence-quality"></a>
+</h3>
 <ul>
-<li>
-<strong>Per base sequence quality</strong>
-<ul>
-<li>Boxplots of quality at each position in the read.<br>
-</li>
-<li>Low quality at the 3′ end often suggests the need for trimming.</li>
+<li>Boxplots representing quality at each base.</li>
+<li>Declining quality at the 3′ ends usually indicates the need for
+trimming.</li>
 </ul>
-</li>
-<li>
-<strong>Per sequence quality scores</strong>
+</div>
+<div class="section level3">
+<h3 id="per-sequence-quality-scores">
+<strong>Per sequence quality scores</strong><a class="anchor" aria-label="anchor" href="#per-sequence-quality-scores"></a>
+</h3>
 <ul>
-<li>Distribution of average quality per read.</li>
+<li>Shows the distribution of average read quality.</li>
+<li>Ideally, most reads should fall into high‑quality ranges.</li>
 </ul>
-</li>
-<li>
-<strong>Per base sequence content</strong>
+</div>
+<div class="section level3">
+<h3 id="per-base-sequence-content">
+<strong>Per base sequence content</strong><a class="anchor" aria-label="anchor" href="#per-base-sequence-content"></a>
+</h3>
 <ul>
-<li>Proportions of A/C/G/T at each base position.</li>
+<li>Early cycles often show imbalance; significant deviation across the
+read is concerning.</li>
 </ul>
-</li>
-<li>
-<strong>Per sequence GC content</strong>
+</div>
+<div class="section level3">
+<h3 id="per-sequence-gc-content">
+<strong>Per sequence GC content</strong><a class="anchor" aria-label="anchor" href="#per-sequence-gc-content"></a>
+</h3>
 <ul>
-<li>Deviations may indicate contamination.</li>
+<li>Should approximate a normal distribution.</li>
+<li>A multimodal distribution may indicate contamination or mixed
+populations.</li>
 </ul>
-</li>
-<li>
-<strong>Overrepresented sequences</strong>
+</div>
+<div class="section level3">
+<h3 id="overrepresented-sequences">
+<strong>Overrepresented sequences</strong><a class="anchor" aria-label="anchor" href="#overrepresented-sequences"></a>
+</h3>
 <ul>
-<li>May reveal adapters or other technical artifacts.</li>
+<li>Often indicates adapters, primers, or contamination.</li>
+<li>Will guide which adapter sequences to remove in trimming.</li>
 </ul>
-</li>
-</ul>
-<p>Your goal is not to memorize every module but to recognize:</p>
+</div>
+<div class="section level3">
+<h3 id="sequence-duplication-levels">
+<strong>Sequence duplication levels</strong><a class="anchor" aria-label="anchor" href="#sequence-duplication-levels"></a>
+</h3>
 <ul>
-<li>whether data quality looks generally <strong>good</strong> or
-<strong>poor</strong>, and</li>
-<li>whether adapters or other contaminants are present.</li>
-</ul></section><section><h2 class="section-heading" id="qc-in-the-genome-assembly-workflow">QC in the genome assembly workflow<a class="anchor" aria-label="anchor" href="#qc-in-the-genome-assembly-workflow"></a>
+<li>Can indicate library prep issues or PCR artifacts.</li>
+</ul>
+</div>
+</section><section><h2 class="section-heading" id="connecting-qc-trimming-assembly">Connecting QC → trimming → assembly<a class="anchor" aria-label="anchor" href="#connecting-qc-trimming-assembly"></a>
 </h2>
 <hr class="half-width">
-<p>In the assembly activity, QC is described as an early step, even if
-it is sometimes skipped in class to save time.</p>
-<p>The typical real‑world workflow is:</p>
-<ol style="list-style-type: decimal">
-<li>Run <strong>FastQC</strong> on raw FASTQ files.</li>
-<li>Use the reports to:
+<p>QC findings determine trimming strategy (Episode 9):</p>
 <ul>
-<li>decide on trimming parameters,</li>
-<li>confirm read length and quality.</li>
-</ul>
+<li>Low 3′ quality → trim ends<br>
 </li>
-<li>Perform <strong>trimming</strong> (next episode).</li>
-<li>Optionally, run FastQC again on trimmed reads.</li>
-</ol>
-<p>Even when abbreviated, understanding the QC step helps interpret
-downstream assembly quality and potential problems.</p>
+<li>Adapter contamination → remove adapters<br>
+</li>
+<li>Short reads after trimming → adjust length filters</li>
+</ul>
+<p>This improves assembly quality in Episode 10.</p>
+</section><section><h2 class="section-heading" id="optional-qc-on-trimmed-reads">Optional: QC on trimmed reads<a class="anchor" aria-label="anchor" href="#optional-qc-on-trimmed-reads"></a>
+</h2>
+<hr class="half-width">
+<p>After trimming:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc trimmed/sample01_R1.trimmed.fastq.gz trimmed/sample01_R2.trimmed.fastq.gz</span></code></pre>
+</div>
+<p>Compare trimmed and untrimmed reports to assess improvements.</p>
 <hr></section><div class="section level1">
 <h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
 </h1>
-<div id="exercise-run-fastqc-on-one-read-file" class="callout discussion">
+<div id="exercise-run-fastqc" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-run-fastqc-on-one-read-file" class="callout-inner">
-<h3 class="callout-title">Exercise: Run FastQC on one read file</h3>
+<div id="exercise-run-fastqc" class="callout-inner">
+<h3 class="callout-title">Exercise: Run FastQC</h3>
 <div class="callout-content">
-<p>Assuming your raw reads are in <code>raw_reads/</code> or
-<code>reads/</code>, run:</p>
+<p>Run FastQC on one FASTQ file:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> qc</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc raw_reads/sample01_R1.fastq.gz</span></code></pre>
 </div>
-<p>Then:</p>
-<div class="codewrapper sourceCode" id="cb5">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">ls</span> qc</span></code></pre>
-</div>
 <p><strong>Questions:</strong></p>
 <ul>
-<li>What output files were created?</li>
-<li>How can you transfer the HTML file to your local machine for
-viewing?</li>
+<li>What output files appeared in the <code>qc/</code> directory?</li>
+<li>How will you view the HTML report?</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="exercise-interpret-a-fastqc-report" class="callout discussion">
+<div id="exercise-interpret-fastqc-metrics" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-interpret-a-fastqc-report" class="callout-inner">
-<h3 class="callout-title">Exercise: Interpret a FastQC report</h3>
+<div id="exercise-interpret-fastqc-metrics" class="callout-inner">
+<h3 class="callout-title">Exercise: Interpret FastQC metrics</h3>
 <div class="callout-content">
-<p>Working from an instructor‑provided FastQC HTML report:</p>
+<p>With an instructor-provided FastQC report:</p>
 <ul>
-<li>Examine the <strong>Per base sequence quality</strong> module.</li>
-<li>Check whether most bases are in the green (high quality) zone.</li>
-<li>Look at the <strong>Overrepresented sequences</strong> module.</li>
-</ul>
-<p><strong>Questions:</strong></p>
-<ul>
-<li>Would you recommend trimming this dataset? Why or why not?</li>
-<li>Do you see evidence of adapter contamination?</li>
+<li>What does the <strong>Per base sequence quality</strong> panel
+show?</li>
+<li>Are there adapters in the <strong>Overrepresented sequences</strong>
+panel?</li>
+<li>Would you recommend trimming? Why?</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="exercise-connect-qc-to-downstream-steps" class="callout discussion">
+<div id="exercise-qc-after-trimming" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-connect-qc-to-downstream-steps" class="callout-inner">
-<h3 class="callout-title">Exercise: Connect QC to downstream steps</h3>
+<div id="exercise-qc-after-trimming" class="callout-inner">
+<h3 class="callout-title">Exercise: QC after trimming</h3>
 <div class="callout-content">
-<p>Discuss with a partner:</p>
-<ol style="list-style-type: decimal">
-<li>How could poor QC (low quality, many adapters) affect:
+<p>Compare QC before and after trimming.</p>
+<p><strong>Questions:</strong></p>
 <ul>
-<li>genome assembly with SPAdes?</li>
-<li>annotation with Prokka?</li>
+<li>Did quality scores improve?</li>
+<li>Were adapters removed?</li>
+<li>Are the reads ready for SPAdes assembly?</li>
 </ul>
-</li>
-<li>How might good QC save time and avoid misleading results?</li>
-</ol>
 </div>
 </div>
 </div>
@@ -2793,14 +2758,11 @@ viewing?</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>QC is a critical first step before trimming and assembly in
-microbial genomics.</li>
-<li>FastQC summarizes read quality, sequence content, GC content, and
-overrepresented sequences.</li>
-<li>FastQC can read compressed <code>.fastq.gz</code> files and produces
-HTML reports for review.</li>
-<li>QC results guide trimming choices and help interpret assembly
-quality.</li>
+<li>QC is essential before trimming and assembly.</li>
+<li>FastQC summarizes read quality, bias, GC content, and possible
+contaminants.</li>
+<li>QC results guide trimming decisions.</li>
+<li>Improved trimmed reads lead to better assemblies.</li>
 </ul>
 </div>
 </div>
