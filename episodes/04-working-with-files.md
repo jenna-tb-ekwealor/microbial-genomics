@@ -6,255 +6,203 @@ exercises: 20
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- How do I create, view, copy, move, and delete files in Unix?
-- How do I redirect output to files?
-- How do these skills prepare us for handling FASTQ, FASTA, QC, trimming, and assembly outputs?
+- How do I create, view, copy, move, and delete files on the server?
+- How do redirection and appending work in the shell?
+- Why are file‑handling skills essential for a microbial genomics workflow?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Create empty files using `touch`.
-- View file contents using `cat`, `less`, and redirection.
-- Copy and move files using `cp` and `mv`.
-- Delete files and directories safely using `rm` and `rmdir`.
-- Use redirection (`>`, `>>`) to create and modify files.
-- Build comfort with file manipulation before working with large genomics datasets.
+- Create and view files using `touch`, `cat`, `less`, and redirection (`>` and `>>`).
+- Copy, move, and rename files using `cp` and `mv`.
+- Remove files and directories safely using `rm` and `rmdir`.
+- Understand how these operations support QC, trimming, assembly, and annotation workflows.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode incorporates content from the Unix tutorial PDF (Exercises 7–11),
-> focusing on file creation, editing, copying, moving, and deletion. These skills
-> directly support genomics workflows where FASTQ, trimmed reads, assemblies,
-> and annotation outputs must be manipulated.
+> This episode expands foundational command-line file manipulation skills.
+> These skills are essential once you begin handling FASTQ files, QC outputs,
+> trimmed reads, SPAdes assemblies, and Prokka annotation results.
 
-## Creating new files with `touch`
+## Creating files
 
-From the Unix tutorial (Exercise 7), `touch` creates an empty file:
+Use `touch` to create an empty file:
 
 ```bash
 touch notes.txt
 ```
 
-Check that it exists:
+Use `echo` with redirection to write text into a file:
 
 ```bash
-ls -l
-```
-
-You will later use this skill when organizing metadata, scripts, logs, and assembly outputs.
-
-## Redirecting output with `>` and `>>`
-
-The `echo` command prints text.  
-Pair it with redirection to send output into files (Unix tutorial Exercise 8).
-
-### Overwrite a file:
-
-```bash
-echo "Quality control complete." > log.txt
-```
-
-### Append to a file:
-
-```bash
-echo "Assembly started at: $(date)" >> log.txt
+echo "This is a line of text" > file1.txt    # overwrite
+echo "Another line" >> file1.txt             # append
 ```
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
-### Overwrite vs append
+## Overwrite vs append
 
-- `>` replaces the entire file (use cautiously).
-- `>>` adds new text at the end (safe for logging).
+- `>` **overwrites** an existing file  
+- `>>` **appends** to the end  
 
-These are especially important when capturing quality control and assembly logs later.
+Overwriting raw sequencing data by mistake can ruin an analysis — use redirection carefully.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Viewing files with `cat` and `less`
-
-- `cat filename` prints the whole file at once.
-- `less filename` allows scrolling (`q` to quit).
-
-These tools are essential for inspecting:
-
-- FASTQ headers
-- log files
-- assembly reports
-- annotation summaries
-
-Example:
+## Viewing files
 
 ```bash
-less log.txt
+cat file1.txt      # print entire file
+less file1.txt     # scroll interactively (press q to quit)
+head file1.txt     # first 10 lines
+tail file1.txt     # last 10 lines
 ```
 
-## Copying files with `cp`
+These commands are essential later when examining FASTQ structure, assembly summaries, and annotation outputs.
 
-From the Unix tutorial (Exercise 9):
+## Copying and moving files
+
+Copy:
 
 ```bash
-cp original.txt backup.txt
+cp file1.txt backup_file1.txt
 ```
 
-Copy to a directory:
+Copy directories:
 
 ```bash
-cp notes.txt archive/
+cp -r raw_reads/ raw_reads_backup/
 ```
 
-Copy entire directories:
+Move or rename:
 
 ```bash
-cp -r results/ results_backup/
+mv file1.txt renamed.txt
+mv renamed.txt raw_reads/
 ```
 
-This becomes essential when backing up read files before quality trimming or assembly.
+## Deleting files and directories
 
-## Moving or renaming files with `mv`
-
-`mv` can move **or** rename files:
+Remove a file:
 
 ```bash
-mv draft.txt final.txt
-mv final.txt documents/
+rm file.txt
 ```
 
-You will later use this to organize outputs such as:
-
-- `ERR435025_assembly/`
-- trimmed reads directories
-- annotation output folders
-
-## Removing files and directories
-
-### Remove a file:
+Remove an empty directory:
 
 ```bash
-rm oldfile.txt
+rmdir mydir
 ```
 
-### Remove an empty directory:
+Remove a directory *and everything inside it*:
 
 ```bash
-rmdir emptydir
-```
-
-### Remove a directory *with contents*:
-
-```bash
-rm -rf tempdir
+rm -r results/
 ```
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
+### ⚠️ Warning: `rm -r` is permanent
 
-### Warning: `rm -rf`
-
-This command deletes **everything** in a directory **permanently** and **cannot be undone**.
-
-Use it carefully, especially when working with important read files or assemblies.
+There is **no undo** in the Unix shell.  
+Always double‑check your path before removing a directory.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Editing files with `nano`
+## Why this matters for genomics
 
-Open a file for editing:
+Throughout this workshop you will:
 
-```bash
-nano notes.txt
-```
+- download or receive FASTQ files,  
+- inspect QC reports,  
+- produce trimmed reads,  
+- create SPAdes assembly directories,  
+- annotate genomes with Prokka.
 
-Use:
+Each stage generates multiple files. Clean file-handling habits prevent:
 
-- `Ctrl + O` to save
-- `Ctrl + X` to exit
+- overwriting raw data,
+- losing track of results,
+- running tools on the wrong inputs.
 
-Log files, small scripts, and metadata files can all be edited this way.
-
----
+Good file management = reproducible science.
 
 # Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Create and inspect files
+## Exercise: Create and modify a file
 
 1. Create a file:
    ```bash
-   touch example.txt
+   touch test.txt
    ```
-2. Add text using `>`:
+2. Add a line:
    ```bash
-   echo "First line" > example.txt
+   echo "first line" > test.txt
    ```
-3. Append text:
+3. Append another line:
    ```bash
-   echo "Second line" >> example.txt
+   echo "second line" >> test.txt
    ```
-4. View using:
+4. View it with `cat`.
+
+**Questions:**
+
+- What changed between `>` and `>>`?
+- Why does this matter for logging workflows?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Copy, move, and rename
+
+```bash
+cp test.txt copy_test.txt
+mv copy_test.txt renamed_test.txt
+mv renamed_test.txt ../   # move one directory up
+```
+
+**Questions:**
+
+- Did the file appear where you expected?
+- How can you verify using `ls` and `pwd`?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Safe deletions
+
+1. Create a temporary directory:
    ```bash
-   cat example.txt
+   mkdir tempdir
+   ```
+2. Add a file to it:
+   ```bash
+   echo "data" > tempdir/data.txt
+   ```
+3. Try to remove with `rmdir tempdir`. What happens?
+4. Remove correctly with:
+   ```bash
+   rm -r tempdir
    ```
 
 **Questions:**  
-- What happened when you used `>`?  
-- What changed when you used `>>`?
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::::::::: challenge
-
-## Exercise: Copy and move files
-
-1. Copy your file:
-   ```bash
-   cp example.txt example_copy.txt
-   ```
-2. Make a directory:
-   ```bash
-   mkdir workspace
-   ```
-3. Move both files into the directory:
-   ```bash
-   mv example*.txt workspace/
-   ```
-
-**Question:**  
-- How can you confirm that the files moved successfully?
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::::::::: challenge
-
-## Exercise: Remove files safely
-
-1. Make a directory with files:
-   ```bash
-   mkdir testdir
-   echo "data" > testdir/a.txt
-   ```
-2. Try:
-   ```bash
-   rmdir testdir
-   ```
-   Why does it fail?
-3. Remove the directory properly:
-   ```bash
-   rm -r testdir
-   ```
-
-Discuss safety concerns around using `rm -rf`.
+- Why does `rmdir` only work on empty directories?  
+- Why is `rm -r` dangerous?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- `touch` creates files; `cat` and `less` view them.
-- `cp` copies files; `mv` moves or renames them.
-- `rm` and `rmdir` delete files or directories.
-- `>` overwrites files; `>>` appends to them.
-- These skills are essential for managing reads, QC logs, assemblies, and annotation outputs.
-- Be extremely careful when removing directories, especially with `rm -rf`.
+- `touch` creates files; `cat` and `less` display them.
+- `cp` copies; `mv` renames or moves files/directories.
+- `rm` and `rm -r` delete files and directories — permanently.
+- Redirection (`>` and `>>`) allows you to create and modify files.
+- Good file-handling practices prevent mistakes during genomics workflows.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
