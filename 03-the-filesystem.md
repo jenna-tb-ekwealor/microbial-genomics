@@ -1,168 +1,204 @@
 ---
-title: Navigating the Filesystem
-teaching: 25
-exercises: 15
+title: The Filesystem
+teaching: 30
+exercises: 20
 ---
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- How is data organized on the server?
-- How do I move between directories?
+- How is the Unix filesystem organized?
+- How do I check where I am in the directory structure?
+- How do I move between directories using paths?
 - What is the difference between absolute and relative paths?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Describe the filesystem as a tree of directories and files.
-- Use `pwd`, `ls`, and `cd` to move around the filesystem.
+- Describe how the Unix filesystem is structured.
+- Use `pwd` to confirm your current location.
+- Navigate into and out of directories using `cd`.
 - Distinguish between absolute and relative paths.
-- Use shortcuts like `.`, `..`, and `~` when specifying paths.
+- Understand how paths matter for genomic workflows later on.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode is adapted from the Data Carpentry *Navigating Files and
-> Directories* episode in *Introduction to the Command Line for Genomics*.
+> This episode draws directly from the Unix tutorial PDF (Exercises 2–5) to teach the
+> filesystem concepts required before handling FASTQ files, assemblies, or annotations.
 
-## The filesystem as a tree
+## What is the filesystem?
 
-The server stores data in a **filesystem**, which you can picture as a tree:
+The Unix filesystem is a **tree-like structure** of directories (folders). At the very top is the root:
 
-- the **root** (`/`) at the top,
-- directories (folders) as branches,
-- files as leaves.
-
-Your personal working area is your **home directory**. On this server, it will
-look something like:
-
-```bash
-/home/learner01
+```
+/
 ```
 
-The shell uses **paths** (like addresses) to locate files and directories.
+Below this, you will find directories such as `/home`, `/usr`, `/etc`, etc.
 
-## Where are we? `pwd`
+When you log into the workshop server, you start in **your home directory**, represented by:
 
-Use `pwd` to **print the working directory**:
+```
+~
+```
+
+You can confirm this using:
 
 ```bash
 pwd
 ```
 
-You should see something like `/home/learner01`. This is your starting point.
+This prints your **present working directory** — your current location.
 
-## What is here? `ls`
+## Listing the contents of a directory
 
-Use `ls` to list directory contents:
+Use `ls` to see what is inside your current directory:
 
 ```bash
 ls
 ```
 
-You should see a directory prepared for the workshop data, for example
-`microbial_workshop` or `shell_data`. Your instructor will tell you the exact
-name.
-
-You can give `ls` a **path** as an argument:
+To view more details:
 
 ```bash
-ls shell_data
+ls -l
+ls -lh
+ls -la
 ```
 
-This lists the contents of `shell_data` without changing where you are.
+- `-l` shows long format
+- `-h` shows sizes in human-readable units
+- `-a` includes hidden files (names beginning with `.`)
 
-## Moving around: `cd`
+## Moving between directories with `cd`
 
-Use `cd` (*change directory*) to move between directories.
+The command `cd` (**change directory**) moves you into a different folder.
 
-```bash
-cd shell_data
-pwd
-```
-
-Now `pwd` should show that you are inside `shell_data`.
-
-To go **back up one level**, use:
-
-```bash
-cd ..
-```
-
-To go directly to your home directory from anywhere:
-
-```bash
-cd
-```
-
-or
+Example:
 
 ```bash
 cd ~
+cd mydata
+cd ..
+```
+
+### Special directories
+
+- `~` — your home directory  
+- `.` — the current directory  
+- `..` — the parent directory (one level up)
+
+From the Unix tutorial PDF (Exercise 5), you can chain these together:
+
+```bash
+cd ~/temp/stuff/things
+cd ../../..
 ```
 
 ## Absolute vs relative paths
 
-There are two ways to describe a location:
+:::::::::::::::::::::::::::::::::::::::::::::: callout
 
-- **Absolute path** – starts from the root `/` and works downward.
-  - Example: `/home/learner01/shell_data/fastq`
-- **Relative path** – starts from your current directory.
-  - Example: if you are already in `/home/learner01`, then `shell_data/fastq`
-    is a relative path to the same place.
+### Absolute paths
+Start with `/` and specify the full path from the root.
 
-Try these commands and compare:
+Example:
 
-```bash
-cd               # go to your home directory
-cd shell_data    # relative path
-pwd
-
-cd               # back home
-cd /home/learner01/shell_data   # absolute path (adjust for your username)
-pwd
+```
+/home/learner01/mydata/reads/
 ```
 
-Both commands put you in the same directory.
+### Relative paths
+Start from your current directory.
 
-## Helpful shortcuts
+Example (from within `mydata`):
 
-- `.` – the current directory
-- `..` – the parent directory
-- `~` – your home directory
-
-These shortcuts work in paths. For example:
-
-```bash
-cd ~/shell_data
-ls ../
+```
+reads/
 ```
 
-The second command lists the contents of the directory *above* `shell_data`.
+Understanding this distinction prevents mistakes later when running tools like
+FastQC, SPAdes, and Prokka, all of which require accurate file paths.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Combining `pwd`, `cd`, and `ls`
+
+These commands form the navigation toolkit you will use throughout the entire workshop:
+
+```bash
+pwd      # where am I?
+ls       # what is here?
+cd dir   # go somewhere else
+cd ..    # go up one level
+cd ~     # return home
+```
+
+You will use them constantly once you begin working with:
+
+- `reads/` directories,
+- `trimmed/` sequence folders,
+- SPAdes output directories,
+- Prokka annotation folders.
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Navigating the workshop data
+## Exercise: Explore your home directory
 
-Your instructor will tell you the name of the main data directory for this
-workshop (for example, `microbial_workshop` or `shell_data`). Starting from
-your home directory:
+Run:
 
-1. Use `cd` and `ls` to find the directory that contains the raw FASTQ files.
-2. Use `pwd` to record the **absolute path** to that directory.
-3. From the FASTQ directory, use a **relative path** with `cd` to return to
-   your home directory.
+```bash
+pwd
+ls -l
+```
 
-Compare answers with your neighbor. Did you find the same paths?
+**Questions:**
+
+1. Which files or directories do you see?
+2. Which items are directories?
+3. Are any hidden files present?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Practice moving around
+
+1. Create a small directory structure:
+   ```bash
+   mkdir -p practice/level1/level2
+   ```
+2. Navigate into the deepest level:
+   ```bash
+   cd practice/level1/level2
+   ```
+3. Use `pwd` — what path do you see?
+4. Navigate back to your home directory in **one command**.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Absolute or relative?
+
+For each path below, decide whether it is absolute or relative:
+
+1. `/home/learner01`
+2. `reads/ERR435025_R1.fastq.gz`
+3. `../trimmed/`
+4. `/usr/bin/`
+5. `./scripts/run_spades.sh`
+
+Discuss why absolute paths are often safer when running long workflows.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- The filesystem is organized as a **tree** of directories and files.
-- `pwd` tells you where you are; `ls` shows what is in a directory; `cd`
-  changes your location.
-- **Absolute paths** start from `/`; **relative paths** start from your current
-  directory.
-- Shortcuts like `.`, `..`, and `~` make it easier to specify paths.
+- The Unix filesystem is a tree with `/` at the root and `~` as your home.
+- `pwd` tells you where you are; `ls` shows what is in a directory.
+- `cd` moves you between directories using absolute or relative paths.
+- Understanding paths is essential for accessing sequencing files and running genomics tools.
+- Good navigation skills reduce errors when working with large datasets.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
