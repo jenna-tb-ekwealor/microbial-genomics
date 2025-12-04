@@ -81,8 +81,6 @@ Each record has **four lines**:
 3. `+` (optionally followed by the identifier)  
 4. ASCII-encoded quality string  
 
-Example (adapted from your notes):
-
 ```text
 @DBRHHJN1:387:H89AEADXX:2:1101:1811:1988 1:N:0:TCCTGAGCCTCTCTAT
 GTATTGGATATGTCCTCTATTAAACCTTGTGATGAGGAAGCTGTCTGTCTCTTATACACATCTCCGAGCCCACGAGACTCCTGAGCA
@@ -167,7 +165,7 @@ For each one, decide whether it is:
 
 ## Exercise: Inspect a FASTQ file
 
-On the server, navigate to where a small sample FASTQ file is stored and run:
+On the server, navigate to where a sample FASTQ file is stored and run:
 
 ```bash
 zcat sample.fastq.gz | head -n 8
