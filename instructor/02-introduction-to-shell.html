@@ -217,7 +217,7 @@
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#what-is-the-shell">What is the shell?</a></li>
-<li><a href="#your-first-commands">Your first commands</a></li>
+<li><a href="#confirming-your-location">Confirming your location</a></li>
 <li><a href="#listing-files-with-ls">Listing files with <code>ls</code></a></li>
 <li><a href="#moving-around-with-cd">Moving around with <code>cd</code></a></li>
 <li><a href="#command-structure">Command structure</a></li>
@@ -399,10 +399,9 @@
 <h3 class="card-title">Objectives</h3>
 <ul><li>Explain what the shell is and why it is essential for microbial
 genomics workflows.</li>
-<li>Run simple shell commands (<code>whoami</code>, <code>pwd</code>,
-<code>ls</code>) on a remote server.</li>
-<li>Navigate the directory structure using <code>cd</code>, absolute
-paths, and relative paths.</li>
+<li>Use <code>pwd</code>, <code>ls</code>, and <code>cd</code> to
+navigate the directory structure.</li>
+<li>Distinguish between absolute and relative paths.</li>
 <li>Understand how commands, arguments, and options fit together.</li>
 </ul></div>
 </div>
@@ -433,28 +432,17 @@ like:</p>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">learner01@genomics-server:~$</span></span></code></pre>
 </div>
-<p>Everything typed after this prompt is a command sent to the remote
-machine.</p>
-</section><section><h2 class="section-heading" id="your-first-commands">Your first commands<a class="anchor" aria-label="anchor" href="#your-first-commands"></a></h2>
-<hr class="half-width"><p>Try these:</p>
+<p>Everything typed after this prompt is interpreted <em>by the remote
+machine</em>.</p>
+</section><section><h2 class="section-heading" id="confirming-your-location">Confirming your location<a class="anchor" aria-label="anchor" href="#confirming-your-location"></a></h2>
+<hr class="half-width"><p>You can check where you are using:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">whoami</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">hostname</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
 </div>
-<ul><li>
-<code>whoami</code> shows your username (on the <strong>remote
-server</strong>, not your laptop).</li>
-<li>
-<code>hostname</code> tells you which machine you’re logged
-into.</li>
-<li>
-<code>pwd</code> prints your <strong>present working
-directory</strong>, letting you confirm where you are.</li>
-</ul><p>These help ensure you’re operating on the server—not your local
-machine.</p>
+<p>This prints the <strong>present working directory</strong>, which
+will usually be your home directory when you first log in.</p>
 </section><section><h2 class="section-heading" id="listing-files-with-ls">Listing files with <code>ls</code>
 <a class="anchor" aria-label="anchor" href="#listing-files-with-ls"></a></h2>
 <hr class="half-width"><p>Use <code>ls</code> to see what’s in your current directory:</p>
@@ -463,55 +451,46 @@ machine.</p>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
 </div>
-<p>Variants:</p>
+<p>Common useful variations:</p>
 <ul><li>
-<code>ls -l</code> – long listing</li>
+<code>ls -l</code> – long listing with details<br></li>
 <li>
 <code>ls -a</code> – show hidden files (those beginning with
-<code>.</code>)</li>
+<code>.</code>)<br></li>
 <li>
-<code>ls -lh</code> – human-readable file sizes</li>
-</ul><p>This is how you inspect data directories like:</p>
-<pre><code>reads/
-trimmed/
-assembly/
-annotation/</code></pre>
-<p>as the workshop progresses.</p>
-</section><section><h2 class="section-heading" id="moving-around-with-cd">Moving around with <code>cd</code>
+<code>ls -lh</code> – human-readable sizes</li>
+</ul></section><section><h2 class="section-heading" id="moving-around-with-cd">Moving around with <code>cd</code>
 <a class="anchor" aria-label="anchor" href="#moving-around-with-cd"></a></h2>
-<hr class="half-width"><p>You will move between directories constantly during QC, trimming,
-assembly, and annotation.</p>
+<hr class="half-width"><p>You will move between directories throughout the workshop:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">cd</span> directoryname</span></code></pre>
+</div>
+<p>To go <strong>home</strong>:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">cd</span> directoryname</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">cd</span> ~</span></code></pre>
 </div>
-<p>To go <strong>home</strong>:</p>
+<p>To go <strong>up one level</strong>:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="bu">cd</span> ~</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre>
 </div>
-<p>To go <strong>up one level</strong>:</p>
+<p>To move multiple levels:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> ../../</span></code></pre>
 </div>
-<p>To move multiple levels:</p>
+<p>To go to a specific path:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="bu">cd</span> ../../</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="bu">cd</span> /home/learner01/myproject/</span></code></pre>
 </div>
-<p>To go to a specific path:</p>
-<div class="codewrapper sourceCode" id="cb9">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="bu">cd</span> /home/learner01/mydata/</span></code></pre>
-</div>
-<p>Understanding paths is critical when feeding files to tools like
-FastQC or SPAdes.</p>
 <div id="absolute-vs-relative-paths" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -521,31 +500,46 @@ FastQC or SPAdes.</p>
 <h3 class="callout-title">Absolute vs relative paths</h3>
 <div class="callout-content">
 <ul><li><p><strong>Absolute path:</strong> starts from the root
-(<code>/</code>), e.g.<br><code>/home/learner01/mydata/reads/ERR435025_R1.fastq.gz</code></p></li>
-<li><p><strong>Relative path:</strong> starts from your current
-directory, e.g.<br><code>reads/ERR435025_R1.fastq.gz</code></p></li>
-</ul><p>SPAdes, FastQC, and Prokka all accept either — but incorrect paths
-are a <em>very</em> common error.</p>
-</div>
+(<code>/</code>), e.g.<br><code>/home/learner01/myproject/raw_reads/</code></p></li>
+<li><p><strong>Relative path:</strong> starts from your <em>current</em>
+directory, e.g.<br><code>raw_reads/ERR435025_R1.fastq.gz</code></p></li>
+</ul></div>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="command-structure">Command structure<a class="anchor" aria-label="anchor" href="#command-structure"></a></h2>
 <hr class="half-width"><p>Commands often look like this:</p>
 <pre><code>command -option argument</code></pre>
 <p>Example:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> /home/learner01/</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> /home/learner01/</span></code></pre>
 </div>
-<p>Later, when you run SPAdes, you’ll see the same structure:</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="ex">spades.py</span> <span class="at">-1</span> reads/R1.fastq.gz <span class="at">-2</span> reads/R2.fastq.gz <span class="at">--threads</span> 10 <span class="at">--memory</span> 120</span></code></pre>
+<div id="common-beginner-mistakes" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
 </div>
-<p>The shell simply interprets the command, options, and arguments you
-provide.</p>
+<span class="callout-header">Callout</span>
+<div id="common-beginner-mistakes" class="callout-inner">
+<h3 class="callout-title">Common beginner mistakes</h3>
+<div class="callout-content">
+<table class="table"><colgroup><col width="26%"><col width="73%"></colgroup><thead><tr class="header"><th>Mistake</th>
+<th>What to check / avoid</th>
+</tr></thead><tbody><tr class="odd"><td>Running commands in the wrong directory</td>
+<td>Always run <code>pwd</code> to confirm location</td>
+</tr><tr class="even"><td>Using relative paths carelessly</td>
+<td>Prefer absolute paths for important commands</td>
+</tr><tr class="odd"><td>Overwriting or deleting files by accident</td>
+<td>Double-check filenames; avoid spaces in names</td>
+</tr><tr class="even"><td>Confusing local vs remote context</td>
+<td>After SSH login, all commands run on the <strong>remote
+server</strong>
+</td>
+</tr></tbody></table></div>
+</div>
+</div>
+</section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a></h1>
 <div id="exercise-where-are-you" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -555,14 +549,12 @@ provide.</p>
 <h3 class="callout-title">Exercise: Where are you?</h3>
 <div class="callout-content">
 <p>Run:</p>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
 </div>
-<ul><li>What directory are you in?</li>
-<li>Is it your home directory?</li>
-</ul></div>
+</div>
 </div>
 </div>
 <div id="exercise-navigate-with-cd" class="callout discussion">
@@ -574,31 +566,14 @@ provide.</p>
 <h3 class="callout-title">Exercise: Navigate with <code>cd</code>
 </h3>
 <div class="callout-content">
-<ol style="list-style-type: decimal"><li>
-<p>Create a directory:</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">mkdir</span> practice</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">mkdir</span> practice</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="bu">cd</span> practice</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
 </div>
-</li>
-<li>
-<p>Move into it:</p>
-<div class="codewrapper sourceCode" id="cb15">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="bu">cd</span> practice</span></code></pre>
 </div>
-</li>
-<li>
-<p>Verify location using:</p>
-<div class="codewrapper sourceCode" id="cb16">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
-</div>
-</li>
-</ol></div>
 </div>
 </div>
 <div id="exercise-inspect-files-with-ls" class="callout discussion">
@@ -611,19 +586,35 @@ provide.</p>
 <code>ls</code>
 </h3>
 <div class="callout-content">
-<p>In your home directory, run:</p>
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span></span></code></pre>
 </div>
-<p><strong>Questions:</strong></p>
-<ul><li>Which files are hidden?</li>
-<li>Which items are directories?</li>
-<li>What do the permission strings (like <code>drwxr-xr-x</code>)
-represent?</li>
-</ul></div>
+</div>
+</div>
+</div>
+<div id="exercise-practice-navigation-and-paths" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-practice-navigation-and-paths" class="callout-inner">
+<h3 class="callout-title">Exercise: Practice navigation and paths</h3>
+<div class="callout-content">
+<ol style="list-style-type: decimal"><li>Use <code>pwd</code> to confirm your current directory.<br></li>
+<li>Create a directory named <code>practice1</code>.<br></li>
+<li>Change into it.<br></li>
+<li>Create and move into a subdirectory:</li>
+</ol><div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">mkdir</span> subdir</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="bu">cd</span> subdir</span></code></pre>
+</div>
+<ol start="5" style="list-style-type: decimal"><li>Navigate back to your home directory in one command.</li>
+</ol></div>
 </div>
 </div>
 <div id="keypoints1" class="callout keypoints">
@@ -635,19 +626,21 @@ represent?</li>
 <div class="callout-content">
 <ul><li>The <strong>shell</strong> is the primary interface for microbial
 genomics workflows.</li>
-<li>Commands like <code>whoami</code>, <code>hostname</code>, and
-<code>pwd</code> confirm where you are working.</li>
 <li>
-<code>ls</code> lists files; <code>cd</code> moves between
-directories.</li>
-<li>Understanding paths is essential for running tools like FastQC,
+<code>pwd</code>, <code>ls</code>, and <code>cd</code> are essential
+tools for navigation.</li>
+<li>Understanding paths is critical for running tools like FastQC,
 SPAdes, and Prokka.</li>
 <li>All commands run on the <strong>remote server</strong>, not your
 local machine.</li>
 </ul></div>
 </div>
 </div>
-</section></div> <!-- / div.lesson-content -->
+</div>
+
+
+
+      </div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/01-why-cloud-computing.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/03-the-filesystem.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
