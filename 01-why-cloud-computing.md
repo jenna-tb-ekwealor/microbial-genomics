@@ -67,8 +67,7 @@ If SPAdes runs out of memory, it crashes.
 Servers commonly provide **32–256 GB RAM**, or more.
 
 ### 3. High-throughput storage  
-Assemblies generate many large temporary files.  
-A server’s storage avoids the “No space left on device” errors common on laptops.
+Assemblies generate many large temporary files. A server’s storage avoids the “No space left on device” errors common on laptops.
 
 ### 4. Reproducibility  
 Shared environments load consistent versions:
@@ -84,16 +83,20 @@ Jobs can run for **hours** without interruption using `screen` or `tmux`.
 
 ## Logging into the remote system
 
-Your instructor will provide:
+Instructors will provide:
 
 - server hostname  
 - username  
 - temporary password  
 
-Connect using SSH (macOS/Linux):
+Connect using SSH:
 ```bash
 ssh <username>@<server-address>
 ```
+
+On macOS/Linux, use:
+
+- Terminal 
 
 On Windows, use:
 
@@ -133,8 +136,7 @@ Discuss:
 
 ## Exercise: Estimate your dataset size
 
-Later in the workshop you will download real FASTQ files.  
-Before assembly, check their sizes:
+Later in the workshop you will work with FASTQ files. Before assembly, check their sizes:
 
 ```bash
 du -h reads/
