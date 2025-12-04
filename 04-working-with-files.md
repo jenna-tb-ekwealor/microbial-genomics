@@ -1,175 +1,260 @@
 ---
-title: Working with Files and Scripts
-teaching: 25
+title: Working With Files
+teaching: 35
 exercises: 20
 ---
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- How can I inspect the contents of text files from the command line?
-- How do I create, copy, move, and remove files and directories?
-- How can I automate a few commands in a simple shell script?
+- How do I create, view, copy, move, and delete files in Unix?
+- How do I redirect output to files?
+- How do these skills prepare us for handling FASTQ, FASTA, QC, trimming, and assembly outputs?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Use `less`, `head`, and `tail` to view text files.
-- Create, copy, move, and remove files and directories with `mkdir`, `cp`,
-  `mv`, and `rm`.
-- Write and run a small shell script using `bash`.
+- Create empty files using `touch`.
+- View file contents using `cat`, `less`, and redirection.
+- Copy and move files using `cp` and `mv`.
+- Delete files and directories safely using `rm` and `rmdir`.
+- Use redirection (`>`, `>>`) to create and modify files.
+- Build comfort with file manipulation before working with large genomics datasets.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode is adapted from the Data Carpentry *Working with Files and
-> Directories* and *Writing Scripts and Working with Data* episodes in
-> *Introduction to the Command Line for Genomics*.
+> This episode incorporates content from the Unix tutorial PDF (Exercises 7–11),
+> focusing on file creation, editing, copying, moving, and deletion. These skills
+> directly support genomics workflows where FASTQ, trimmed reads, assemblies,
+> and annotation outputs must be manipulated.
 
-## Looking at files: `less`, `head`, and `tail`
+## Creating new files with `touch`
 
-Genomics data and results are usually stored in **plain text files**. We can
-inspect them from the command line without opening a separate editor.
-
-Navigate to the directory that contains a small text file (for example,
-a README or an example FASTQ). Your instructor will give a specific path.
+From the Unix tutorial (Exercise 7), `touch` creates an empty file:
 
 ```bash
-cd ~/shell_data
-ls
+touch notes.txt
 ```
 
-Use `head` to see the first few lines of a file:
+Check that it exists:
 
 ```bash
-head README.txt
+ls -l
 ```
 
-Use `tail` to see the last few lines:
+You will later use this skill when organizing metadata, scripts, logs, and assembly outputs.
+
+## Redirecting output with `>` and `>>`
+
+The `echo` command prints text.  
+Pair it with redirection to send output into files (Unix tutorial Exercise 8).
+
+### Overwrite a file:
 
 ```bash
-tail README.txt
+echo "Quality control complete." > log.txt
 ```
 
-For longer files, `less` lets you scroll:
+### Append to a file:
 
 ```bash
-less README.txt
+echo "Assembly started at: $(date)" >> log.txt
 ```
 
-- Use the arrow keys or <kbd>Space</kbd> to move.
-- Press <kbd>q</kbd> to quit `less`.
+:::::::::::::::::::::::::::::::::::::::::::::: callout
 
-## Creating and organizing directories
+### Overwrite vs append
 
-We often want to separate **raw data**, **intermediate files**, and **results**.
+- `>` replaces the entire file (use cautiously).
+- `>>` adds new text at the end (safe for logging).
 
-From your home directory, create a project folder structure:
+These are especially important when capturing quality control and assembly logs later.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Viewing files with `cat` and `less`
+
+- `cat filename` prints the whole file at once.
+- `less filename` allows scrolling (`q` to quit).
+
+These tools are essential for inspecting:
+
+- FASTQ headers
+- log files
+- assembly reports
+- annotation summaries
+
+Example:
 
 ```bash
-cd
-mkdir microbial_project
-cd microbial_project
-mkdir data raw qc scripts results
-ls
+less log.txt
 ```
 
-Now you have a tidy place to keep files you will create in later episodes.
+## Copying files with `cp`
 
-## Copying, moving, and removing files
-
-The main commands are:
-
-- `cp` – copy files
-- `mv` – move or rename files
-- `rm` – remove (delete) files
-- `mkdir` – create directories
-- `rmdir` – remove empty directories
-
-Examples (run from inside `microbial_project`):
+From the Unix tutorial (Exercise 9):
 
 ```bash
-cp ~/shell_data/README.txt data/
-ls data
-
-mv data/README.txt data/project_readme.txt
-ls data
-
-rm data/project_readme.txt
+cp original.txt backup.txt
 ```
 
-Be careful with `rm` – deleted files are **not** sent to a trash can. They are
-gone unless you have a backup.
-
-## A first shell script
-
-Typing the same sequence of commands over and over is error-prone. A **shell
-script** is just a text file containing commands that you want to run together.
-
-In the `scripts` directory, create a script called `hello.sh`:
+Copy to a directory:
 
 ```bash
-cd ~/microbial_project/scripts
-nano hello.sh
+cp notes.txt archive/
 ```
 
-In the editor, type:
+Copy entire directories:
 
 ```bash
-#!/usr/bin/env bash
-
-echo "Hello from the microbial genomics workshop!"
-pwd
-ls
+cp -r results/ results_backup/
 ```
 
-- The first line is called a **shebang** and tells the system to run the script
-  with `bash`.
-- The remaining lines are the same commands you would type at the prompt.
+This becomes essential when backing up read files before quality trimming or assembly.
 
-Save the file and exit the editor (your instructor will demonstrate the key
-strokes if you are using `nano`).
+## Moving or renaming files with `mv`
 
-Run the script:
+`mv` can move **or** rename files:
 
 ```bash
-bash hello.sh
+mv draft.txt final.txt
+mv final.txt documents/
 ```
 
-You should see the message, then the working directory, then a listing of the
-files in `scripts`.
+You will later use this to organize outputs such as:
 
-Optionally, you can mark the script as **executable**:
+- `ERR435025_assembly/`
+- trimmed reads directories
+- annotation output folders
+
+## Removing files and directories
+
+### Remove a file:
 
 ```bash
-chmod +x hello.sh
-./hello.sh
+rm oldfile.txt
 ```
 
-Now you can run it directly with `./hello.sh`.
+### Remove an empty directory:
+
+```bash
+rmdir emptydir
+```
+
+### Remove a directory *with contents*:
+
+```bash
+rm -rf tempdir
+```
+
+:::::::::::::::::::::::::::::::::::::::::::::: callout
+
+### Warning: `rm -rf`
+
+This command deletes **everything** in a directory **permanently** and **cannot be undone**.
+
+Use it carefully, especially when working with important read files or assemblies.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Editing files with `nano`
+
+Open a file for editing:
+
+```bash
+nano notes.txt
+```
+
+Use:
+
+- `Ctrl + O` to save
+- `Ctrl + X` to exit
+
+Log files, small scripts, and metadata files can all be edited this way.
+
+---
+
+# Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Making a project script
+## Exercise: Create and inspect files
 
-1. From inside `~/microbial_project/scripts`, create a script called
-   `setup_project.sh`.
-2. The script should:
-   - print the current working directory,
-   - create directories called `tmp` and `logs` (if they do not already exist),
-   - list the contents of the project directory.
+1. Create a file:
+   ```bash
+   touch example.txt
+   ```
+2. Add text using `>`:
+   ```bash
+   echo "First line" > example.txt
+   ```
+3. Append text:
+   ```bash
+   echo "Second line" >> example.txt
+   ```
+4. View using:
+   ```bash
+   cat example.txt
+   ```
 
-3. Run your script from the project root (`~/microbial_project`).
+**Questions:**  
+- What happened when you used `>`?  
+- What changed when you used `>>`?
 
-> Hint: use `mkdir -p` to avoid errors if the directory already exists.
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Copy and move files
+
+1. Copy your file:
+   ```bash
+   cp example.txt example_copy.txt
+   ```
+2. Make a directory:
+   ```bash
+   mkdir workspace
+   ```
+3. Move both files into the directory:
+   ```bash
+   mv example*.txt workspace/
+   ```
+
+**Question:**  
+- How can you confirm that the files moved successfully?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Remove files safely
+
+1. Make a directory with files:
+   ```bash
+   mkdir testdir
+   echo "data" > testdir/a.txt
+   ```
+2. Try:
+   ```bash
+   rmdir testdir
+   ```
+   Why does it fail?
+3. Remove the directory properly:
+   ```bash
+   rm -r testdir
+   ```
+
+Discuss safety concerns around using `rm -rf`.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Use `head`, `tail`, and `less` to inspect text files on the command line.
-- Use `mkdir`, `cp`, `mv`, and `rm` to manage files and directories.
-- A **shell script** is a text file containing commands that can be run
-  together with `bash scriptname.sh`.
-- Scripts help automate repetitive tasks and make your work more reproducible.
+- `touch` creates files; `cat` and `less` view them.
+- `cp` copies files; `mv` moves or renames them.
+- `rm` and `rmdir` delete files or directories.
+- `>` overwrites files; `>>` appends to them.
+- These skills are essential for managing reads, QC logs, assemblies, and annotation outputs.
+- Be extremely careful when removing directories, especially with `rm -rf`.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
