@@ -287,7 +287,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="05-tidiness.html">5. Project Tidiness</a>
+        <a href="05-tidiness.html">5. Tidiness &amp; Project Organization</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -1667,23 +1667,218 @@ and annotation outputs.</li>
 </div>
 </div>
 </div>
-</div></section><section id="aio-05-tidiness"><p>Content from <a href="05-tidiness.html">Project Tidiness</a></p>
+</div></section><section id="aio-05-tidiness"><p>Content from <a href="05-tidiness.html">Tidiness &amp; Project Organization</a></p>
 <hr>
-<p>Last updated on 2025-12-03 |
+<p>Last updated on 2025-12-04 |
 
         <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/05-tidiness.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 15 minutes</p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 40 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
-<section><h2 class="section-heading" id="suggested-layout">Suggested layout<a class="anchor" aria-label="anchor" href="#suggested-layout"></a>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>How should we organize files for a microbial genomics project?</li>
+<li>Why is tidy organization essential for QC, trimming, assembly, and
+annotation workflows?</li>
+<li>What naming conventions and directory structures prevent errors
+later?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain the importance of tidy project organization in
+genomics.</li>
+<li>Create a clear directory structure for raw reads, trimmed reads, QC
+outputs, assemblies, and annotations.</li>
+<li>Apply consistent and meaningful file naming conventions.</li>
+<li>Understand how well‑organized projects reduce mistakes in downstream
+commands.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>This episode uses best practices from the Unix tutorial and prepares
+for handling large datasets and multi-step genomics workflows in later
+episodes.</p>
+</blockquote>
+<section><h2 class="section-heading" id="why-organization-matters-in-genomics">Why organization matters in genomics<a class="anchor" aria-label="anchor" href="#why-organization-matters-in-genomics"></a>
 </h2>
 <hr class="half-width">
+<p>Microbial genomics projects quickly accumulate many files:</p>
+<ul>
+<li>raw FASTQ files<br>
+</li>
+<li>QC reports<br>
+</li>
+<li>trimmed reads<br>
+</li>
+<li>assembly outputs<br>
+</li>
+<li>annotation files<br>
+</li>
+<li>logs and scripts</li>
+</ul>
+<p>Without structure, it becomes easy to:</p>
+<ul>
+<li>run tools on the wrong files,<br>
+</li>
+<li>overwrite results,<br>
+</li>
+<li>mix up samples, or<br>
+</li>
+<li>accidentally delete important data.</li>
+</ul>
+<p>A tidy filesystem prevents these mistakes.</p>
+</section><section><h2 class="section-heading" id="recommended-project-structure">Recommended project structure<a class="anchor" aria-label="anchor" href="#recommended-project-structure"></a>
+</h2>
+<hr class="half-width">
+<p>A common layout is:</p>
 <pre><code>project/
-├── data/raw/
-├── data/trimmed/
+├── raw_reads/
+├── qc_reports/
+├── trimmed/
 ├── assembly/
-└── annotation/</code></pre>
+├── annotation/
+└── scripts/</code></pre>
+<p>As taught in earlier Unix episodes, this structure uses directories
+effectively to keep related files together.</p>
+</section><section><h2 class="section-heading" id="naming-conventions">Naming conventions<a class="anchor" aria-label="anchor" href="#naming-conventions"></a>
+</h2>
+<hr class="half-width">
+<p>Use filenames that are:</p>
+<ul>
+<li>
+<strong>descriptive</strong><br>
+</li>
+<li>
+<strong>consistent</strong><br>
+</li>
+<li>
+<strong>machine‑friendly</strong> (no spaces!)</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li><code>sample01_R1.fastq.gz</code></li>
+<li><code>sample01_R2.fastq.gz</code></li>
+<li><code>ERR435025_assembly/</code></li>
+<li><code>prokka_sample01/</code></li>
+</ul>
+<p>Avoid:</p>
+<ul>
+<li>
+<code>my file.fastq</code><br>
+</li>
+<li>
+<code>data stuff/</code><br>
+</li>
+<li><code>final_FINAL_reallyfinal.txt</code></li>
+</ul>
+<div id="tip-use-hyphens-or-underscores" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="tip-use-hyphens-or-underscores" class="callout-inner">
+<h3 class="callout-title">Tip: Use hyphens or underscores</h3>
+<div class="callout-content">
+<p>Good:</p>
+<pre><code>sample01_R1.fastq.gz
+run-2025-reads/</code></pre>
+<p>Bad:</p>
+<pre><code>Sample 1 Reads/</code></pre>
+<p>Spaces break commands unless quoted—dangerous in genomics
+workflows.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="planning-for-downstream-tools">Planning for downstream tools<a class="anchor" aria-label="anchor" href="#planning-for-downstream-tools"></a>
+</h2>
+<hr class="half-width">
+<p>Later episodes will use:</p>
+<ul>
+<li>
+<strong>FastQC</strong> → expects clear input filenames<br>
+</li>
+<li>
+<strong>Trimming tools</strong> → produce new FASTQ files<br>
+</li>
+<li>
+<strong>SPAdes</strong> → creates many output directories<br>
+</li>
+<li>
+<strong>Prokka</strong> → generates several annotation files</li>
+</ul>
+<p>A well‑organized structure ensures:</p>
+<ul>
+<li>safe separation of raw vs processed data<br>
+</li>
+<li>clarity during command execution<br>
+</li>
+<li>easier troubleshooting<br>
+</li>
+<li>reproducible workflows</li>
+</ul>
+<div id="exercise-build-your-project-structure" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-build-your-project-structure" class="callout-inner">
+<h3 class="callout-title">Exercise: Build your project structure</h3>
+<div class="callout-content">
+<p>Create the recommended structure:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> project/<span class="dt">{raw_reads</span><span class="op">,</span><span class="dt">qc_reports</span><span class="op">,</span><span class="dt">trimmed</span><span class="op">,</span><span class="dt">assembly</span><span class="op">,</span><span class="dt">annotation</span><span class="op">,</span><span class="dt">scripts}</span></span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Which directories will hold input FASTQ files?</li>
+<li>Where will SPAdes results go?</li>
+<li>Where should you store logs or scripts?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-rename-files-for-tidiness" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-rename-files-for-tidiness" class="callout-inner">
+<h3 class="callout-title">Exercise: Rename files for tidiness</h3>
+<div class="callout-content">
+<p>Suppose you have files:</p>
+<pre><code><span><span class="va">read1.fq.gz</span></span>
+<span><span class="va">read2.fq.gz</span></span></code></pre>
+<p>Rename them using a good naming convention:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">mv</span> read1.fq.gz sample01_R1.fastq.gz</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">mv</span> read2.fq.gz sample01_R2.fastq.gz</span></code></pre>
+</div>
+<p><strong>Question:</strong><br>
+Why is this better for downstream analysis?</p>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1692,7 +1887,14 @@ and annotation outputs.</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>Keep raw data immutable.</li>
+<li>Good organization prevents errors in multi-step genomics
+workflows.</li>
+<li>Use meaningful directory structures: raw reads, QC reports, trimmed
+data, assemblies, annotations.</li>
+<li>Consistent, space‑free filenames make commands easier and
+safer.</li>
+<li>Tidy projects support reproducibility and smooth downstream
+analysis.</li>
 </ul>
 </div>
 </div>
