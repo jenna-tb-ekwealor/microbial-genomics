@@ -1097,10 +1097,13 @@ local machine.</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>How is the Unix filesystem organized?</li>
-<li>How do I check where I am in the directory structure?</li>
-<li>How do I move between directories using paths?</li>
-<li>What is the difference between absolute and relative paths?</li>
+<li>What is the directory (folder) structure on a Linux server, and why
+should you care?</li>
+<li>How do you create, navigate, and manage directories in the
+shell?</li>
+<li>What are hidden files, and how can you view them?</li>
+<li>Why does a consistent project directory structure matter for
+microbial genomics?</li>
 </ul>
 </div>
 </div>
@@ -1110,155 +1113,132 @@ local machine.</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Describe how the Unix filesystem is structured.</li>
-<li>Use <code>pwd</code> to confirm your current location.</li>
-<li>Navigate into and out of directories using <code>cd</code>.</li>
-<li>Distinguish between absolute and relative paths.</li>
-<li>Understand how paths matter for genomic workflows later on.</li>
+<li>Understand the root filesystem and the concept of a home
+directory.</li>
+<li>Navigate directories using absolute and relative paths.</li>
+<li>Create, remove, move, and rename files and directories.</li>
+<li>View hidden files and interpret file permissions.</li>
+<li>Apply good directory organization for microbial genomics
+workflows.</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </div>
-<blockquote>
-<p>This episode draws directly from the Unix tutorial PDF (Exercises
-2–5) to teach the filesystem concepts required before handling FASTQ
-files, assemblies, or annotations.</p>
-</blockquote>
-<section><h2 class="section-heading" id="what-is-the-filesystem">What is the filesystem?<a class="anchor" aria-label="anchor" href="#what-is-the-filesystem"></a>
+<section><h2 class="section-heading" id="what-is-the-linux-filesystem">What is the Linux filesystem?<a class="anchor" aria-label="anchor" href="#what-is-the-linux-filesystem"></a>
 </h2>
 <hr class="half-width">
-<p>The Unix filesystem is a <strong>tree-like structure</strong> of
-directories (folders). At the very top is the root:</p>
-<pre><code>/</code></pre>
-<p>Below this, you will find directories such as <code>/home</code>,
-<code>/usr</code>, <code>/etc</code>, etc.</p>
-<p>When you log into the workshop server, you start in <strong>your home
-directory</strong>, represented by:</p>
-<pre><code>~</code></pre>
-<p>You can confirm this using:</p>
+<p>On the server, all files live under the root directory
+<code>/</code>.<br>
+As a learner, you will mainly work in your <strong>home
+directory</strong>, for example:</p>
+<pre><code>/home/learner01/</code></pre>
+<p>This is where all your project files — raw reads, QC results,
+assemblies, and annotations — should live.</p>
+</section><section><h2 class="section-heading" id="why-directory-structure-matters-for-genomics">Why directory structure matters for genomics<a class="anchor" aria-label="anchor" href="#why-directory-structure-matters-for-genomics"></a>
+</h2>
+<hr class="half-width">
+<p>A microbial genomics project generates many files (FASTQ, QC outputs,
+trimmed reads, assembly files, annotation outputs). A clear structure
+prevents confusion and supports reproducibility.</p>
+<p>A recommended layout:</p>
+<pre><code>myproject/
+├── metadata/
+├── raw_reads/
+├── qc/
+├── trimmed/
+├── assembly/
+├── annotation/
+└── scripts/</code></pre>
+</section><section><h2 class="section-heading" id="navigating-directories-with-pwd-ls-and-cd">Navigating directories with <code>pwd</code>, <code>ls</code>, and
+<code>cd</code>
+<a class="anchor" aria-label="anchor" href="#navigating-directories-with-pwd-ls-and-cd"></a>
+</h2>
+<hr class="half-width">
+<p>Check where you are:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
 </div>
-<p>This prints your <strong>present working directory</strong> — your
-current location.</p>
-</section><section><h2 class="section-heading" id="listing-the-contents-of-a-directory">Listing the contents of a directory<a class="anchor" aria-label="anchor" href="#listing-the-contents-of-a-directory"></a>
-</h2>
-<hr class="half-width">
-<p>Use <code>ls</code> to see what is inside your current directory:</p>
+<p>List files:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span>      <span class="co"># long format</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span>      <span class="co"># include hidden files</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span>     <span class="co"># human-readable sizes</span></span></code></pre>
 </div>
-<p>To view more details:</p>
+<p>Move between directories:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">cd</span> directoryname</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="bu">cd</span> ~        <span class="co"># home</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="bu">cd</span> ..       <span class="co"># up one level</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="bu">cd</span> ../../   <span class="co"># up two levels</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="bu">cd</span> /home/learner01/myproject/</span></code></pre>
 </div>
-<ul>
-<li>
-<code>-l</code> shows long format</li>
-<li>
-<code>-h</code> shows sizes in human-readable units</li>
-<li>
-<code>-a</code> includes hidden files (names beginning with
-<code>.</code>)</li>
-</ul></section><section><h2 class="section-heading" id="moving-between-directories-with-cd">Moving between directories with <code>cd</code>
-<a class="anchor" aria-label="anchor" href="#moving-between-directories-with-cd"></a>
-</h2>
-<hr class="half-width">
-<p>The command <code>cd</code> (<strong>change directory</strong>) moves
-you into a different folder.</p>
-<p>Example:</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="bu">cd</span> ~</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="bu">cd</span> mydata</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="special-directories">Special directories<a class="anchor" aria-label="anchor" href="#special-directories"></a>
-</h3>
-<ul>
-<li>
-<code>~</code> — your home directory<br>
-</li>
-<li>
-<code>.</code> — the current directory<br>
-</li>
-<li>
-<code>..</code> — the parent directory (one level up)</li>
-</ul>
-<p>From the Unix tutorial PDF (Exercise 5), you can chain these
-together:</p>
-<div class="codewrapper sourceCode" id="cb7">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> ~/temp/stuff/things</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="bu">cd</span> ../../..</span></code></pre>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="absolute-vs-relative-paths">Absolute vs relative paths<a class="anchor" aria-label="anchor" href="#absolute-vs-relative-paths"></a>
-</h2>
-<hr class="half-width">
-<div id="absolute-paths" class="callout">
+<div id="absolute-vs-relative-paths" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="absolute-paths" class="callout-inner">
-<h3 class="callout-title">Absolute paths</h3>
+<div id="absolute-vs-relative-paths" class="callout-inner">
+<h3 class="callout-title">Absolute vs relative paths</h3>
 <div class="callout-content">
-<p>Start with <code>/</code> and specify the full path from the
-root.</p>
-<p>Example:</p>
-<pre><code>/home/learner01/mydata/reads/</code></pre>
-<div class="section level3">
-<h3 id="relative-paths">Relative paths<a class="anchor" aria-label="anchor" href="#relative-paths"></a>
-</h3>
-<p>Start from your current directory.</p>
-<p>Example (from within <code>mydata</code>):</p>
-<pre><code>reads/</code></pre>
-<p>Understanding this distinction prevents mistakes later when running
-tools like FastQC, SPAdes, and Prokka, all of which require accurate
-file paths.</p>
+<p><strong>Absolute paths</strong> start from <code>/</code>.
+Example:</p>
+<pre><code>/home/learner01/myproject/raw_reads/</code></pre>
+<p><strong>Relative paths</strong> depend on where you currently
+are:</p>
+<pre><code><span><span class="va">raw_reads</span><span class="op">/</span><span class="va">sample.fastq.gz</span></span></code></pre>
+<p>Understanding paths is essential later when running FastQC, SPAdes,
+and Prokka.</p>
 </div>
 </div>
 </div>
-</div>
-</section><section><h2 class="section-heading" id="combining-pwd-cd-and-ls">Combining <code>pwd</code>, <code>cd</code>, and
-<code>ls</code>
-<a class="anchor" aria-label="anchor" href="#combining-pwd-cd-and-ls"></a>
+</section><section><h2 class="section-heading" id="creating-moving-copying-and-deleting-files">Creating, moving, copying, and deleting files<a class="anchor" aria-label="anchor" href="#creating-moving-copying-and-deleting-files"></a>
 </h2>
 <hr class="half-width">
-<p>These commands form the navigation toolkit you will use throughout
-the entire workshop:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">pwd</span>      <span class="co"># where am I?</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">ls</span>       <span class="co"># what is here?</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="bu">cd</span> dir   <span class="co"># go somewhere else</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="bu">cd</span> ..    <span class="co"># go up one level</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="bu">cd</span> ~     <span class="co"># return home</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">mkdir</span> newdir</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">cp</span> file1 file2</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> dir1 dir2     <span class="co"># copy directories</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">mv</span> old new</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">rm</span> file</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> directory     <span class="co"># remove directory and contents (dangerous!)</span></span></code></pre>
 </div>
-<p>You will use them constantly once you begin working with:</p>
+<div id="permissions-basics" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="permissions-basics" class="callout-inner">
+<h3 class="callout-title">Permissions basics</h3>
+<div class="callout-content">
+<p><code>ls -l</code> shows file permissions:</p>
 <ul>
 <li>
-<code>reads/</code> directories,</li>
+<code>r</code> = read<br>
+</li>
 <li>
-<code>trimmed/</code> sequence folders,</li>
-<li>SPAdes output directories,</li>
-<li>Prokka annotation folders.</li>
+<code>w</code> = write<br>
+</li>
+<li>
+<code>x</code> = execute</li>
 </ul>
+<p>Directories need <code>x</code> permission to be entered.</p>
+</div>
+</div>
+</div>
+</section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
 <div id="exercise-explore-your-home-directory" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -1267,72 +1247,72 @@ the entire workshop:</p>
 <div id="exercise-explore-your-home-directory" class="callout-inner">
 <h3 class="callout-title">Exercise: Explore your home directory</h3>
 <div class="callout-content">
-<p>Run:</p>
+<ol style="list-style-type: decimal">
+<li>Run <code>pwd</code> — where are you?<br>
+</li>
+<li>Use <code>ls -l</code> — what files or directories do you see?<br>
+</li>
+<li>Use <code>ls -a</code> — what hidden files appear?</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="exercise-create-your-project-skeleton" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-create-your-project-skeleton" class="callout-inner">
+<h3 class="callout-title">Exercise: Create your project skeleton</h3>
+<div class="callout-content">
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">mkdir</span> myproject</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="bu">cd</span> myproject</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">mkdir</span> metadata raw_reads qc trimmed assembly annotation scripts</span></code></pre>
+</div>
+<p>Run <code>ls -l</code>.<br>
+What permissions and sizes do you see?</p>
+</div>
+</div>
+</div>
+<div id="exercise-copy-move-and-delete-files" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-copy-move-and-delete-files" class="callout-inner">
+<h3 class="callout-title">Exercise: Copy, move, and delete files</h3>
+<div class="callout-content">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"example"</span> <span class="op">&gt;</span> testfile.txt</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">cp</span> testfile.txt copy_testfile.txt</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">mv</span> copy_testfile.txt renamed_testfile.txt</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">rm</span> testfile.txt</span></code></pre>
+</div>
+<p>Use <code>ls -l</code> to confirm results.</p>
+</div>
+</div>
+</div>
+<div id="exercise-clean-up-reflect" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-clean-up-reflect" class="callout-inner">
+<h3 class="callout-title">Exercise: Clean up &amp; reflect</h3>
+<div class="callout-content">
+<p>Return to your home directory:</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="bu">pwd</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="bu">cd</span> ~</span></code></pre>
 </div>
-<p><strong>Questions:</strong></p>
-<ol style="list-style-type: decimal">
-<li>Which files or directories do you see?</li>
-<li>Which items are directories?</li>
-<li>Are any hidden files present?</li>
-</ol>
-</div>
-</div>
-</div>
-<div id="exercise-practice-moving-around" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-practice-moving-around" class="callout-inner">
-<h3 class="callout-title">Exercise: Practice moving around</h3>
-<div class="callout-content">
-<ol style="list-style-type: decimal">
-<li>
-<p>Create a small directory structure:</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> practice/level1/level2</span></code></pre>
-</div>
-</li>
-<li>
-<p>Navigate into the deepest level:</p>
-<div class="codewrapper sourceCode" id="cb13">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">cd</span> practice/level1/level2</span></code></pre>
-</div>
-</li>
-<li><p>Use <code>pwd</code> — what path do you see?</p></li>
-<li><p>Navigate back to your home directory in <strong>one
-command</strong>.</p></li>
-</ol>
-</div>
-</div>
-</div>
-<div id="exercise-absolute-or-relative" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-absolute-or-relative" class="callout-inner">
-<h3 class="callout-title">Exercise: Absolute or relative?</h3>
-<div class="callout-content">
-<p>For each path below, decide whether it is absolute or relative:</p>
-<ol style="list-style-type: decimal">
-<li><code>/home/learner01</code></li>
-<li><code>reads/ERR435025_R1.fastq.gz</code></li>
-<li><code>../trimmed/</code></li>
-<li><code>/usr/bin/</code></li>
-<li><code>./scripts/run_spades.sh</code></li>
-</ol>
-<p>Discuss why absolute paths are often safer when running long
-workflows.</p>
+<p>Why is it important that all genomics work stays inside a dedicated
+project directory?</p>
 </div>
 </div>
 </div>
@@ -1344,23 +1324,20 @@ workflows.</p>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>The Unix filesystem is a tree with <code>/</code> at the root and
-<code>~</code> as your home.</li>
+<li>Linux uses a hierarchical filesystem with <code>/</code> at the
+root.</li>
 <li>
-<code>pwd</code> tells you where you are; <code>ls</code> shows what
-is in a directory.</li>
-<li>
-<code>cd</code> moves you between directories using absolute or
-relative paths.</li>
-<li>Understanding paths is essential for accessing sequencing files and
-running genomics tools.</li>
-<li>Good navigation skills reduce errors when working with large
-datasets.</li>
+<code>pwd</code>, <code>ls</code>, and <code>cd</code> are essential
+tools for navigating the shell.</li>
+<li>Good file organization is critical for genomic workflows.</li>
+<li>Absolute paths are reliable; relative paths depend on your current
+location.</li>
+<li>Use caution with <code>rm -r</code>.</li>
 </ul>
 </div>
 </div>
 </div>
-</section></section><section id="aio-04-working-with-files"><p>Content from <a href="04-working-with-files.html">Working With Files</a></p>
+</div></section><section id="aio-04-working-with-files"><p>Content from <a href="04-working-with-files.html">Working With Files</a></p>
 <hr>
 <p>Last updated on 2025-12-04 |
 
@@ -1376,10 +1353,11 @@ datasets.</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>How do I create, view, copy, move, and delete files in Unix?</li>
-<li>How do I redirect output to files?</li>
-<li>How do these skills prepare us for handling FASTQ, FASTA, QC,
-trimming, and assembly outputs?</li>
+<li>How do I create, view, copy, move, and delete files on the
+server?</li>
+<li>How do redirection and appending work in the shell?</li>
+<li>Why are file‑handling skills essential for a microbial genomics
+workflow?</li>
 </ul>
 </div>
 </div>
@@ -1389,16 +1367,15 @@ trimming, and assembly outputs?</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Create empty files using <code>touch</code>.</li>
-<li>View file contents using <code>cat</code>, <code>less</code>, and
-redirection.</li>
-<li>Copy and move files using <code>cp</code> and <code>mv</code>.</li>
-<li>Delete files and directories safely using <code>rm</code> and
+<li>Create and view files using <code>touch</code>, <code>cat</code>,
+<code>less</code>, and redirection (<code>&gt;</code> and
+<code>&gt;&gt;</code>).</li>
+<li>Copy, move, and rename files using <code>cp</code> and
+<code>mv</code>.</li>
+<li>Remove files and directories safely using <code>rm</code> and
 <code>rmdir</code>.</li>
-<li>Use redirection (<code>&gt;</code>, <code>&gt;&gt;</code>) to create
-and modify files.</li>
-<li>Build comfort with file manipulation before working with large
-genomics datasets.</li>
+<li>Understand how these operations support QC, trimming, assembly, and
+annotation workflows.</li>
 </ul>
 </div>
 </div>
@@ -1406,55 +1383,26 @@ genomics datasets.</li>
 </div>
 </div>
 <blockquote>
-<p>This episode incorporates content from the Unix tutorial PDF
-(Exercises 7–11), focusing on file creation, editing, copying, moving,
-and deletion. These skills directly support genomics workflows where
-FASTQ, trimmed reads, assemblies, and annotation outputs must be
-manipulated.</p>
+<p>This episode expands foundational command-line file manipulation
+skills. These skills are essential once you begin handling FASTQ files,
+QC outputs, trimmed reads, SPAdes assemblies, and Prokka annotation
+results.</p>
 </blockquote>
-<section><h2 class="section-heading" id="creating-new-files-with-touch">Creating new files with <code>touch</code>
-<a class="anchor" aria-label="anchor" href="#creating-new-files-with-touch"></a>
+<section><h2 class="section-heading" id="creating-files">Creating files<a class="anchor" aria-label="anchor" href="#creating-files"></a>
 </h2>
 <hr class="half-width">
-<p>From the Unix tutorial (Exercise 7), <code>touch</code> creates an
-empty file:</p>
+<p>Use <code>touch</code> to create an empty file:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">touch</span> notes.txt</span></code></pre>
 </div>
-<p>Check that it exists:</p>
+<p>Use <code>echo</code> with redirection to write text into a file:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre>
-</div>
-<p>You will later use this skill when organizing metadata, scripts,
-logs, and assembly outputs.</p>
-</section><section><h2 class="section-heading" id="redirecting-output-with-and">Redirecting output with <code>&gt;</code> and
-<code>&gt;&gt;</code>
-<a class="anchor" aria-label="anchor" href="#redirecting-output-with-and"></a>
-</h2>
-<hr class="half-width">
-<p>The <code>echo</code> command prints text.<br>
-Pair it with redirection to send output into files (Unix tutorial
-Exercise 8).</p>
-<div class="section level3">
-<h3 id="overwrite-a-file">Overwrite a file:<a class="anchor" aria-label="anchor" href="#overwrite-a-file"></a>
-</h3>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Quality control complete."</span> <span class="op">&gt;</span> log.txt</span></code></pre>
-</div>
-</div>
-<div class="section level3">
-<h3 id="append-to-a-file">Append to a file:<a class="anchor" aria-label="anchor" href="#append-to-a-file"></a>
-</h3>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Assembly started at: </span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span><span class="st">"</span> <span class="op">&gt;&gt;</span> log.txt</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"This is a line of text"</span> <span class="op">&gt;</span> file1.txt    <span class="co"># overwrite</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Another line"</span> <span class="op">&gt;&gt;</span> file1.txt             <span class="co"># append</span></span></code></pre>
 </div>
 <div id="overwrite-vs-append" class="callout">
 <div class="callout-square">
@@ -1466,273 +1414,218 @@ Exercise 8).</p>
 <div class="callout-content">
 <ul>
 <li>
-<code>&gt;</code> replaces the entire file (use cautiously).</li>
+<code>&gt;</code> <strong>overwrites</strong> an existing file<br>
+</li>
 <li>
-<code>&gt;&gt;</code> adds new text at the end (safe for
-logging).</li>
+<code>&gt;&gt;</code> <strong>appends</strong> to the end</li>
 </ul>
-<p>These are especially important when capturing quality control and
-assembly logs later.</p>
+<p>Overwriting raw sequencing data by mistake can ruin an analysis — use
+redirection carefully.</p>
 </div>
 </div>
 </div>
-</div>
-</section><section><h2 class="section-heading" id="viewing-files-with-cat-and-less">Viewing files with <code>cat</code> and <code>less</code>
-<a class="anchor" aria-label="anchor" href="#viewing-files-with-cat-and-less"></a>
+</section><section><h2 class="section-heading" id="viewing-files">Viewing files<a class="anchor" aria-label="anchor" href="#viewing-files"></a>
 </h2>
 <hr class="half-width">
-<ul>
-<li>
-<code>cat filename</code> prints the whole file at once.</li>
-<li>
-<code>less filename</code> allows scrolling (<code>q</code> to
-quit).</li>
-</ul>
-<p>These tools are essential for inspecting:</p>
-<ul>
-<li>FASTQ headers</li>
-<li>log files</li>
-<li>assembly reports</li>
-<li>annotation summaries</li>
-</ul>
-<p>Example:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">cat</span> file1.txt      <span class="co"># print entire file</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">less</span> file1.txt     <span class="co"># scroll interactively (press q to quit)</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">head</span> file1.txt     <span class="co"># first 10 lines</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">tail</span> file1.txt     <span class="co"># last 10 lines</span></span></code></pre>
+</div>
+<p>These commands are essential later when examining FASTQ structure,
+assembly summaries, and annotation outputs.</p>
+</section><section><h2 class="section-heading" id="copying-and-moving-files">Copying and moving files<a class="anchor" aria-label="anchor" href="#copying-and-moving-files"></a>
+</h2>
+<hr class="half-width">
+<p>Copy:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">cp</span> file1.txt backup_file1.txt</span></code></pre>
+</div>
+<p>Copy directories:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">less</span> log.txt</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> raw_reads/ raw_reads_backup/</span></code></pre>
 </div>
-</section><section><h2 class="section-heading" id="copying-files-with-cp">Copying files with <code>cp</code>
-<a class="anchor" aria-label="anchor" href="#copying-files-with-cp"></a>
-</h2>
-<hr class="half-width">
-<p>From the Unix tutorial (Exercise 9):</p>
+<p>Move or rename:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">cp</span> original.txt backup.txt</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">mv</span> file1.txt renamed.txt</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">mv</span> renamed.txt raw_reads/</span></code></pre>
 </div>
-<p>Copy to a directory:</p>
+</section><section><h2 class="section-heading" id="deleting-files-and-directories">Deleting files and directories<a class="anchor" aria-label="anchor" href="#deleting-files-and-directories"></a>
+</h2>
+<hr class="half-width">
+<p>Remove a file:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">cp</span> notes.txt archive/</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">rm</span> file.txt</span></code></pre>
 </div>
-<p>Copy entire directories:</p>
+<p>Remove an empty directory:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> results/ results_backup/</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">rmdir</span> mydir</span></code></pre>
 </div>
-<p>This becomes essential when backing up read files before quality
-trimming or assembly.</p>
-</section><section><h2 class="section-heading" id="moving-or-renaming-files-with-mv">Moving or renaming files with <code>mv</code>
-<a class="anchor" aria-label="anchor" href="#moving-or-renaming-files-with-mv"></a>
-</h2>
-<hr class="half-width">
-<p><code>mv</code> can move <strong>or</strong> rename files:</p>
+<p>Remove a directory <em>and everything inside it</em>:</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">mv</span> draft.txt final.txt</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">mv</span> final.txt documents/</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> results/</span></code></pre>
 </div>
-<p>You will later use this to organize outputs such as:</p>
-<ul>
-<li><code>ERR435025_assembly/</code></li>
-<li>trimmed reads directories</li>
-<li>annotation output folders</li>
-</ul></section><section><h2 class="section-heading" id="removing-files-and-directories">Removing files and directories<a class="anchor" aria-label="anchor" href="#removing-files-and-directories"></a>
-</h2>
-<hr class="half-width">
-<div class="section level3">
-<h3 id="remove-a-file">Remove a file:<a class="anchor" aria-label="anchor" href="#remove-a-file"></a>
-</h3>
-<div class="codewrapper sourceCode" id="cb10">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">rm</span> oldfile.txt</span></code></pre>
-</div>
-</div>
-<div class="section level3">
-<h3 id="remove-an-empty-directory">Remove an empty directory:<a class="anchor" aria-label="anchor" href="#remove-an-empty-directory"></a>
-</h3>
-<div class="codewrapper sourceCode" id="cb11">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">rmdir</span> emptydir</span></code></pre>
-</div>
-</div>
-<div class="section level3">
-<h3 id="remove-a-directory-with-contents">Remove a directory <em>with contents</em>:<a class="anchor" aria-label="anchor" href="#remove-a-directory-with-contents"></a>
-</h3>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> tempdir</span></code></pre>
-</div>
-<div id="warning-rm--rf" class="callout">
+<div id="warning-rm--r-is-permanent" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="warning-rm--rf" class="callout-inner">
-<h3 class="callout-title">Warning: <code>rm -rf</code>
-</h3>
+<div id="warning-rm--r-is-permanent" class="callout-inner">
+<h3 class="callout-title">⚠️ Warning: <code>rm -r</code> is
+permanent</h3>
 <div class="callout-content">
-<p>This command deletes <strong>everything</strong> in a directory
-<strong>permanently</strong> and <strong>cannot be undone</strong>.</p>
-<p>Use it carefully, especially when working with important read files
-or assemblies.</p>
+<p>There is <strong>no undo</strong> in the Unix shell.<br>
+Always double‑check your path before removing a directory.</p>
 </div>
 </div>
 </div>
-</div>
-</section><section><h2 class="section-heading" id="editing-files-with-nano">Editing files with <code>nano</code>
-<a class="anchor" aria-label="anchor" href="#editing-files-with-nano"></a>
+</section><section><h2 class="section-heading" id="why-this-matters-for-genomics">Why this matters for genomics<a class="anchor" aria-label="anchor" href="#why-this-matters-for-genomics"></a>
 </h2>
 <hr class="half-width">
-<p>Open a file for editing:</p>
-<div class="codewrapper sourceCode" id="cb13">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">nano</span> notes.txt</span></code></pre>
-</div>
-<p>Use:</p>
+<p>Throughout this workshop you will:</p>
 <ul>
-<li>
-<code>Ctrl + O</code> to save</li>
-<li>
-<code>Ctrl + X</code> to exit</li>
+<li>download or receive FASTQ files,<br>
+</li>
+<li>inspect QC reports,<br>
+</li>
+<li>produce trimmed reads,<br>
+</li>
+<li>create SPAdes assembly directories,<br>
+</li>
+<li>annotate genomes with Prokka.</li>
 </ul>
-<p>Log files, small scripts, and metadata files can all be edited this
-way.</p>
-<hr></section><div class="section level1">
+<p>Each stage generates multiple files. Clean file-handling habits
+prevent:</p>
+<ul>
+<li>overwriting raw data,</li>
+<li>losing track of results,</li>
+<li>running tools on the wrong inputs.</li>
+</ul>
+<p>Good file management = reproducible science.</p>
+</section><div class="section level1">
 <h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
 </h1>
-<div id="exercise-create-and-inspect-files" class="callout discussion">
+<div id="exercise-create-and-modify-a-file" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-create-and-inspect-files" class="callout-inner">
-<h3 class="callout-title">Exercise: Create and inspect files</h3>
+<div id="exercise-create-and-modify-a-file" class="callout-inner">
+<h3 class="callout-title">Exercise: Create and modify a file</h3>
 <div class="callout-content">
 <ol style="list-style-type: decimal">
 <li>
 <p>Create a file:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">touch</span> test.txt</span></code></pre>
+</div>
+</li>
+<li>
+<p>Add a line:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"first line"</span> <span class="op">&gt;</span> test.txt</span></code></pre>
+</div>
+</li>
+<li>
+<p>Append another line:</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"second line"</span> <span class="op">&gt;&gt;</span> test.txt</span></code></pre>
+</div>
+</li>
+<li><p>View it with <code>cat</code>.</p></li>
+</ol>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>What changed between <code>&gt;</code> and
+<code>&gt;&gt;</code>?</li>
+<li>Why does this matter for logging workflows?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-copy-move-and-rename" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-copy-move-and-rename" class="callout-inner">
+<h3 class="callout-title">Exercise: Copy, move, and rename</h3>
+<div class="callout-content">
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">cp</span> test.txt copy_test.txt</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">mv</span> copy_test.txt renamed_test.txt</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="fu">mv</span> renamed_test.txt ../   <span class="co"># move one directory up</span></span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Did the file appear where you expected?</li>
+<li>How can you verify using <code>ls</code> and <code>pwd</code>?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-safe-deletions" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-safe-deletions" class="callout-inner">
+<h3 class="callout-title">Exercise: Safe deletions</h3>
+<div class="callout-content">
+<ol style="list-style-type: decimal">
+<li>
+<p>Create a temporary directory:</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">touch</span> example.txt</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">mkdir</span> tempdir</span></code></pre>
 </div>
 </li>
 <li>
-<p>Add text using <code>&gt;</code>:</p>
+<p>Add a file to it:</p>
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"First line"</span> <span class="op">&gt;</span> example.txt</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"data"</span> <span class="op">&gt;</span> tempdir/data.txt</span></code></pre>
 </div>
 </li>
+<li><p>Try to remove with <code>rmdir tempdir</code>. What
+happens?</p></li>
 <li>
-<p>Append text:</p>
+<p>Remove correctly with:</p>
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Second line"</span> <span class="op">&gt;&gt;</span> example.txt</span></code></pre>
-</div>
-</li>
-<li>
-<p>View using:</p>
-<div class="codewrapper sourceCode" id="cb17">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">cat</span> example.txt</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> tempdir</span></code></pre>
 </div>
 </li>
 </ol>
 <p><strong>Questions:</strong><br>
-- What happened when you used <code>&gt;</code>?<br>
-- What changed when you used <code>&gt;&gt;</code>?</p>
-</div>
-</div>
-</div>
-<div id="exercise-copy-and-move-files" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-copy-and-move-files" class="callout-inner">
-<h3 class="callout-title">Exercise: Copy and move files</h3>
-<div class="callout-content">
-<ol style="list-style-type: decimal">
-<li>
-<p>Copy your file:</p>
-<div class="codewrapper sourceCode" id="cb18">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">cp</span> example.txt example_copy.txt</span></code></pre>
-</div>
-</li>
-<li>
-<p>Make a directory:</p>
-<div class="codewrapper sourceCode" id="cb19">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">mkdir</span> workspace</span></code></pre>
-</div>
-</li>
-<li>
-<p>Move both files into the directory:</p>
-<div class="codewrapper sourceCode" id="cb20">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">mv</span> example<span class="pp">*</span>.txt workspace/</span></code></pre>
-</div>
-</li>
-</ol>
-<p><strong>Question:</strong><br>
-- How can you confirm that the files moved successfully?</p>
-</div>
-</div>
-</div>
-<div id="exercise-remove-files-safely" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-remove-files-safely" class="callout-inner">
-<h3 class="callout-title">Exercise: Remove files safely</h3>
-<div class="callout-content">
-<ol style="list-style-type: decimal">
-<li>
-<p>Make a directory with files:</p>
-<div class="codewrapper sourceCode" id="cb21">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">mkdir</span> testdir</span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"data"</span> <span class="op">&gt;</span> testdir/a.txt</span></code></pre>
-</div>
-</li>
-<li>
-<p>Try:</p>
-<div class="codewrapper sourceCode" id="cb22">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">rmdir</span> testdir</span></code></pre>
-</div>
-<p>Why does it fail?</p>
-</li>
-<li>
-<p>Remove the directory properly:</p>
-<div class="codewrapper sourceCode" id="cb23">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> testdir</span></code></pre>
-</div>
-</li>
-</ol>
-<p>Discuss safety concerns around using <code>rm -rf</code>.</p>
+- Why does <code>rmdir</code> only work on empty directories?<br>
+- Why is <code>rm -r</code> dangerous?</p>
 </div>
 </div>
 </div>
@@ -1746,20 +1639,17 @@ way.</p>
 <ul>
 <li>
 <code>touch</code> creates files; <code>cat</code> and
-<code>less</code> view them.</li>
+<code>less</code> display them.</li>
 <li>
-<code>cp</code> copies files; <code>mv</code> moves or renames
-them.</li>
+<code>cp</code> copies; <code>mv</code> renames or moves
+files/directories.</li>
 <li>
-<code>rm</code> and <code>rmdir</code> delete files or
-directories.</li>
-<li>
-<code>&gt;</code> overwrites files; <code>&gt;&gt;</code> appends to
-them.</li>
-<li>These skills are essential for managing reads, QC logs, assemblies,
-and annotation outputs.</li>
-<li>Be extremely careful when removing directories, especially with
-<code>rm -rf</code>.</li>
+<code>rm</code> and <code>rm -r</code> delete files and directories
+— permanently.</li>
+<li>Redirection (<code>&gt;</code> and <code>&gt;&gt;</code>) allows you
+to create and modify files.</li>
+<li>Good file-handling practices prevent mistakes during genomics
+workflows.</li>
 </ul>
 </div>
 </div>

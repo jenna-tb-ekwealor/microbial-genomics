@@ -109,11 +109,11 @@
   Microbial Genomics Workshop
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 13%" class="percentage">
-    13%
+<aside class="col-md-12 lesson-progress"><div style="width: 14%" class="percentage">
+    14%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 13%" aria-valuenow="13" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 14%" aria-valuenow="14" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -225,12 +225,11 @@
 
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
-        <ul><li><a href="#what-is-the-filesystem">What is the filesystem?</a></li>
-<li><a href="#listing-the-contents-of-a-directory">Listing the contents of a directory</a></li>
-<li><a href="#moving-between-directories-with-cd">Moving between directories with <code>cd</code></a></li>
-<li><a href="#absolute-vs-relative-paths">Absolute vs relative paths</a></li>
-<li><a href="#combining-pwd-cd-and-ls">Combining <code>pwd</code>, <code>cd</code>, and
-<code>ls</code></a></li>
+        <ul><li><a href="#what-is-the-linux-filesystem">What is the Linux filesystem?</a></li>
+<li><a href="#why-directory-structure-matters-for-genomics">Why directory structure matters for genomics</a></li>
+<li><a href="#navigating-directories-with-pwd-ls-and-cd">Navigating directories with <code>pwd</code>, <code>ls</code>, and
+<code>cd</code></a></li>
+<li><a href="#creating-moving-copying-and-deleting-files">Creating, moving, copying, and deleting files</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
 
@@ -373,7 +372,7 @@
 
 
 
-        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 50 minutes</p>
+        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 40 minutes</p>
 
         <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
@@ -388,10 +387,13 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>How is the Unix filesystem organized?</li>
-<li>How do I check where I am in the directory structure?</li>
-<li>How do I move between directories using paths?</li>
-<li>What is the difference between absolute and relative paths?</li>
+<ul><li>What is the directory (folder) structure on a Linux server, and why
+should you care?</li>
+<li>How do you create, navigate, and manage directories in the
+shell?</li>
+<li>What are hidden files, and how can you view them?</li>
+<li>Why does a consistent project directory structure matter for
+microbial genomics?</li>
 </ul></div>
 </div>
 </div>
@@ -399,136 +401,119 @@
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<ul><li>Describe how the Unix filesystem is structured.</li>
-<li>Use <code>pwd</code> to confirm your current location.</li>
-<li>Navigate into and out of directories using <code>cd</code>.</li>
-<li>Distinguish between absolute and relative paths.</li>
-<li>Understand how paths matter for genomic workflows later on.</li>
+<ul><li>Understand the root filesystem and the concept of a home
+directory.</li>
+<li>Navigate directories using absolute and relative paths.</li>
+<li>Create, remove, move, and rename files and directories.</li>
+<li>View hidden files and interpret file permissions.</li>
+<li>Apply good directory organization for microbial genomics
+workflows.</li>
 </ul></div>
 </div>
 </div>
 </div>
 </div>
-<blockquote>
-<p>This episode draws directly from the Unix tutorial PDF (Exercises
-2–5) to teach the filesystem concepts required before handling FASTQ
-files, assemblies, or annotations.</p>
-</blockquote>
-<section><h2 class="section-heading" id="what-is-the-filesystem">What is the filesystem?<a class="anchor" aria-label="anchor" href="#what-is-the-filesystem"></a></h2>
-<hr class="half-width"><p>The Unix filesystem is a <strong>tree-like structure</strong> of
-directories (folders). At the very top is the root:</p>
-<pre><code>/</code></pre>
-<p>Below this, you will find directories such as <code>/home</code>,
-<code>/usr</code>, <code>/etc</code>, etc.</p>
-<p>When you log into the workshop server, you start in <strong>your home
-directory</strong>, represented by:</p>
-<pre><code>~</code></pre>
-<p>You can confirm this using:</p>
+<section><h2 class="section-heading" id="what-is-the-linux-filesystem">What is the Linux filesystem?<a class="anchor" aria-label="anchor" href="#what-is-the-linux-filesystem"></a></h2>
+<hr class="half-width"><p>On the server, all files live under the root directory
+<code>/</code>.<br>
+As a learner, you will mainly work in your <strong>home
+directory</strong>, for example:</p>
+<pre><code>/home/learner01/</code></pre>
+<p>This is where all your project files — raw reads, QC results,
+assemblies, and annotations — should live.</p>
+</section><section><h2 class="section-heading" id="why-directory-structure-matters-for-genomics">Why directory structure matters for genomics<a class="anchor" aria-label="anchor" href="#why-directory-structure-matters-for-genomics"></a></h2>
+<hr class="half-width"><p>A microbial genomics project generates many files (FASTQ, QC outputs,
+trimmed reads, assembly files, annotation outputs). A clear structure
+prevents confusion and supports reproducibility.</p>
+<p>A recommended layout:</p>
+<pre><code>myproject/
+├── metadata/
+├── raw_reads/
+├── qc/
+├── trimmed/
+├── assembly/
+├── annotation/
+└── scripts/</code></pre>
+</section><section><h2 class="section-heading" id="navigating-directories-with-pwd-ls-and-cd">Navigating directories with <code>pwd</code>, <code>ls</code>, and
+<code>cd</code>
+<a class="anchor" aria-label="anchor" href="#navigating-directories-with-pwd-ls-and-cd"></a></h2>
+<hr class="half-width"><p>Check where you are:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
 </div>
-<p>This prints your <strong>present working directory</strong> — your
-current location.</p>
-</section><section><h2 class="section-heading" id="listing-the-contents-of-a-directory">Listing the contents of a directory<a class="anchor" aria-label="anchor" href="#listing-the-contents-of-a-directory"></a></h2>
-<hr class="half-width"><p>Use <code>ls</code> to see what is inside your current directory:</p>
+<p>List files:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span>      <span class="co"># long format</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span>      <span class="co"># include hidden files</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span>     <span class="co"># human-readable sizes</span></span></code></pre>
 </div>
-<p>To view more details:</p>
+<p>Move between directories:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">cd</span> directoryname</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="bu">cd</span> ~        <span class="co"># home</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="bu">cd</span> ..       <span class="co"># up one level</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="bu">cd</span> ../../   <span class="co"># up two levels</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="bu">cd</span> /home/learner01/myproject/</span></code></pre>
 </div>
-<ul><li>
-<code>-l</code> shows long format</li>
-<li>
-<code>-h</code> shows sizes in human-readable units</li>
-<li>
-<code>-a</code> includes hidden files (names beginning with
-<code>.</code>)</li>
-</ul></section><section><h2 class="section-heading" id="moving-between-directories-with-cd">Moving between directories with <code>cd</code>
-<a class="anchor" aria-label="anchor" href="#moving-between-directories-with-cd"></a></h2>
-<hr class="half-width"><p>The command <code>cd</code> (<strong>change directory</strong>) moves
-you into a different folder.</p>
-<p>Example:</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="bu">cd</span> ~</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="bu">cd</span> mydata</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="bu">cd</span> ..</span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="special-directories">Special directories<a class="anchor" aria-label="anchor" href="#special-directories"></a></h3>
-<ul><li>
-<code>~</code> — your home directory<br></li>
-<li>
-<code>.</code> — the current directory<br></li>
-<li>
-<code>..</code> — the parent directory (one level up)</li>
-</ul><p>From the Unix tutorial PDF (Exercise 5), you can chain these
-together:</p>
-<div class="codewrapper sourceCode" id="cb7">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> ~/temp/stuff/things</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="bu">cd</span> ../../..</span></code></pre>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="absolute-vs-relative-paths">Absolute vs relative paths<a class="anchor" aria-label="anchor" href="#absolute-vs-relative-paths"></a></h2>
-<hr class="half-width"><div id="absolute-paths" class="callout">
+<div id="absolute-vs-relative-paths" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="absolute-paths" class="callout-inner">
-<h3 class="callout-title">Absolute paths</h3>
+<div id="absolute-vs-relative-paths" class="callout-inner">
+<h3 class="callout-title">Absolute vs relative paths</h3>
 <div class="callout-content">
-<p>Start with <code>/</code> and specify the full path from the
-root.</p>
-<p>Example:</p>
-<pre><code>/home/learner01/mydata/reads/</code></pre>
-<div class="section level3">
-<h3 id="relative-paths">Relative paths<a class="anchor" aria-label="anchor" href="#relative-paths"></a></h3>
-<p>Start from your current directory.</p>
-<p>Example (from within <code>mydata</code>):</p>
-<pre><code>reads/</code></pre>
-<p>Understanding this distinction prevents mistakes later when running
-tools like FastQC, SPAdes, and Prokka, all of which require accurate
-file paths.</p>
+<p><strong>Absolute paths</strong> start from <code>/</code>.
+Example:</p>
+<pre><code>/home/learner01/myproject/raw_reads/</code></pre>
+<p><strong>Relative paths</strong> depend on where you currently
+are:</p>
+<pre><code><span><span class="va">raw_reads</span><span class="op">/</span><span class="va">sample.fastq.gz</span></span></code></pre>
+<p>Understanding paths is essential later when running FastQC, SPAdes,
+and Prokka.</p>
 </div>
 </div>
 </div>
-</div>
-</section><section><h2 class="section-heading" id="combining-pwd-cd-and-ls">Combining <code>pwd</code>, <code>cd</code>, and
-<code>ls</code>
-<a class="anchor" aria-label="anchor" href="#combining-pwd-cd-and-ls"></a></h2>
-<hr class="half-width"><p>These commands form the navigation toolkit you will use throughout
-the entire workshop:</p>
-<div class="codewrapper sourceCode" id="cb10">
+</section><section><h2 class="section-heading" id="creating-moving-copying-and-deleting-files">Creating, moving, copying, and deleting files<a class="anchor" aria-label="anchor" href="#creating-moving-copying-and-deleting-files"></a></h2>
+<hr class="half-width"><div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">pwd</span>      <span class="co"># where am I?</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">ls</span>       <span class="co"># what is here?</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="bu">cd</span> dir   <span class="co"># go somewhere else</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="bu">cd</span> ..    <span class="co"># go up one level</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="bu">cd</span> ~     <span class="co"># return home</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">mkdir</span> newdir</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">cp</span> file1 file2</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> dir1 dir2     <span class="co"># copy directories</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">mv</span> old new</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">rm</span> file</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> directory     <span class="co"># remove directory and contents (dangerous!)</span></span></code></pre>
 </div>
-<p>You will use them constantly once you begin working with:</p>
+<div id="permissions-basics" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="permissions-basics" class="callout-inner">
+<h3 class="callout-title">Permissions basics</h3>
+<div class="callout-content">
+<p><code>ls -l</code> shows file permissions:</p>
 <ul><li>
-<code>reads/</code> directories,</li>
+<code>r</code> = read<br></li>
 <li>
-<code>trimmed/</code> sequence folders,</li>
-<li>SPAdes output directories,</li>
-<li>Prokka annotation folders.</li>
-</ul><div id="exercise-explore-your-home-directory" class="callout discussion">
+<code>w</code> = write<br></li>
+<li>
+<code>x</code> = execute</li>
+</ul><p>Directories need <code>x</code> permission to be entered.</p>
+</div>
+</div>
+</div>
+</section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a></h1>
+<div id="exercise-explore-your-home-directory" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
@@ -536,66 +521,68 @@ the entire workshop:</p>
 <div id="exercise-explore-your-home-directory" class="callout-inner">
 <h3 class="callout-title">Exercise: Explore your home directory</h3>
 <div class="callout-content">
-<p>Run:</p>
+<ol style="list-style-type: decimal"><li>Run <code>pwd</code> — where are you?<br></li>
+<li>Use <code>ls -l</code> — what files or directories do you see?<br></li>
+<li>Use <code>ls -a</code> — what hidden files appear?</li>
+</ol></div>
+</div>
+</div>
+<div id="exercise-create-your-project-skeleton" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-create-your-project-skeleton" class="callout-inner">
+<h3 class="callout-title">Exercise: Create your project skeleton</h3>
+<div class="callout-content">
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">mkdir</span> myproject</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="bu">cd</span> myproject</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">mkdir</span> metadata raw_reads qc trimmed assembly annotation scripts</span></code></pre>
+</div>
+<p>Run <code>ls -l</code>.<br>
+What permissions and sizes do you see?</p>
+</div>
+</div>
+</div>
+<div id="exercise-copy-move-and-delete-files" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-copy-move-and-delete-files" class="callout-inner">
+<h3 class="callout-title">Exercise: Copy, move, and delete files</h3>
+<div class="callout-content">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"example"</span> <span class="op">&gt;</span> testfile.txt</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">cp</span> testfile.txt copy_testfile.txt</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">mv</span> copy_testfile.txt renamed_testfile.txt</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">rm</span> testfile.txt</span></code></pre>
+</div>
+<p>Use <code>ls -l</code> to confirm results.</p>
+</div>
+</div>
+</div>
+<div id="exercise-clean-up-reflect" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-clean-up-reflect" class="callout-inner">
+<h3 class="callout-title">Exercise: Clean up &amp; reflect</h3>
+<div class="callout-content">
+<p>Return to your home directory:</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="bu">pwd</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="bu">cd</span> ~</span></code></pre>
 </div>
-<p><strong>Questions:</strong></p>
-<ol style="list-style-type: decimal"><li>Which files or directories do you see?</li>
-<li>Which items are directories?</li>
-<li>Are any hidden files present?</li>
-</ol></div>
-</div>
-</div>
-<div id="exercise-practice-moving-around" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-practice-moving-around" class="callout-inner">
-<h3 class="callout-title">Exercise: Practice moving around</h3>
-<div class="callout-content">
-<ol style="list-style-type: decimal"><li>
-<p>Create a small directory structure:</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> practice/level1/level2</span></code></pre>
-</div>
-</li>
-<li>
-<p>Navigate into the deepest level:</p>
-<div class="codewrapper sourceCode" id="cb13">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">cd</span> practice/level1/level2</span></code></pre>
-</div>
-</li>
-<li><p>Use <code>pwd</code> — what path do you see?</p></li>
-<li><p>Navigate back to your home directory in <strong>one
-command</strong>.</p></li>
-</ol></div>
-</div>
-</div>
-<div id="exercise-absolute-or-relative" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-absolute-or-relative" class="callout-inner">
-<h3 class="callout-title">Exercise: Absolute or relative?</h3>
-<div class="callout-content">
-<p>For each path below, decide whether it is absolute or relative:</p>
-<ol style="list-style-type: decimal"><li><code>/home/learner01</code></li>
-<li><code>reads/ERR435025_R1.fastq.gz</code></li>
-<li><code>../trimmed/</code></li>
-<li><code>/usr/bin/</code></li>
-<li><code>./scripts/run_spades.sh</code></li>
-</ol><p>Discuss why absolute paths are often safer when running long
-workflows.</p>
+<p>Why is it important that all genomics work stays inside a dedicated
+project directory?</p>
 </div>
 </div>
 </div>
@@ -606,22 +593,23 @@ workflows.</p>
 <span class="callout-header">Key Points</span>
 <div class="callout-inner">
 <div class="callout-content">
-<ul><li>The Unix filesystem is a tree with <code>/</code> at the root and
-<code>~</code> as your home.</li>
+<ul><li>Linux uses a hierarchical filesystem with <code>/</code> at the
+root.</li>
 <li>
-<code>pwd</code> tells you where you are; <code>ls</code> shows what
-is in a directory.</li>
-<li>
-<code>cd</code> moves you between directories using absolute or
-relative paths.</li>
-<li>Understanding paths is essential for accessing sequencing files and
-running genomics tools.</li>
-<li>Good navigation skills reduce errors when working with large
-datasets.</li>
+<code>pwd</code>, <code>ls</code>, and <code>cd</code> are essential
+tools for navigating the shell.</li>
+<li>Good file organization is critical for genomic workflows.</li>
+<li>Absolute paths are reliable; relative paths depend on your current
+location.</li>
+<li>Use caution with <code>rm -r</code>.</li>
 </ul></div>
 </div>
 </div>
-</section></div> <!-- / div.lesson-content -->
+</div>
+
+
+
+      </div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/02-introduction-to-shell.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/04-working-with-files.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
