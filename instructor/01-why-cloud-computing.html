@@ -416,19 +416,19 @@ rely on powerful remote systems.</p>
 </blockquote>
 <section><h2 class="section-heading" id="why-local-machines-arent-enough">Why local machines aren’t enough<a class="anchor" aria-label="anchor" href="#why-local-machines-arent-enough"></a></h2>
 <hr class="half-width"><p>Microbial genomics data are large:</p>
-<ul><li>Illumina paired-end datasets often exceed <strong>5–20
+<ul><li>Illumina paired-end datasets can be large, exceeding even <strong>20
 GB</strong>.</li>
 <li>Each FASTQ file may contain <strong>millions of reads</strong>.</li>
-<li>Assembly tools like <strong>SPAdes</strong> can require
-<strong>16–120 GB of RAM</strong>.</li>
+<li>Assembly tools like <strong>SPAdes</strong> can require more than
+<strong>16 GB of RAM</strong>.</li>
 <li>Annotation tools like <strong>Prokka</strong> load large databases
-into memory.</li>
+into memory (RAM).</li>
 </ul><p>Most laptops cannot handle these resource requirements. Typical
 problems include:</p>
 <ul><li>Programs freezing due to insufficient memory.</li>
 <li>Disk space running out during assembly.</li>
 <li>Analyses taking many hours or failing entirely.</li>
-</ul><p>A remote server solves these issues.</p>
+</ul><p>A remote server solves these issues!</p>
 <div id="vocabulary" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -458,13 +458,16 @@ accessed via SSH.</li>
 </section><section><h2 class="section-heading" id="why-cloud-or-hpc-systems-excel-at-microbial-genomics">Why cloud or HPC systems excel at microbial genomics<a class="anchor" aria-label="anchor" href="#why-cloud-or-hpc-systems-excel-at-microbial-genomics"></a></h2>
 <hr class="half-width"><div class="section level3">
 <h3 id="more-cpus-faster-assembly">1. More CPUs → Faster assembly<a class="anchor" aria-label="anchor" href="#more-cpus-faster-assembly"></a></h3>
-<p>SPAdes supports threading:</p>
+<p>Later, we’ll use the assembly softwsre SPAdes. SPAdes supports
+threading, which means it can do multiple tasks (or pieces of the task)
+simultaneously:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">spades.py</span> <span class="at">--threads</span> 10</span></code></pre>
 </div>
-<p>More threads = faster graph construction and contig generation.</p>
+<p>More threads = faster graph construction and contig generation (i.e.,
+faster assembly).</p>
 </div>
 <div class="section level3">
 <h3 id="more-ram-successful-assembly">2. More RAM → Successful assembly<a class="anchor" aria-label="anchor" href="#more-ram-successful-assembly"></a></h3>
