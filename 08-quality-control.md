@@ -80,26 +80,26 @@ Some servers also allow opening them via a remote browser session.
 
 Below are the most important FastQC panels for microbial genomics:
 
-### **Per base sequence quality**
+#### **Per base sequence quality**
 - Boxplots representing quality at each base.
 - Declining quality at the 3′ ends usually indicates the need for trimming.
 
-### **Per sequence quality scores**
+#### **Per sequence quality scores**
 - Shows the distribution of average read quality.
 - Ideally, most reads should fall into high‑quality ranges.
 
-### **Per base sequence content**
+#### **Per base sequence content**
 - Early cycles often show imbalance; significant deviation across the read is concerning.
 
-### **Per sequence GC content**
+#### **Per sequence GC content**
 - Should approximate a normal distribution.
 - A multimodal distribution may indicate contamination or mixed populations.
 
-### **Overrepresented sequences**
+#### **Overrepresented sequences**
 - Often indicates adapters, primers, or contamination.
 - Will guide which adapter sequences to remove in trimming.
 
-### **Sequence duplication levels**
+#### **Sequence duplication levels**
 - Can indicate library prep issues or PCR artifacts.
 
 ## Connecting QC → trimming → assembly
