@@ -128,7 +128,7 @@ Understanding paths is critical when feeding files to tools like FastQC or SPAde
 - **Relative path:** starts from your current directory, e.g.  
   `reads/ERR435025_R1.fastq.gz`
 
-SPAdes, FastQC, and Prokka all accept either — but incorrect paths are a *very* common beginner error.
+SPAdes, FastQC, and Prokka all accept either — but incorrect paths are a *very* common error.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
