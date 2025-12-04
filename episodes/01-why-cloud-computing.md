@@ -28,10 +28,10 @@ exercises: 10
 
 Microbial genomics data are large:
 
-- Illumina paired-end datasets often exceed **5–20 GB**.
+- Illumina paired-end datasets can be large, exceeding even **20 GB**.
 - Each FASTQ file may contain **millions of reads**.
-- Assembly tools like **SPAdes** can require **16–120 GB of RAM**.
-- Annotation tools like **Prokka** load large databases into memory.
+- Assembly tools like **SPAdes** can require more than **16 GB of RAM**.
+- Annotation tools like **Prokka** load large databases into memory (RAM).
 
 Most laptops cannot handle these resource requirements. Typical problems include:
 
@@ -39,7 +39,7 @@ Most laptops cannot handle these resource requirements. Typical problems include
 - Disk space running out during assembly.
 - Analyses taking many hours or failing entirely.
 
-A remote server solves these issues.
+A remote server solves these issues!
 
 :::::::::::::::::::::::::::::::::::::::::::::: callout
 
@@ -56,11 +56,11 @@ A remote server solves these issues.
 ## Why cloud or HPC systems excel at microbial genomics
 
 ### 1. More CPUs → Faster assembly  
-SPAdes supports threading:
+Later, we'll use the assembly softwsre SPAdes. SPAdes supports threading, which means it can do multiple tasks (or pieces of the task) simultaneously:
 ```bash
 spades.py --threads 10
 ```
-More threads = faster graph construction and contig generation.
+More threads = faster graph construction and contig generation (i.e., faster assembly).
 
 ### 2. More RAM → Successful assembly  
 If SPAdes runs out of memory, it crashes.  
