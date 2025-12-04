@@ -6,163 +6,187 @@ exercises: 15
 
 :::::::::::::::::::::::::::::::::::::::::::::: questions
 
-- How should we organize files for a microbial genomics project?
-- Why is tidy organization essential for QC, trimming, assembly, and annotation workflows?
-- What naming conventions and directory structures prevent errors later?
+- Why does tidy organization matter for microbial genomics?
+- How should we structure directories for a full analysis workflow?
+- How do naming conventions support clarity and reproducibility?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain the importance of tidy project organization in genomics.
-- Create a clear directory structure for raw reads, trimmed reads, QC outputs, assemblies, and annotations.
-- Apply consistent and meaningful file naming conventions.
-- Understand how well‑organized projects reduce mistakes in downstream commands.
+- Organize a microbial genomics project with a clear directory structure.
+- Apply consistent file‑naming conventions.
+- Understand how tidiness supports transparent, reproducible analysis.
+- Prepare a workspace that will be used for QC, trimming, assembly, and annotation.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> This episode uses best practices from the Unix tutorial and prepares for handling
-> large datasets and multi-step genomics workflows in later episodes.
-
 ## Why organization matters in genomics
 
-Microbial genomics projects quickly accumulate many files:
+Microbial genomics projects generate many files:  
+raw FASTQ, QC reports, trimmed reads, assemblies, annotations, logs, and more.  
+Without organization, it becomes easy to:
 
-- raw FASTQ files  
-- QC reports  
-- trimmed reads  
-- assembly outputs  
-- annotation files  
-- logs and scripts  
+- run tools on the wrong files,
+- overwrite or lose important results,
+- confuse raw vs processed data,
+- make mistakes that compromise downstream steps.
 
-Without structure, it becomes easy to:
+But beyond convenience, tidy organization is essential for **reproducibility**.
 
-- run tools on the wrong files,  
-- overwrite results,  
-- mix up samples, or  
-- accidentally delete important data.
+Reproducibility means that:
 
-A tidy filesystem prevents these mistakes.
+- *You* can return to your project months later and understand every step.  
+- *Another researcher* can recreate your workflow from raw reads to final annotations.  
+- Files and directories document the workflow clearly and transparently.
 
-## Recommended project structure
+Good structure = good science.
 
-A common layout is:
+:::::::::::::::::::::::::::::::::::::::::::::: callout
+
+## Naming conventions and reproducibility
+
+Consistent, descriptive naming makes your work understandable.
+
+Good:
 
 ```
-project/
+sample01_R1.fastq.gz
+sample01_R2.fastq.gz
+trimmed/sample01_R1.trimmed.fastq.gz
+assembly/sample01_assembly/
+annotation/sample01_prokka/
+```
+
+Avoid spaces or ambiguous names:
+
+```
+my file.fastq
+weirdStuff/
+analysis2_final_final/
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Recommended project directory structure
+
+A clean layout helps separate raw data from processed data:
+
+```
+myproject/
+├── metadata/
 ├── raw_reads/
-├── qc_reports/
+├── qc/
 ├── trimmed/
 ├── assembly/
 ├── annotation/
 └── scripts/
 ```
 
-As taught in earlier Unix episodes, this structure uses directories effectively
-to keep related files together.
+Purpose of each:
 
-## Naming conventions
+- **metadata/**: sample sheets, README files  
+- **raw_reads/**: original FASTQ (never modified)  
+- **qc/**: FastQC reports and summaries  
+- **trimmed/**: files after read trimming  
+- **assembly/**: SPAdes results and filtered scaffolds  
+- **annotation/**: Prokka outputs  
+- **scripts/**: helper scripts, logs, and workflow notes  
 
-Use filenames that are:
-
-- **descriptive**  
-- **consistent**  
-- **machine‑friendly** (no spaces!)  
-
-Examples:
-
-- `sample01_R1.fastq.gz`
-- `sample01_R2.fastq.gz`
-- `ERR435025_assembly/`
-- `prokka_sample01/`
-
-Avoid:
-
-- `my file.fastq`  
-- `data stuff/`  
-- `final_FINAL_reallyfinal.txt`
-
-:::::::::::::::::::::::::::::::::::::::::::::: callout
-
-### Tip: Use hyphens or underscores
-
-Good:
-```
-sample01_R1.fastq.gz
-run-2025-reads/
-```
-
-Bad:
-```
-Sample 1 Reads/
-```
-
-Spaces break commands unless quoted—dangerous in genomics workflows.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
+This structure mirrors the entire 8‑hour workflow and supports transparent, reproducible analysis.
 
 ## Planning for downstream tools
 
-Later episodes will use:
+Many tools assume or benefit from a predictable layout:
 
-- **FastQC** → expects clear input filenames  
-- **Trimming tools** → produce new FASTQ files  
-- **SPAdes** → creates many output directories  
-- **Prokka** → generates several annotation files  
+- FastQC outputs can go in `qc/`
+- Trimming outputs go in `trimmed/`
+- SPAdes creates an assembly directory inside `assembly/`
+- Prokka writes annotation files inside `annotation/`
 
-A well‑organized structure ensures:
+Clear organization ensures:
 
-- safe separation of raw vs processed data  
-- clarity during command execution  
-- easier troubleshooting  
-- reproducible workflows
+- raw data stays untouched,
+- intermediate steps remain traceable,
+- results are easy to locate and interpret,
+- collaborators (or future you) can reproduce the workflow.
+
+:::::::::::::::::::::::::::::::::::::::::::::: callout
+
+## Reproducibility checklist
+
+- [ ] Raw FASTQ lives **only** in `raw_reads/`  
+- [ ] QC outputs stored in `qc/`  
+- [ ] Trimmed reads stored in `trimmed/`  
+- [ ] Assemblies saved in `assembly/`  
+- [ ] Annotations saved in `annotation/`  
+- [ ] Scripts, notes, and logs saved in `scripts/`  
+- [ ] No spaces in filenames  
+- [ ] Clear, descriptive naming for all samples  
+- [ ] README or metadata file explains the workflow  
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+# Exercises
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
 ## Exercise: Build your project structure
 
-Create the recommended structure:
-
 ```bash
-mkdir -p project/{raw_reads,qc_reports,trimmed,assembly,annotation,scripts}
+mkdir -p myproject/{metadata,raw_reads,qc,trimmed,assembly,annotation,scripts}
 ```
 
 **Questions:**
 
-- Which directories will hold input FASTQ files?
-- Where will SPAdes results go?
-- Where should you store logs or scripts?
+- Which directories will hold raw vs processed data?
+- Why should raw data be kept untouched?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: challenge
 
-## Exercise: Rename files for tidiness
+## Exercise: Rename for tidiness
 
-Suppose you have files:
+Suppose you received files named:
 
 ```
-read1.fq.gz
-read2.fq.gz
+reads1.fq.gz
+reads2.fq.gz
 ```
 
-Rename them using a good naming convention:
+Rename them:
 
 ```bash
-mv read1.fq.gz sample01_R1.fastq.gz
-mv read2.fq.gz sample01_R2.fastq.gz
+mv reads1.fq.gz sample01_R1.fastq.gz
+mv reads2.fq.gz sample01_R2.fastq.gz
 ```
 
-**Question:**  
-Why is this better for downstream analysis?
+**Why is this important?**
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::: challenge
+
+## Exercise: Add documentation
+
+Inside `metadata/`, create a basic README:
+
+```bash
+echo "Project: Microbial Genome Workshop
+Sample: sample01
+Notes: Raw reads stored in raw_reads/, workflow steps recorded in scripts/" > metadata/README.txt
+```
+
+Why does this improve reproducibility?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Good organization prevents errors in multi-step genomics workflows.
-- Use meaningful directory structures: raw reads, QC reports, trimmed data, assemblies, annotations.
-- Consistent, space‑free filenames make commands easier and safer.
-- Tidy projects support reproducibility and smooth downstream analysis.
+- Good organization prevents mistakes in multi‑step genomics workflows.
+- Clean, consistent naming is essential for clarity and reproducibility.
+- A standard directory layout helps trace raw → QC → trimmed → assembly → annotation.
+- Documentation (metadata, README, logs) is part of reproducible science.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
