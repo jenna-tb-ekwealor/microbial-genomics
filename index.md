@@ -69,7 +69,7 @@ and server environment.
 | ------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [Intro to R and RStudio for Genomics](https://datacarpentry.org/genomics-r-intro/) | Use R to analyze and visualize between-sample variation. |
 
-**Please note that lesson [Intro to R and RStudio for Genomics](https://datacarpentry.org/genomics-r-intro/) is in "beta" development, which means that it is currently being piloted by instructors, but is not yet part of The Carpentries' official lesson offerings.**    
+**PLEASE NOTE:** The lesson *Intro to R and RStudio for Genomics* is in "beta" development, which means that it is currently being piloted by instructors, but is not yet part of The Carpentries' official lesson offerings.    
 
 ---
 
