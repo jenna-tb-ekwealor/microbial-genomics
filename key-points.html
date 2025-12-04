@@ -296,7 +296,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="06-project-planning.html">6. Planning a Genomics Project</a>
+        <a href="06-project-planning.html">6. Project Planning</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -308,7 +308,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="07-background.html">7. Sequencing Data Background</a>
+        <a href="07-background.html">7. Sequence File Formats</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -320,7 +320,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-quality-control.html">8. Assessing Read Quality (FastQC)</a>
+        <a href="08-quality-control.html">8. Quality Control of Reads</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -332,7 +332,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="09-trimming.html">9. Trimming Reads (fastp)</a>
+        <a href="09-trimming.html">9. Trimming and Cleaning Reads</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -344,7 +344,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="10-assembly-spades.html">10. De Novo Assembly with SPAdes</a>
+        <a href="10-assembly-spades.html">10. Genome Assembly with SPAdes</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -490,65 +490,80 @@ data, assemblies, annotations.</li>
 safer.</li>
 <li>Tidy projects support reproducibility and smooth downstream
 analysis.</li>
-</ul></section><section id="06-project-planning"><h2 class="section-heading"><a href="06-project-planning.html">Planning a Genomics Project</a></h2>
+</ul></section><section id="06-project-planning"><h2 class="section-heading"><a href="06-project-planning.html">Project Planning</a></h2>
 <hr class="half-width">
 <ul>
-<li>Genome size expectations help interpret the assembly.</li>
-</ul></section><section id="07-background"><h2 class="section-heading"><a href="07-background.html">Sequencing Data Background</a></h2>
+<li>Planning your project structure prevents mistakes during multi-step
+analysis.</li>
+<li>Separate raw data, QC results, trimmed reads, assemblies, and
+annotations.</li>
+<li>Metadata prepared early improves reproducibility and keeps analyses
+organized.</li>
+<li>This planning sets the stage for handling FASTQ files starting in
+Episode 7.</li>
+</ul></section><section id="07-background"><h2 class="section-heading"><a href="07-background.html">Sequence File FormatsExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>
-<li>FASTA stores <strong>sequence only</strong>; FASTQ stores
-<strong>sequence plus quality</strong>.</li>
-<li>Each FASTQ read uses four lines: identifier, sequence, separator,
-qualities.</li>
-<li>Illumina paired-end data is stored as <code>R1</code> and
-<code>R2</code> FASTQ files.</li>
-<li>We keep raw reads in <code>~/microbial_project/data/raw</code> on
-the rampers server.</li>
-</ul></section><section id="08-quality-control"><h2 class="section-heading"><a href="08-quality-control.html">Assessing Read Quality (FastQC)</a></h2>
-<hr class="half-width">
-<ul>
-<li>FastQC provides a quick overview of sequencing read quality.</li>
-<li>We store FastQC reports in a <code>qc/</code> directory inside the
-project.</li>
-<li>Key plots show base quality, sequence quality distribution, and
-adapter content.</li>
-<li>FastQC helps us decide how aggressively to trim reads before
+<li>FASTA stores sequence(s) with header lines starting with
+<code>&gt;</code>.</li>
+<li>FASTQ stores reads with <strong>four lines per record</strong>,
+including quality scores.</li>
+<li>Many FASTQ files are compressed as <code>.fastq.gz</code> to save
+space.</li>
+<li>SAM/BAM store read alignments to a reference genome or
 assembly.</li>
-</ul></section><section id="09-trimming"><h2 class="section-heading"><a href="09-trimming.html">Trimming Reads (fastp)</a></h2>
+<li>Understanding these formats is essential for QC, trimming, assembly,
+and annotation.</li>
+</ul></section><section id="08-quality-control"><h2 class="section-heading"><a href="08-quality-control.html">Quality Control of ReadsExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>
-<li>Trimming removes low-quality bases and adapters, improving
-downstream assembly.</li>
-<li>We keep trimmed reads in <code>data/trimmed/</code> and trimming
-reports in <code>qc/</code>.</li>
-<li>
-<code>fastp</code> can handle paired-end trimming and produce
-summary reports.</li>
-<li>Comparing raw and trimmed statistics helps ensure trimming is
-reasonable.</li>
-</ul></section><section id="10-assembly-spades"><h2 class="section-heading"><a href="10-assembly-spades.html">De Novo Assembly with SPAdes</a></h2>
+<li>QC is a critical first step before trimming and assembly in
+microbial genomics.</li>
+<li>FastQC summarizes read quality, sequence content, GC content, and
+overrepresented sequences.</li>
+<li>FastQC can read compressed <code>.fastq.gz</code> files and produces
+HTML reports for review.</li>
+<li>QC results guide trimming choices and help interpret assembly
+quality.</li>
+</ul></section><section id="09-trimming"><h2 class="section-heading"><a href="09-trimming.html">Trimming and Cleaning ReadsExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>
-<li>Assemblers like SPAdes reconstruct genomes from overlapping short
-reads, producing <strong>contigs</strong>.</li>
-<li>N50 summarizes assembly contiguity: larger N50 usually means a more
-contiguous assembly.</li>
-<li>We run SPAdes on trimmed reads and store outputs in
-<code>assembly/</code>.</li>
-<li>
-<code>contigs.fasta</code> is the main file we use for downstream
+<li>Trimming removes low-quality bases and adapters that can interfere
+with assembly.</li>
+<li>Trimmed reads should be saved in a separate <code>trimmed/</code>
+directory; raw data must not be overwritten.</li>
+<li>QC (FastQC) guides trimming decisions and can be rerun afterward to
+confirm improvements.</li>
+<li>Trimmed FASTQ files will be used as inputs to SPAdes in the genome
+assembly step.</li>
+</ul></section><section id="10-assembly-spades"><h2 class="section-heading"><a href="10-assembly-spades.html">Genome Assembly with SPAdesExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
+<hr class="half-width">
+<ul>
+<li>SPAdes performs de novo genome assembly from paired-end reads.</li>
+<li>You must provide paths to R1 and R2 reads, thread count, memory
+limit, and an output directory.</li>
+<li>SPAdes produces many files; <code>contigs.fasta</code> and
+<code>scaffolds.fasta</code> are the most important for downstream
+analysis.</li>
+<li>Basic inspection of the assembly (number of contigs, total size,
+N50) helps assess quality.</li>
+<li>The assembly FASTA file will be the input to Prokka for genome
 annotation.</li>
-</ul></section><section id="11-annotation-prokka"><h2 class="section-heading"><a href="11-annotation-prokka.html">Genome Annotation with Prokka</a></h2>
+</ul></section><section id="11-annotation-prokka"><h2 class="section-heading"><a href="11-annotation-prokka.html">Genome Annotation with ProkkaExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>
-<li>Annotation adds biological meaning to an assembly by predicting
-genes and other features.</li>
-<li>Prokka is a rapid pipeline for annotating microbial genomes.</li>
-<li>Key outputs include GFF (features + coordinates) and FAA (protein
-sequences).</li>
-<li>We run Prokka on <code>contigs.fasta</code> from SPAdes and store
-results in <code>annotation/</code> for downstream analysis.</li>
+<li>Prokka performs rapid, automated annotation of bacterial and
+archaeal genomes.</li>
+<li>You must provide an assembly FASTA file and specify sensible options
+(output directory, prefix, locus tag, CPUs, minimum contig length).</li>
+<li>Prokka generates many outputs; the most important include
+<code>.gff</code>, <code>.gbk</code>, <code>.faa</code>,
+<code>.ffn</code>, <code>.fna</code>, and <code>.txt</code>.</li>
+<li>Annotation results summarize genes, rRNAs, tRNAs, and other
+features, and can be used in downstream comparative and visualization
+workflows.</li>
+<li>The annotated genome is the culmination of the QC → trimming →
+assembly → annotation pipeline used in this workshop.</li>
 </ul></section>
 </div>
     </main>

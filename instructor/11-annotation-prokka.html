@@ -109,11 +109,11 @@
   Microbial Genomics Workshop
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 90%" class="percentage">
-    90%
+<aside class="col-md-12 lesson-progress"><div style="width: 89%" class="percentage">
+    89%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 90%" aria-valuenow="90" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 89%" aria-valuenow="89" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -242,7 +242,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="06-project-planning.html">6. Planning a Genomics Project</a>
+        <a href="06-project-planning.html">6. Project Planning</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -251,7 +251,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="07-background.html">7. Sequencing Data Background</a>
+        <a href="07-background.html">7. Sequence File Formats</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -260,7 +260,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-quality-control.html">8. Assessing Read Quality (FastQC)</a>
+        <a href="08-quality-control.html">8. Quality Control of Reads</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -269,7 +269,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="09-trimming.html">9. Trimming Reads (fastp)</a>
+        <a href="09-trimming.html">9. Trimming and Cleaning Reads</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -278,7 +278,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="10-assembly-spades.html">10. De Novo Assembly with SPAdes</a>
+        <a href="10-assembly-spades.html">10. Genome Assembly with SPAdes</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -299,8 +299,10 @@
       <div class="accordion-body">
         <ul><li><a href="#what-is-genome-annotation">What is genome annotation?</a></li>
 <li><a href="#inputs-and-outputs-of-prokka">Inputs and outputs of Prokka</a></li>
-<li><a href="#running-prokka-on-the-rampers-server">Running Prokka on the rampers server</a></li>
-<li><a href="#inspecting-annotation-results">Inspecting annotation results</a></li>
+<li><a href="#basic-prokka-command">Basic Prokka command</a></li>
+<li><a href="#running-prokka-on-a-spades-assembly">Running Prokka on a SPAdes assembly</a></li>
+<li><a href="#inspecting-prokka-output">Inspecting Prokka output</a></li>
+<li><a href="#using-annotation-results">Using annotation results</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
 
@@ -356,7 +358,7 @@
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="../instructor/10-assembly-spades.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: De Novo Assembly
+          Previous: Genome Assembly with
         </a>
         <a class="chapter-link float-end" href="../instructor/index.html" rel="next">
           Home
@@ -365,13 +367,13 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Genome Annotation with Prokka</h1>
-        <p>Last updated on 2025-12-03 |
+        <p>Last updated on 2025-12-04 |
 
         <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/11-annotation-prokka.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
 
 
-        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 40 minutes</p>
+        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 60 minutes</p>
 
         <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
@@ -386,11 +388,13 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>What does it mean to “annotate” a genome?</li>
-<li>What features does Prokka predict from an assembled microbial
-genome?</li>
-<li>How do we run Prokka on the contigs from SPAdes?</li>
-<li>What useful information is stored in the GFF and FAA files?</li>
+<ul><li>What is genome annotation, and why do we perform it after
+assembly?</li>
+<li>How do we run Prokka on an assembled microbial genome?</li>
+<li>What Prokka options are most important for typical bacterial
+genomes?</li>
+<li>What kinds of output files does Prokka produce, and how can we use
+them?</li>
 </ul></div>
 </div>
 </div>
@@ -398,120 +402,274 @@ genome?</li>
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<ul><li>Explain the goal of genome annotation in microbial genomics.</li>
-<li>Run Prokka on an assembled genome to predict genes and other
-features.</li>
-<li>Identify key output files from Prokka (GFF, FAA, FFN, etc.).</li>
-<li>Perform simple inspections of annotation results on the rampers
-server.</li>
+<ul><li>Explain the purpose of genome annotation in microbial genomics.</li>
+<li>Run Prokka on an assembled genome using sensible options.</li>
+<li>Interpret the most important annotation output files (GFF, FAA, FFN,
+GBK, etc.).</li>
+<li>Understand the difference between annotating a single genome, a bin,
+or a metagenome.</li>
+<li>Connect annotation results to downstream analyses (comparative
+genomics, visualization, etc.).</li>
 </ul></div>
 </div>
 </div>
 </div>
 </div>
 <blockquote>
-<p>This episode is adapted from short microbial annotation teaching
-materials and the Prokka documentation.</p>
+<p>This episode is based on your Prokka annotation exercise and follows
+directly from the SPAdes assembly in Episode 10. We assume that a
+scaffold FASTA file is available and that contigs have already been
+filtered to a reasonable minimum length.</p>
 </blockquote>
 <section><h2 class="section-heading" id="what-is-genome-annotation">What is genome annotation?<a class="anchor" aria-label="anchor" href="#what-is-genome-annotation"></a></h2>
-<hr class="half-width"><p>An assembly (like <code>contigs.fasta</code>) is just raw sequence.
-<strong>Annotation</strong> adds biological meaning by predicting:</p>
-<ul><li>protein-coding genes (CDS),</li>
-<li>rRNA and tRNA genes,</li>
-<li>product names and functional descriptions (where possible).</li>
-</ul><p>Prokka is a rapid annotation pipeline tuned for <strong>bacterial,
-archaeal, and viral</strong> genomes.</p>
+<hr class="half-width"><p>Genome annotation is the process of:</p>
+<ul><li>finding genes (CDS) and other features (tRNAs, rRNAs),</li>
+<li>predicting their functions,</li>
+<li>assigning standardized names and identifiers.</li>
+</ul><p>For a microbial genome, annotation helps you answer:</p>
+<ul><li>How many protein-coding genes are present?</li>
+<li>Are there plasmids, phage, or mobile elements?</li>
+<li>Which pathways or functions are encoded?</li>
+</ul><p><strong>Prokka</strong> is a widely used tool for <strong>rapid,
+automated annotation</strong> of bacterial and archaeal genomes.</p>
 </section><section><h2 class="section-heading" id="inputs-and-outputs-of-prokka">Inputs and outputs of Prokka<a class="anchor" aria-label="anchor" href="#inputs-and-outputs-of-prokka"></a></h2>
-<hr class="half-width"><p><strong>Input:</strong></p>
-<ul><li>a FASTA file with assembled contigs
-(e.g. <code>contigs.fasta</code>).</li>
-</ul><p><strong>Outputs (in an output directory):</strong></p>
+<hr class="half-width"><p>Prokka expects:</p>
+<ul><li>a FASTA file of contigs (e.g. scaffolds from SPAdes),</li>
+<li>basic options describing the run and the organism.</li>
+</ul><p>It produces:</p>
 <ul><li>
-<code>*.gff</code> – combined sequence and annotation in one
-file.</li>
+<code>.gff</code> – combined sequence and annotation</li>
 <li>
-<code>*.faa</code> – amino acid sequences of predicted
-proteins.</li>
+<code>.gbk</code> – GenBank-format file</li>
 <li>
-<code>*.ffn</code> – nucleotide sequences of predicted genes.</li>
+<code>.faa</code> – protein sequences</li>
 <li>
-<code>*.tbl</code> – feature table.</li>
+<code>.ffn</code> – nucleotide sequences of genes</li>
 <li>
-<code>*.txt</code> – summary of the run.</li>
-</ul><p>These files can be used for downstream analysis (e.g. searching for
-particular genes, comparing annotations, building phylogenies).</p>
-</section><section><h2 class="section-heading" id="running-prokka-on-the-rampers-server">Running Prokka on the rampers server<a class="anchor" aria-label="anchor" href="#running-prokka-on-the-rampers-server"></a></h2>
-<hr class="half-width"><p>We will annotate the SPAdes contigs produced in the previous
-episode.</p>
-<p>From your project root:</p>
+<code>.fna</code> – nucleotide sequences of contigs</li>
+<li>
+<code>.tbl</code> – feature table</li>
+<li>
+<code>.txt</code> – plain-text summary</li>
+<li>other helper files</li>
+</ul><p>These outputs can be loaded into genome browsers, comparative
+genomics tools, or downstream pipelines.</p>
+</section><section><h2 class="section-heading" id="basic-prokka-command">Basic Prokka command<a class="anchor" aria-label="anchor" href="#basic-prokka-command"></a></h2>
+<hr class="half-width"><p>From your Prokka exercise, the generic form is:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> ~/microbial_project</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> annotation</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">prokka</span>   <span class="at">--outdir</span> annotation/sample   <span class="at">--prefix</span> sample   assembly/spades_sample/contigs.fasta</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span> mysequences.fna</span></code></pre>
 </div>
-<p>Options used:</p>
-<ul><li>
-<code>--outdir</code> – where to put the output files.</li>
-<li>
-<code>--prefix</code> – prefix for output filenames.</li>
-<li>the final argument is the input FASTA file.</li>
-</ul><p>Prokka will print progress messages and may take a few minutes
-depending on the size of the assembly and the server load.</p>
-<p>After it finishes, list the outputs:</p>
+<p>For a typical genome or metagenome bin, your notes suggest:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span> annotation/sample</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">--outdir</span> OUTPUTDIRECTORY <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">--prefix</span> OUTPUTFILE_PREFIX <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">--addgenes</span> <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">--locustag</span> MYGEN <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">--increment</span> 5 <span class="dt">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">--cpus</span> 20 <span class="dt">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">--mincontiglen</span> 1000 <span class="dt">\</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  MYSEQUENCEFILE</span></code></pre>
 </div>
-<p>Look for <code>sample.gff</code>, <code>sample.faa</code>, and
-<code>sample.txt</code>.</p>
-</section><section><h2 class="section-heading" id="inspecting-annotation-results">Inspecting annotation results<a class="anchor" aria-label="anchor" href="#inspecting-annotation-results"></a></h2>
-<hr class="half-width"><p>To get a quick sense of what Prokka found:</p>
+<p>We will adapt this to our workshop data.</p>
+</section><section><h2 class="section-heading" id="running-prokka-on-a-spades-assembly">Running Prokka on a SPAdes assembly<a class="anchor" aria-label="anchor" href="#running-prokka-on-a-spades-assembly"></a></h2>
+<hr class="half-width"><p>Assume you have a scaffold FASTA file from Episode 10, such as:</p>
+<ul><li><code>scaffolds.fasta</code></li>
+<li>or a filtered version with contigs ≥ 1000 bp.</li>
+</ul><p>From your <code>annotation/</code> directory:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"	CDS	"</span> annotation/sample/sample.gff</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">cd</span> myproject/annotation</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">cp</span> ../assembly/scaffolds.fasta sample01.scaffolds.fasta</span></code></pre>
 </div>
-<p>This counts how many CDS features were annotated.</p>
-<p>You can also inspect the summary file:</p>
+<p>Run Prokka:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">less</span> annotation/sample/sample.txt</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">--outdir</span> sample01_prokka <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">--prefix</span> sample01 <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">--addgenes</span> <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">--locustag</span> S01 <span class="dt">\</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">--increment</span> 5 <span class="dt">\</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">--cpus</span> 8 <span class="dt">\</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">--mincontiglen</span> 1000 <span class="dt">\</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  sample01.scaffolds.fasta</span></code></pre>
 </div>
-<p>Look for lines describing:</p>
-<ul><li>the number of contigs and bases,</li>
-<li>the number of CDS, rRNA, tRNA predictions,</li>
-<li>the annotation databases used.</li>
-</ul><p>To preview protein sequences:</p>
+<p>Adjust:</p>
+<ul><li>
+<code>--cpus</code> for your system,</li>
+<li>
+<code>--locustag</code> and <code>--prefix</code> for your organism
+or project,</li>
+<li>
+<code>--mincontiglen</code> if you want a different minimum contig
+size.</li>
+</ul><div id="prokka-for-metagenomes" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="prokka-for-metagenomes" class="callout-inner">
+<h3 class="callout-title">Prokka for metagenomes</h3>
+<div class="callout-content">
+<p>Your notes distinguish:</p>
+<ul><li>
+<p><strong>Genome or bin</strong> annotation:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">head</span> annotation/sample/sample.faa</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="at">--outdir</span> OUT <span class="at">--prefix</span> PREFIX <span class="at">--addgenes</span> <span class="at">--locustag</span> TAG <span class="at">--increment</span> 5 <span class="at">--cpus</span> 20 <span class="at">--mincontiglen</span> 1000 MYSEQUENCEFILE</span></code></pre>
 </div>
-<p>Each entry has a header line with the locus tag and product name (if
-any), followed by the amino acid sequence.</p>
-<div id="exercise-exploring-prokka-output" class="callout discussion">
+</li>
+<li>
+<p><strong>Entire metagenome</strong> annotation:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="at">--outdir</span> OUT <span class="at">--prefix</span> PREFIX <span class="at">--addgenes</span> <span class="at">--metagenome</span> <span class="at">--locustag</span> TAG <span class="at">--increment</span> 5 <span class="at">--cpus</span> 20 <span class="at">--mincontiglen</span> 1000 MYSEQUENCEFILE</span></code></pre>
+</div>
+</li>
+</ul><p>The <code>--metagenome</code> flag adjusts gene prediction for
+fragmented genomes.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="inspecting-prokka-output">Inspecting Prokka output<a class="anchor" aria-label="anchor" href="#inspecting-prokka-output"></a></h2>
+<hr class="half-width"><p>After Prokka finishes, list the output directory:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">ls</span> sample01_prokka</span></code></pre>
+</div>
+<p>Look for:</p>
+<ul><li><code>sample01.gff</code></li>
+<li><code>sample01.gbk</code></li>
+<li><code>sample01.faa</code></li>
+<li><code>sample01.ffn</code></li>
+<li><code>sample01.fna</code></li>
+<li><code>sample01.tbl</code></li>
+<li><code>sample01.txt</code></li>
+</ul><p>You can inspect the summary file:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">less</span> sample01.txt</span></code></pre>
+</div>
+<p>It typically includes:</p>
+<ul><li>number of CDS,</li>
+<li>number of tRNAs and rRNAs,</li>
+<li>contig statistics,</li>
+<li>basic annotation summary.</li>
+</ul><p>View the GFF header:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">head</span> sample01.gff</span></code></pre>
+</div>
+<p>This file is especially useful because it:</p>
+<ul><li>combines sequence,</li>
+<li>feature coordinates,</li>
+<li>annotations,</li>
+</ul><p>in a single standardized format.</p>
+</section><section><h2 class="section-heading" id="using-annotation-results">Using annotation results<a class="anchor" aria-label="anchor" href="#using-annotation-results"></a></h2>
+<hr class="half-width"><p>Annotation outputs can be used for:</p>
+<ul><li>
+<strong>exploratory analysis</strong> – counting genes, inspecting
+interesting CDS,</li>
+<li>
+<strong>comparative genomics</strong> – clustering proteins from
+<code>.faa</code> files,</li>
+<li>
+<strong>visualization</strong> – loading <code>.gbk</code> or
+<code>.gff</code> into genome browsers,</li>
+<li>
+<strong>downstream pipelines</strong> – feeding <code>.gff</code>
+and <code>.fna</code> into other tools.</li>
+</ul><p>In this workshop, we focus on:</p>
+<ul><li>understanding what Prokka did,</li>
+<li>identifying key outcome metrics,</li>
+<li>connecting the results back to the assembly used as input.</li>
+</ul><hr></section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a></h1>
+<div id="exercise-run-prokka-on-your-assembly" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-exploring-prokka-output" class="callout-inner">
-<h3 class="callout-title">Exercise: Exploring Prokka output</h3>
+<div id="exercise-run-prokka-on-your-assembly" class="callout-inner">
+<h3 class="callout-title">Exercise: Run Prokka on your assembly</h3>
 <div class="callout-content">
-<p>Using <code>sample.gff</code> and <code>sample.faa</code>, try to
-answer:</p>
-<ol style="list-style-type: decimal"><li>Approximately how many protein-coding genes were predicted?</li>
-<li>Can you find a gene annotated as something like “DNA gyrase” or
-another familiar function?</li>
-<li>How might you extract all protein sequences for a particular
-functional category (conceptually)?</li>
-</ol><p>Discuss how you might use these files in a downstream analysis
-(e.g. searching for specific genes, building a phylogenetic tree).</p>
+<p>Assuming your assembly FASTA is in <code>assembly/</code>:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">cd</span> myproject/annotation</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">cp</span> ../assembly/scaffolds.fasta sample01.scaffolds.fasta</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="ex">prokka</span> <span class="dt">\</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">--outdir</span> sample01_prokka <span class="dt">\</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="at">--prefix</span> sample01 <span class="dt">\</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="at">--addgenes</span> <span class="dt">\</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  <span class="at">--locustag</span> S01 <span class="dt">\</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="at">--increment</span> 5 <span class="dt">\</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  <span class="at">--cpus</span> 4 <span class="dt">\</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  <span class="at">--mincontiglen</span> 1000 <span class="dt">\</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  sample01.scaffolds.fasta</span></code></pre>
 </div>
+<p><strong>Questions:</strong></p>
+<ul><li>Did Prokka complete without errors?</li>
+<li>How long did the run take?</li>
+<li>How many CDS, tRNAs, and rRNAs were predicted (check
+<code>sample01.txt</code>)?</li>
+</ul></div>
+</div>
+</div>
+<div id="exercise-explore-annotation-files" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-explore-annotation-files" class="callout-inner">
+<h3 class="callout-title">Exercise: Explore annotation files</h3>
+<div class="callout-content">
+<p>From within <code>sample01_prokka</code>:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">head</span> sample01.txt</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">head</span> sample01.gff</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">head</span> sample01.faa</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul><li>What information is summarized in <code>sample01.txt</code>?</li>
+<li>How are features represented in the GFF file?</li>
+<li>What does a typical protein header in <code>sample01.faa</code> look
+like?</li>
+</ul></div>
+</div>
+</div>
+<div id="exercise-genome-vs-metagenome-mode" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-genome-vs-metagenome-mode" class="callout-inner">
+<h3 class="callout-title">Exercise: Genome vs metagenome mode</h3>
+<div class="callout-content">
+<p>Discuss with a partner:</p>
+<ol style="list-style-type: decimal"><li>When would you use <code>--metagenome</code> with Prokka?</li>
+<li>What kinds of datasets (e.g., bins, MAGs, entire metagenomes) might
+benefit from <code>--metagenome</code>?</li>
+<li>For the assembly produced in this workshop, is
+<code>--metagenome</code> appropriate or not?</li>
+</ol></div>
 </div>
 </div>
 <div id="keypoints1" class="callout keypoints">
@@ -521,17 +679,26 @@ functional category (conceptually)?</li>
 <span class="callout-header">Key Points</span>
 <div class="callout-inner">
 <div class="callout-content">
-<ul><li>Annotation adds biological meaning to an assembly by predicting
-genes and other features.</li>
-<li>Prokka is a rapid pipeline for annotating microbial genomes.</li>
-<li>Key outputs include GFF (features + coordinates) and FAA (protein
-sequences).</li>
-<li>We run Prokka on <code>contigs.fasta</code> from SPAdes and store
-results in <code>annotation/</code> for downstream analysis.</li>
+<ul><li>Prokka performs rapid, automated annotation of bacterial and
+archaeal genomes.</li>
+<li>You must provide an assembly FASTA file and specify sensible options
+(output directory, prefix, locus tag, CPUs, minimum contig length).</li>
+<li>Prokka generates many outputs; the most important include
+<code>.gff</code>, <code>.gbk</code>, <code>.faa</code>,
+<code>.ffn</code>, <code>.fna</code>, and <code>.txt</code>.</li>
+<li>Annotation results summarize genes, rRNAs, tRNAs, and other
+features, and can be used in downstream comparative and visualization
+workflows.</li>
+<li>The annotated genome is the culmination of the QC → trimming →
+assembly → annotation pipeline used in this workshop.</li>
 </ul></div>
 </div>
 </div>
-</section></div> <!-- / div.lesson-content -->
+</div>
+
+
+
+      </div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/10-assembly-spades.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/index.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -540,7 +707,7 @@ results in <code>annotation/</code> for downstream analysis.</li>
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="../instructor/10-assembly-spades.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: De Novo Assembly
+          Previous: Genome Assembly with
         </a>
         <a class="chapter-link float-end" href="../instructor/index.html" rel="next">
           Home
@@ -591,7 +758,7 @@ results in <code>annotation/</code> for downstream analysis.</li>
   "url": "https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/11-annotation-prokka.html",
   "identifier": "https://jenna-tb-ekwealor.github.io/microbial-genomics/instructor/11-annotation-prokka.html",
   "dateCreated": "2025-12-25",
-  "dateModified": "2025-12-03",
+  "dateModified": "2025-12-04",
   "datePublished": "2025-12-04"
 }
 

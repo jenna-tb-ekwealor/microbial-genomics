@@ -299,7 +299,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="06-project-planning.html">6. Planning a Genomics Project</a>
+        <a href="06-project-planning.html">6. Project Planning</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -311,7 +311,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="07-background.html">7. Sequencing Data Background</a>
+        <a href="07-background.html">7. Sequence File Formats</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -323,7 +323,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-quality-control.html">8. Assessing Read Quality (FastQC)</a>
+        <a href="08-quality-control.html">8. Quality Control of Reads</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -335,7 +335,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="09-trimming.html">9. Trimming Reads (fastp)</a>
+        <a href="09-trimming.html">9. Trimming and Cleaning Reads</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -347,7 +347,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="10-assembly-spades.html">10. De Novo Assembly with SPAdes</a>
+        <a href="10-assembly-spades.html">10. Genome Assembly with SPAdes</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -1899,792 +1899,11 @@ analysis.</li>
 </div>
 </div>
 </div>
-</section></section><section id="aio-06-project-planning"><p>Content from <a href="06-project-planning.html">Planning a Genomics Project</a></p>
+</section></section><section id="aio-06-project-planning"><p>Content from <a href="06-project-planning.html">Project Planning</a></p>
 <hr>
-<p>Last updated on 2025-12-03 |
+<p>Last updated on 2025-12-04 |
 
         <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/06-project-planning.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 10 minutes</p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<p>Know: - organism - expected genome size - sequencing approach -
-analysis goals</p>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<span class="callout-header">Key Points</span>
-<div class="callout-inner">
-<div class="callout-content">
-<ul>
-<li>Genome size expectations help interpret the assembly.</li>
-</ul>
-</div>
-</div>
-</div></section><section id="aio-07-background"><p>Content from <a href="07-background.html">Sequencing Data Background</a></p>
-<hr>
-<p>Last updated on 2025-12-03 |
-
-        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/07-background.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 20 minutes</p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>What is the difference between FASTA and FASTQ files?</li>
-<li>What information is stored in a sequencing read?</li>
-<li>What are paired-end reads, and why do we use them?</li>
-<li>Where will our sequencing files live on the rampers server?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Distinguish between FASTA and FASTQ formats.</li>
-<li>Describe the four lines that make up a single FASTQ record.</li>
-<li>Explain what paired-end reads are and how they are named.</li>
-<li>Locate the raw FASTQ files for this workshop in your project
-directory.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<blockquote>
-<p>This episode is adapted from the Data Carpentry <strong>Wrangling
-Genomics</strong> background lesson and a short sequence file formats
-overview, condensed for microbial assembly.</p>
-</blockquote>
-<section><h2 class="section-heading" id="sequences-reads-and-genomes">Sequences, reads, and genomes<a class="anchor" aria-label="anchor" href="#sequences-reads-and-genomes"></a>
-</h2>
-<hr class="half-width">
-<ul>
-<li>A <strong>genome</strong> is the complete DNA sequence of an
-organism.</li>
-<li>A <strong>read</strong> is a short piece of DNA sequence produced by
-a sequencer.</li>
-<li>To reconstruct a genome, we need many overlapping reads.</li>
-</ul>
-<p>In this workshop, we work with <strong>Illumina paired-end
-reads</strong> from a single microbial genome. The goal is to assemble
-these reads into <strong>contigs</strong> and then annotate genes.</p>
-</section><section><h2 class="section-heading" id="fasta-vs-fastq">FASTA vs FASTQ<a class="anchor" aria-label="anchor" href="#fasta-vs-fastq"></a>
-</h2>
-<hr class="half-width">
-<p>Both FASTA and FASTQ are text formats used to store sequences.</p>
-<ul>
-<li>
-<strong>FASTA</strong> stores only the
-<strong>sequence</strong>.</li>
-<li>
-<strong>FASTQ</strong> stores the <strong>sequence plus a quality
-score</strong> for each base.</li>
-</ul>
-<p>A FASTA record looks like:</p>
-<pre class="text"><code>&gt;sequence_id
-ACGTACGTACGT...</code></pre>
-<p>A FASTQ record always has <strong>four lines per read</strong>:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>@</code> + sequence identifier<br>
-</li>
-<li>DNA sequence<br>
-</li>
-<li>
-<code>+</code> (optionally followed by the identifier again)<br>
-</li>
-<li>Quality string (one character per base)</li>
-</ol>
-<p>For example:</p>
-<pre class="text"><code>@read0001
-ACGTACGTACGT
-+
-IIIIHHHFFFEE</code></pre>
-<p>The quality string encodes how confident the sequencer is about each
-base (higher characters = better quality). We will not decode the exact
-scores in this workshop, but we will look at <strong>quality
-profiles</strong> with FastQC.</p>
-</section><section><h2 class="section-heading" id="compressed-fastq-files">Compressed FASTQ files<a class="anchor" aria-label="anchor" href="#compressed-fastq-files"></a>
-</h2>
-<hr class="half-width">
-<p>On the rampers server, sequencing reads are usually stored in
-compressed files with the <code>.fastq.gz</code> extension. These are
-FASTQ files that have been compressed with <code>gzip</code> to save
-disk space.</p>
-<p>Example filenames:</p>
-<ul>
-<li>
-<code>sample_R1.fastq.gz</code> – forward reads<br>
-</li>
-<li>
-<code>sample_R2.fastq.gz</code> – reverse reads</li>
-</ul>
-<p>The <code>R1</code> and <code>R2</code> indicate the two
-<strong>ends</strong> of the same DNA fragment.</p>
-</section><section><h2 class="section-heading" id="paired-end-reads">Paired-end reads<a class="anchor" aria-label="anchor" href="#paired-end-reads"></a>
-</h2>
-<hr class="half-width">
-<p>In <strong>paired-end sequencing</strong>, the machine reads from
-both ends of each DNA fragment, producing two reads per fragment:</p>
-<ul>
-<li>
-<code>R1</code> – read from one end</li>
-<li>
-<code>R2</code> – read from the other end</li>
-</ul>
-<p>These pairs:</p>
-<ul>
-<li>improve mapping and assembly,</li>
-<li>help resolve small repeats,</li>
-<li>give more confidence about insert size.</li>
-</ul>
-<p>Assemblers like SPAdes expect these reads to be provided as matching
-<code>R1</code> and <code>R2</code> FASTQ files.</p>
-</section><section><h2 class="section-heading" id="where-are-our-reads-on-the-rampers-server">Where are our reads on the rampers server?<a class="anchor" aria-label="anchor" href="#where-are-our-reads-on-the-rampers-server"></a>
-</h2>
-<hr class="half-width">
-<p>For this workshop we will keep raw data in:</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">~/microbial_project/data/raw</span></span></code></pre>
-</div>
-<p>Check that directory now:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">cd</span> ~/microbial_project</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">ls</span> data/raw</span></code></pre>
-</div>
-<p>You should see one or more pairs of FASTQ files
-(e.g. <code>sample_R1.fastq.gz</code> and
-<code>sample_R2.fastq.gz</code>). Your instructor will describe the
-specific dataset.</p>
-<div id="exercise-counting-reads-conceptual" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-counting-reads-conceptual" class="callout-inner">
-<h3 class="callout-title">Exercise: Counting reads (conceptual)</h3>
-<div class="callout-content">
-<p>The total number of reads in a FASTQ file is the number of lines
-divided by 4.</p>
-<p>Without actually running the commands, answer:</p>
-<ol style="list-style-type: decimal">
-<li>Which command would show you the number of lines in a compressed
-FASTQ?</li>
-<li>How would you compute the approximate number of reads from
-that?</li>
-</ol>
-<p>Your instructor may demonstrate this on the rampers server.</p>
-</div>
-</div>
-</div>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<span class="callout-header">Key Points</span>
-<div class="callout-inner">
-<div class="callout-content">
-<ul>
-<li>FASTA stores <strong>sequence only</strong>; FASTQ stores
-<strong>sequence plus quality</strong>.</li>
-<li>Each FASTQ read uses four lines: identifier, sequence, separator,
-qualities.</li>
-<li>Illumina paired-end data is stored as <code>R1</code> and
-<code>R2</code> FASTQ files.</li>
-<li>We keep raw reads in <code>~/microbial_project/data/raw</code> on
-the rampers server.</li>
-</ul>
-</div>
-</div>
-</div>
-</section></section><section id="aio-08-quality-control"><p>Content from <a href="08-quality-control.html">Assessing Read Quality (FastQC)</a></p>
-<hr>
-<p>Last updated on 2025-12-03 |
-
-        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/08-quality-control.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 30 minutes</p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>How can we quickly assess the quality of our sequencing reads?</li>
-<li>What kinds of problems can we detect with FastQC?</li>
-<li>Where should we store QC reports in our project structure?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Run FastQC on raw FASTQ files.</li>
-<li>Locate and interpret key plots in a FastQC report.</li>
-<li>Identify common quality issues (low-quality tails, adapter
-contamination).</li>
-<li>Store QC reports in a dedicated <code>qc/</code> directory.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<blockquote>
-<p>This episode is adapted from the Data Carpentry <strong>Quality
-Control</strong> episode in <em>Wrangling Genomics</em>, using FastQC on
-microbial reads.</p>
-</blockquote>
-<section><h2 class="section-heading" id="why-do-quality-control">Why do quality control?<a class="anchor" aria-label="anchor" href="#why-do-quality-control"></a>
-</h2>
-<hr class="half-width">
-<p>Sequencing machines make mistakes. Problems such as:</p>
-<ul>
-<li>declining quality at the ends of reads,</li>
-<li>leftover adapter sequences,</li>
-<li>unexpected sequence content,</li>
-</ul>
-<p>can cause trouble for assembly and downstream analyses.</p>
-<p>Before trimming or assembly, we run <strong>FastQC</strong> to get an
-overview of read quality and potential issues.</p>
-</section><section><h2 class="section-heading" id="running-fastqc-on-the-rampers-server">Running FastQC on the rampers server<a class="anchor" aria-label="anchor" href="#running-fastqc-on-the-rampers-server"></a>
-</h2>
-<hr class="half-width">
-<p>We will keep all QC outputs in a <code>qc/</code> directory inside
-our project.</p>
-<p>From your project root:</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> ~/microbial_project</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> qc</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">fastqc</span> data/raw/<span class="pp">*</span>.fastq.gz <span class="at">-o</span> qc</span></code></pre>
-</div>
-<p>This command:</p>
-<ul>
-<li>runs FastQC on all <code>.fastq.gz</code> files in
-<code>data/raw/</code>,</li>
-<li>writes HTML and <code>.zip</code> reports into
-<code>qc/</code>.</li>
-</ul>
-<p>Check the output:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span> qc</span></code></pre>
-</div>
-<p>You should see files like <code>sample_R1_fastqc.html</code> and
-<code>sample_R2_fastqc.html</code>.</p>
-</section><section><h2 class="section-heading" id="viewing-fastqc-reports">Viewing FastQC reports<a class="anchor" aria-label="anchor" href="#viewing-fastqc-reports"></a>
-</h2>
-<hr class="half-width">
-<p>FastQC produces HTML files meant to be viewed in a web browser. There
-are a few options for seeing them:</p>
-<ul>
-<li>Instructor demo: the instructor downloads one report and shows it on
-a projector.</li>
-<li>Download yourself: use <code>scp</code> or an SFTP client to copy
-<code>qc/*.html</code> to your local machine and open them in a
-browser.</li>
-</ul>
-<p>The details of downloading will depend on your system; your
-instructor will show an example.</p>
-</section><section><h2 class="section-heading" id="key-fastqc-modules">Key FastQC modules<a class="anchor" aria-label="anchor" href="#key-fastqc-modules"></a>
-</h2>
-<hr class="half-width">
-<p>When viewing a FastQC report, pay particular attention to:</p>
-<ul>
-<li>
-<strong>Per base sequence quality</strong>
-<ul>
-<li>Boxplots of quality scores at each base position.<br>
-</li>
-<li>We like to see high-quality scores across most of the read.</li>
-</ul>
-</li>
-<li>
-<strong>Per sequence quality scores</strong>
-<ul>
-<li>Distribution of mean quality per read.<br>
-</li>
-<li>A unimodal distribution with high scores is good.</li>
-</ul>
-</li>
-<li>
-<strong>Per base sequence content</strong>
-<ul>
-<li>Proportions of A/C/G/T at each position.<br>
-</li>
-<li>Weird patterns at the start of reads can reflect library prep
-bias.</li>
-</ul>
-</li>
-<li>
-<strong>Adapter content / overrepresented sequences</strong>
-<ul>
-<li>Presence of adapter sequences or unexpected motifs.<br>
-</li>
-<li>If adapters are present, trimming is essential.</li>
-</ul>
-</li>
-</ul>
-<p>FastQC uses a red/orange/green flag system (FAIL/WARN/PASS). These
-are guidelines, not absolute rules; context matters.</p>
-</section><section><h2 class="section-heading" id="deciding-what-to-do-next">Deciding what to do next<a class="anchor" aria-label="anchor" href="#deciding-what-to-do-next"></a>
-</h2>
-<hr class="half-width">
-<p>FastQC does <strong>not</strong> modify your data. It only reports.
-Based on the report, we decide:</p>
-<ul>
-<li>whether to trim low-quality bases from read ends,</li>
-<li>whether to remove adapter sequences,</li>
-<li>whether to discard very short or very poor-quality reads.</li>
-</ul>
-<p>In the next episode, we will use <strong>fastp</strong> to perform
-trimming.</p>
-<div id="exercise-interpreting-a-fastqc-report" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-interpreting-a-fastqc-report" class="callout-inner">
-<h3 class="callout-title">Exercise: Interpreting a FastQC report</h3>
-<div class="callout-content">
-<p>Working from the FastQC report shown by your instructor (or one you
-download):</p>
-<ol style="list-style-type: decimal">
-<li>Is the overall read quality good, fair, or poor?</li>
-<li>Does quality drop toward the end of the reads?</li>
-<li>Is there evidence of adapter contamination?</li>
-<li>Based on the report, what trimming steps seem necessary?</li>
-</ol>
-<p>Discuss your answers with a neighbor.</p>
-</div>
-</div>
-</div>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<span class="callout-header">Key Points</span>
-<div class="callout-inner">
-<div class="callout-content">
-<ul>
-<li>FastQC provides a quick overview of sequencing read quality.</li>
-<li>We store FastQC reports in a <code>qc/</code> directory inside the
-project.</li>
-<li>Key plots show base quality, sequence quality distribution, and
-adapter content.</li>
-<li>FastQC helps us decide how aggressively to trim reads before
-assembly.</li>
-</ul>
-</div>
-</div>
-</div>
-</section></section><section id="aio-09-trimming"><p>Content from <a href="09-trimming.html">Trimming Reads (fastp)</a></p>
-<hr>
-<p>Last updated on 2025-12-03 |
-
-        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/09-trimming.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 25 minutes</p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>Why do we trim sequencing reads before assembly?</li>
-<li>How can we remove low-quality bases and adapter sequences?</li>
-<li>Where do trimmed reads fit in our project directory structure?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Explain why trimming improves assembly quality.</li>
-<li>Run <code>fastp</code> on paired-end reads to produce cleaned FASTQ
-files.</li>
-<li>Save trimmed reads under <code>data/trimmed/</code> and new QC
-reports under <code>qc/</code>.</li>
-<li>Compare the number of reads before and after trimming.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<blockquote>
-<p>This episode is adapted from the Data Carpentry <strong>Trimming and
-Filtering</strong> episode in <em>Wrangling Genomics</em>, using
-<code>fastp</code> instead of Trimmomatic.</p>
-</blockquote>
-<section><h2 class="section-heading" id="why-trim-reads">Why trim reads?<a class="anchor" aria-label="anchor" href="#why-trim-reads"></a>
-</h2>
-<hr class="half-width">
-<p>FastQC often shows:</p>
-<ul>
-<li>lower quality toward the ends of reads,</li>
-<li>leftover adapter sequence,</li>
-<li>some reads that are too short or poor quality to be useful.</li>
-</ul>
-<p><strong>Trimming</strong> aims to:</p>
-<ul>
-<li>remove low-quality bases from read ends,</li>
-<li>remove adapters,</li>
-<li>discard very short reads after trimming.</li>
-</ul>
-<p>The result is a smaller set of <strong>higher-quality reads</strong>
-that usually assemble better.</p>
-</section><section><h2 class="section-heading" id="project-locations-for-trimmed-reads">Project locations for trimmed reads<a class="anchor" aria-label="anchor" href="#project-locations-for-trimmed-reads"></a>
-</h2>
-<hr class="half-width">
-<p>We will keep trimmed reads in:</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">~/microbial_project/data/trimmed</span></span></code></pre>
-</div>
-<p>and any additional QC reports from fastp in:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">~/microbial_project/qc</span></span></code></pre>
-</div>
-<p>Create the trimmed directory if needed:</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">cd</span> ~/microbial_project</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/trimmed</span></code></pre>
-</div>
-</section><section><h2 class="section-heading" id="running-fastp-on-paired-end-reads">Running fastp on paired-end reads<a class="anchor" aria-label="anchor" href="#running-fastp-on-paired-end-reads"></a>
-</h2>
-<hr class="half-width">
-<p>Here is a typical <code>fastp</code> command for one sample:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">fastp</span>   <span class="at">-i</span> data/raw/sample_R1.fastq.gz   <span class="at">-I</span> data/raw/sample_R2.fastq.gz   <span class="at">-o</span> data/trimmed/sample_R1.trimmed.fastq.gz   <span class="at">-O</span> data/trimmed/sample_R2.trimmed.fastq.gz   <span class="at">-h</span> qc/fastp_sample.html   <span class="at">-j</span> qc/fastp_sample.json</span></code></pre>
-</div>
-<p>This will:</p>
-<ul>
-<li>read <code>R1</code> and <code>R2</code> files from
-<code>data/raw/</code>,</li>
-<li>write trimmed reads to <code>data/trimmed/</code>,</li>
-<li>produce an HTML and JSON report summarizing the trimming.</li>
-</ul>
-<p>Your instructor will provide the exact sample filenames used on the
-rampers server, or a script that runs <code>fastp</code> for multiple
-samples.</p>
-</section><section><h2 class="section-heading" id="inspecting-fastp-reports">Inspecting fastp reports<a class="anchor" aria-label="anchor" href="#inspecting-fastp-reports"></a>
-</h2>
-<hr class="half-width">
-<p>Like FastQC, <code>fastp</code> produces an HTML report with:</p>
-<ul>
-<li>basic read statistics,</li>
-<li>quality distributions before and after trimming,</li>
-<li>adapter removal statistics,</li>
-<li>length distributions.</li>
-</ul>
-<p>The instructor may demonstrate:</p>
-<ul>
-<li>how many reads were removed,</li>
-<li>how much shorter reads became on average,</li>
-<li>whether adapters were detected and trimmed.</li>
-</ul></section><section><h2 class="section-heading" id="checking-trimmed-files-on-the-server">Checking trimmed files on the server<a class="anchor" aria-label="anchor" href="#checking-trimmed-files-on-the-server"></a>
-</h2>
-<hr class="half-width">
-<p>We can use simple commands to compare raw and trimmed files. For
-example:</p>
-<div class="codewrapper sourceCode" id="cb5">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">cd</span> ~/microbial_project</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># list raw and trimmed files</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">ls</span> data/raw</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">ls</span> data/trimmed</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co"># count lines in one raw vs trimmed file (conceptual)</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">zcat</span> data/raw/sample_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">zcat</span> data/trimmed/sample_R1.trimmed.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre>
-</div>
-<p>Remember to divide the line counts by 4 to get approximate read
-counts.</p>
-<div id="exercise-reasonable-trimming-or-too-aggressive" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-reasonable-trimming-or-too-aggressive" class="callout-inner">
-<h3 class="callout-title">Exercise: Reasonable trimming or too
-aggressive?</h3>
-<div class="callout-content">
-<p>Using the <code>fastp</code> report demonstrated by your instructor
-(or provided as an example), answer:</p>
-<ol style="list-style-type: decimal">
-<li>What percentage of reads were kept after trimming?</li>
-<li>Are the per-base quality scores improved after trimming?</li>
-<li>Did any reads become very short? Would you consider changing the
-minimum length setting?</li>
-</ol>
-<p>Discuss with your neighbor how you would adjust trimming parameters
-if this were your own project.</p>
-</div>
-</div>
-</div>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<span class="callout-header">Key Points</span>
-<div class="callout-inner">
-<div class="callout-content">
-<ul>
-<li>Trimming removes low-quality bases and adapters, improving
-downstream assembly.</li>
-<li>We keep trimmed reads in <code>data/trimmed/</code> and trimming
-reports in <code>qc/</code>.</li>
-<li>
-<code>fastp</code> can handle paired-end trimming and produce
-summary reports.</li>
-<li>Comparing raw and trimmed statistics helps ensure trimming is
-reasonable.</li>
-</ul>
-</div>
-</div>
-</div>
-</section></section><section id="aio-10-assembly-spades"><p>Content from <a href="10-assembly-spades.html">De Novo Assembly with SPAdes</a></p>
-<hr>
-<p>Last updated on 2025-12-03 |
-
-        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/10-assembly-spades.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 45 minutes</p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>How do short reads become longer contigs in an assembly?</li>
-<li>What are contigs, scaffolds, and N50?</li>
-<li>How do we run SPAdes on the rampers server using trimmed reads?</li>
-<li>How can we quickly inspect the assembly output?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Describe at a high level how de novo assembly reconstructs genomes
-from reads.</li>
-<li>Define contigs, scaffolds, and N50 in the context of
-assemblies.</li>
-<li>Run SPAdes on trimmed paired-end reads to generate an assembly.</li>
-<li>Inspect the resulting <code>contigs.fasta</code> file and basic
-assembly statistics.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<blockquote>
-<p>This episode is adapted from short microbial assembly teaching
-materials and the SPAdes documentation, customized for the rampers
-server project layout.</p>
-</blockquote>
-<section><h2 class="section-heading" id="from-reads-to-contigs">From reads to contigs<a class="anchor" aria-label="anchor" href="#from-reads-to-contigs"></a>
-</h2>
-<hr class="half-width">
-<p>Illumina reads are typically 100–300 bases long, while microbial
-genomes have millions of bases. An <strong>assembler</strong>:</p>
-<ul>
-<li>finds overlaps between reads,</li>
-<li>builds a graph of how reads connect,</li>
-<li>collapses paths through that graph into longer sequences called
-<strong>contigs</strong>.</li>
-</ul>
-<p>Key terms:</p>
-<ul>
-<li>
-<strong>contig</strong> – a contiguous stretch of assembled
-sequence.</li>
-<li>
-<strong>scaffold</strong> – a set of contigs ordered and oriented
-with gaps (Ns) between them.</li>
-<li>
-<strong>N50</strong> – the contig length such that 50% of the
-assembly lies in contigs of that length or longer.</li>
-</ul>
-<p>Larger N50 and fewer contigs usually mean a more contiguous assembly,
-but context (genome size, repeats, coverage) matters.</p>
-</section><section><h2 class="section-heading" id="in-person-assembly-activity-offline">In-person assembly activity (offline)<a class="anchor" aria-label="anchor" href="#in-person-assembly-activity-offline"></a>
-</h2>
-<hr class="half-width">
-<p>Before running SPAdes, we will do a <strong>paper-based
-assembly</strong>:</p>
-<ul>
-<li>You will receive strips of paper with short “reads” from a simple
-story.</li>
-<li>Your task is to find overlaps and reconstruct the original
-story.</li>
-<li>You will notice challenges like repeats and ambiguous joins.</li>
-</ul>
-<p>This activity builds intuition for what assemblies are doing behind
-the scenes.</p>
-</section><section><h2 class="section-heading" id="running-spades-on-the-rampers-server">Running SPAdes on the rampers server<a class="anchor" aria-label="anchor" href="#running-spades-on-the-rampers-server"></a>
-</h2>
-<hr class="half-width">
-<p>We will run SPAdes using the trimmed reads in
-<code>data/trimmed/</code> and write all output to an
-<code>assembly/</code> directory.</p>
-<p>From your project root:</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> ~/microbial_project</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> assembly</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">spades.py</span>   <span class="at">-1</span> data/trimmed/sample_R1.trimmed.fastq.gz   <span class="at">-2</span> data/trimmed/sample_R2.trimmed.fastq.gz   <span class="at">-o</span> assembly/spades_sample</span></code></pre>
-</div>
-<p>Notes:</p>
-<ul>
-<li>
-<code>-1</code> and <code>-2</code> specify the paired-end read
-files.</li>
-<li>
-<code>-o</code> sets the output directory.</li>
-<li>SPAdes may take several minutes depending on data size and server
-load.</li>
-</ul>
-<p>Your instructor may provide a script that runs SPAdes with the
-correct sample names for the workshop dataset.</p>
-</section><section><h2 class="section-heading" id="inspecting-contigs-fasta">Inspecting <code>contigs.fasta</code>
-<a class="anchor" aria-label="anchor" href="#inspecting-contigs-fasta"></a>
-</h2>
-<hr class="half-width">
-<p>When SPAdes finishes, list the output directory:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span> assembly/spades_sample</span></code></pre>
-</div>
-<p>You should see files including <code>contigs.fasta</code> and
-<code>scaffolds.fasta</code> (we will focus on
-<code>contigs.fasta</code>).</p>
-<p>To count the number of contigs:</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"^&gt;"</span> assembly/spades_sample/contigs.fasta</span></code></pre>
-</div>
-<p>To look at the first contig:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 20 assembly/spades_sample/contigs.fasta</span></code></pre>
-</div>
-<p>If <code>seqkit</code> is available on the rampers server, we can get
-quick stats:</p>
-<div class="codewrapper sourceCode" id="cb5">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">seqkit</span> stats assembly/spades_sample/contigs.fasta</span></code></pre>
-</div>
-<p>This will report total length, N50, and other metrics. Compare the
-total length to the expected genome size for the organism.</p>
-<p>If <code>seqkit</code> is not available, your instructor may provide
-precomputed assembly statistics for discussion.</p>
-<div id="exercise-interpreting-assembly-metrics" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-interpreting-assembly-metrics" class="callout-inner">
-<h3 class="callout-title">Exercise: Interpreting assembly metrics</h3>
-<div class="callout-content">
-<p>Using the stats shown by your instructor (or from
-<code>seqkit stats</code>), answer:</p>
-<ol style="list-style-type: decimal">
-<li>Approximately how large is the assembly (total length)?</li>
-<li>How many contigs are there?</li>
-<li>What is the N50 value?</li>
-<li>Does the total length seem reasonable for a microbial genome of this
-type?</li>
-</ol>
-<p>Discuss whether you would consider this assembly “good enough” for
-basic annotation.</p>
-</div>
-</div>
-</div>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<span class="callout-header">Key Points</span>
-<div class="callout-inner">
-<div class="callout-content">
-<ul>
-<li>Assemblers like SPAdes reconstruct genomes from overlapping short
-reads, producing <strong>contigs</strong>.</li>
-<li>N50 summarizes assembly contiguity: larger N50 usually means a more
-contiguous assembly.</li>
-<li>We run SPAdes on trimmed reads and store outputs in
-<code>assembly/</code>.</li>
-<li>
-<code>contigs.fasta</code> is the main file we use for downstream
-annotation.</li>
-</ul>
-</div>
-</div>
-</div>
-</section></section><section id="aio-11-annotation-prokka"><p>Content from <a href="11-annotation-prokka.html">Genome Annotation with Prokka</a></p>
-<hr>
-<p>Last updated on 2025-12-03 |
-
-        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/11-annotation-prokka.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 40 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
@@ -2697,11 +1916,12 @@ annotation.</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>What does it mean to “annotate” a genome?</li>
-<li>What features does Prokka predict from an assembled microbial
-genome?</li>
-<li>How do we run Prokka on the contigs from SPAdes?</li>
-<li>What useful information is stored in the GFF and FAA files?</li>
+<li>How should I plan a microbial genomics analysis before touching the
+data?</li>
+<li>What directories, files, and metadata should I set up ahead of
+time?</li>
+<li>How do I structure a workflow so QC, trimming, assembly, and
+annotation run smoothly?</li>
 </ul>
 </div>
 </div>
@@ -2711,12 +1931,12 @@ genome?</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Explain the goal of genome annotation in microbial genomics.</li>
-<li>Run Prokka on an assembled genome to predict genes and other
-features.</li>
-<li>Identify key output files from Prokka (GFF, FAA, FFN, etc.).</li>
-<li>Perform simple inspections of annotation results on the rampers
-server.</li>
+<li>Anticipate the workflow steps in a microbial genomics project.</li>
+<li>Plan a directory layout suitable for QC, trimming, assembly, and
+annotation workflows.</li>
+<li>Identify metadata you must collect before running tools.</li>
+<li>Understand how planning improves reproducibility and avoids
+downstream errors.</li>
 </ul>
 </div>
 </div>
@@ -2724,127 +1944,180 @@ server.</li>
 </div>
 </div>
 <blockquote>
-<p>This episode is adapted from short microbial annotation teaching
-materials and the Prokka documentation.</p>
+<p>This episode prepares learners for the workflow used in Episodes 7–11
+by building the project plan and directory structure needed for quality
+control, trimming, assembly (SPAdes), and annotation (Prokka).<br>
+It draws on concepts from the Unix tutorial and best practices for
+genome analysis, but does <strong>not</strong> yet introduce FASTQ or
+tool-specific PDF content.</p>
 </blockquote>
-<section><h2 class="section-heading" id="what-is-genome-annotation">What is genome annotation?<a class="anchor" aria-label="anchor" href="#what-is-genome-annotation"></a>
+<section><h2 class="section-heading" id="why-planning-matters">Why planning matters<a class="anchor" aria-label="anchor" href="#why-planning-matters"></a>
 </h2>
 <hr class="half-width">
-<p>An assembly (like <code>contigs.fasta</code>) is just raw sequence.
-<strong>Annotation</strong> adds biological meaning by predicting:</p>
+<p>Microbial genomics workflows involve multiple steps:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Quality control</strong> (FastQC)</li>
+<li><strong>Trimming</strong></li>
+<li>
+<strong>Genome assembly</strong> (SPAdes)</li>
+<li><strong>Assembly evaluation &amp; filtering</strong></li>
+<li>
+<strong>Annotation</strong> (Prokka)</li>
+<li><strong>Archiving results &amp; documenting methods</strong></li>
+</ol>
+<p>Each step produces files, logs, and subdirectories. Without
+planning:</p>
 <ul>
-<li>protein-coding genes (CDS),</li>
-<li>rRNA and tRNA genes,</li>
-<li>product names and functional descriptions (where possible).</li>
+<li>files become scattered across your home directory,</li>
+<li>output overwrites previous results,</li>
+<li>commands reference the wrong paths,</li>
+<li>reproducibility becomes impossible.</li>
 </ul>
-<p>Prokka is a rapid annotation pipeline tuned for <strong>bacterial,
-archaeal, and viral</strong> genomes.</p>
-</section><section><h2 class="section-heading" id="inputs-and-outputs-of-prokka">Inputs and outputs of Prokka<a class="anchor" aria-label="anchor" href="#inputs-and-outputs-of-prokka"></a>
+<p>A simple, thoughtful plan prevents all of this.</p>
+</section><section><h2 class="section-heading" id="anticipating-the-workflow">Anticipating the workflow<a class="anchor" aria-label="anchor" href="#anticipating-the-workflow"></a>
 </h2>
 <hr class="half-width">
-<p><strong>Input:</strong></p>
+<p>Before analyzing data, ask:</p>
 <ul>
-<li>a FASTA file with assembled contigs
-(e.g. <code>contigs.fasta</code>).</li>
+<li>Where will I store raw FASTQ files?</li>
+<li>Where will QC reports go?</li>
+<li>Where will trimmed reads go?</li>
+<li>Where should the SPAdes assembly output live?</li>
+<li>Where should I store annotation results?</li>
+<li>Where will scripts or notes be kept?</li>
 </ul>
-<p><strong>Outputs (in an output directory):</strong></p>
-<ul>
-<li>
-<code>*.gff</code> – combined sequence and annotation in one
-file.</li>
-<li>
-<code>*.faa</code> – amino acid sequences of predicted
-proteins.</li>
-<li>
-<code>*.ffn</code> – nucleotide sequences of predicted genes.</li>
-<li>
-<code>*.tbl</code> – feature table.</li>
-<li>
-<code>*.txt</code> – summary of the run.</li>
-</ul>
-<p>These files can be used for downstream analysis (e.g. searching for
-particular genes, comparing annotations, building phylogenies).</p>
-</section><section><h2 class="section-heading" id="running-prokka-on-the-rampers-server">Running Prokka on the rampers server<a class="anchor" aria-label="anchor" href="#running-prokka-on-the-rampers-server"></a>
+<p>This planning mirrors the Unix skills covered in Episodes
+1–5—especially filesystem navigation and working with files.</p>
+</section><section><h2 class="section-heading" id="recommended-directory-skeleton">Recommended directory skeleton<a class="anchor" aria-label="anchor" href="#recommended-directory-skeleton"></a>
 </h2>
 <hr class="half-width">
-<p>We will annotate the SPAdes contigs produced in the previous
-episode.</p>
-<p>From your project root:</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> ~/microbial_project</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> annotation</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">prokka</span>   <span class="at">--outdir</span> annotation/sample   <span class="at">--prefix</span> sample   assembly/spades_sample/contigs.fasta</span></code></pre>
-</div>
-<p>Options used:</p>
+<p>You can create a clean starting layout:</p>
+<pre><code>myproject/
+├── metadata/
+├── raw_reads/
+├── qc/
+├── trimmed/
+├── assembly/
+├── annotation/
+└── scripts/</code></pre>
+<p>Purpose of each:</p>
 <ul>
 <li>
-<code>--outdir</code> – where to put the output files.</li>
+<strong>metadata/</strong>: sample sheets, run notes<br>
+</li>
 <li>
-<code>--prefix</code> – prefix for output filenames.</li>
-<li>the final argument is the input FASTA file.</li>
+<strong>raw_reads/</strong>: original FASTQ files<br>
+</li>
+<li>
+<strong>qc/</strong>: FastQC or other QC outputs<br>
+</li>
+<li>
+<strong>trimmed/</strong>: files after trimming<br>
+</li>
+<li>
+<strong>assembly/</strong>: SPAdes output folders<br>
+</li>
+<li>
+<strong>annotation/</strong>: Prokka output<br>
+</li>
+<li>
+<strong>scripts/</strong>: shell scripts, helper commands</li>
 </ul>
-<p>Prokka will print progress messages and may take a few minutes
-depending on the size of the assembly and the server load.</p>
-<p>After it finishes, list the outputs:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span> annotation/sample</span></code></pre>
+<p>This structure mirrors the layout used throughout the workshop and is
+consistent with good practice in microbial genomics research.</p>
+<div id="planning-tip" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
 </div>
-<p>Look for <code>sample.gff</code>, <code>sample.faa</code>, and
-<code>sample.txt</code>.</p>
-</section><section><h2 class="section-heading" id="inspecting-annotation-results">Inspecting annotation results<a class="anchor" aria-label="anchor" href="#inspecting-annotation-results"></a>
+<span class="callout-header">Callout</span>
+<div id="planning-tip" class="callout-inner">
+<h3 class="callout-title">Planning tip</h3>
+<div class="callout-content">
+<p>Never mix <strong>raw data</strong> with <strong>processed
+data</strong>.<br>
+Raw FASTQ files should remain untouched and stored in their own
+directory.<br>
+All processing steps should write outputs into new directories.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="metadata-planning">Metadata planning<a class="anchor" aria-label="anchor" href="#metadata-planning"></a>
 </h2>
 <hr class="half-width">
-<p>To get a quick sense of what Prokka found:</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"	CDS	"</span> annotation/sample/sample.gff</span></code></pre>
-</div>
-<p>This counts how many CDS features were annotated.</p>
-<p>You can also inspect the summary file:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">less</span> annotation/sample/sample.txt</span></code></pre>
-</div>
-<p>Look for lines describing:</p>
+<p>Before running any tool, you should prepare:</p>
 <ul>
-<li>the number of contigs and bases,</li>
-<li>the number of CDS, rRNA, tRNA predictions,</li>
-<li>the annotation databases used.</li>
+<li>sample names<br>
+</li>
+<li>read file names (R1, R2)<br>
+</li>
+<li>sequencing platform<br>
+</li>
+<li>expected genome size (helps anticipate memory needs)<br>
+</li>
+<li>notes on experimental conditions</li>
 </ul>
-<p>To preview protein sequences:</p>
-<div class="codewrapper sourceCode" id="cb5">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">head</span> annotation/sample/sample.faa</span></code></pre>
-</div>
-<p>Each entry has a header line with the locus tag and product name (if
-any), followed by the amino acid sequence.</p>
-<div id="exercise-exploring-prokka-output" class="callout discussion">
+<p>A simple spreadsheet often works best.<br>
+This metadata informs file naming and makes SPAdes/Prokka outputs easier
+to interpret.</p>
+</section><section><h2 class="section-heading" id="planning-for-tool-inputs-outputs">Planning for tool inputs &amp; outputs<a class="anchor" aria-label="anchor" href="#planning-for-tool-inputs-outputs"></a>
+</h2>
+<hr class="half-width">
+<p>This episode does <strong>not</strong> invoke SPAdes or Prokka
+directly, but prepares for their behavior:</p>
+<ul>
+<li>SPAdes produces an output directory with many files (logs, contigs,
+scaffolds, temporary files).</li>
+<li>Prokka outputs multiple files (<code>.gff</code>, <code>.faa</code>,
+<code>.ffn</code>, <code>.tbl</code>, etc.).</li>
+</ul>
+<p>Ensuring you already have dedicated directories avoids clutter and
+accidental overwriting.</p>
+<div id="exercise-create-your-project-layout" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-exploring-prokka-output" class="callout-inner">
-<h3 class="callout-title">Exercise: Exploring Prokka output</h3>
+<div id="exercise-create-your-project-layout" class="callout-inner">
+<h3 class="callout-title">Exercise: Create your project layout</h3>
 <div class="callout-content">
-<p>Using <code>sample.gff</code> and <code>sample.faa</code>, try to
-answer:</p>
-<ol style="list-style-type: decimal">
-<li>Approximately how many protein-coding genes were predicted?</li>
-<li>Can you find a gene annotated as something like “DNA gyrase” or
-another familiar function?</li>
-<li>How might you extract all protein sequences for a particular
-functional category (conceptually)?</li>
-</ol>
-<p>Discuss how you might use these files in a downstream analysis
-(e.g. searching for specific genes, building a phylogenetic tree).</p>
+<p>Make the directory skeleton:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> myproject/<span class="dt">{metadata</span><span class="op">,</span><span class="dt">raw_reads</span><span class="op">,</span><span class="dt">qc</span><span class="op">,</span><span class="dt">trimmed</span><span class="op">,</span><span class="dt">assembly</span><span class="op">,</span><span class="dt">annotation</span><span class="op">,</span><span class="dt">scripts}</span></span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Which folder will contain raw FASTQ files?</li>
+<li>Where will SPAdes output go?</li>
+<li>Where should your Prokka annotation end up?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-plan-metadata-for-one-sample" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-plan-metadata-for-one-sample" class="callout-inner">
+<h3 class="callout-title">Exercise: Plan metadata for one sample</h3>
+<div class="callout-content">
+<p>Create a text file in the <code>metadata/</code> directory:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-e</span> <span class="st">"sample_id\tread1\tread2\nsample01\tsample01_R1.fastq.gz\tsample01_R2.fastq.gz"</span> <span class="op">&gt;</span> metadata/samples.tsv</span></code></pre>
+</div>
+<p>Then inspect it:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">cat</span> metadata/samples.tsv</span></code></pre>
+</div>
+<p><strong>Question:</strong><br>
+Why is it helpful to prepare metadata before running analysis tools?</p>
 </div>
 </div>
 </div>
@@ -2856,18 +2129,1619 @@ functional category (conceptually)?</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>Annotation adds biological meaning to an assembly by predicting
-genes and other features.</li>
-<li>Prokka is a rapid pipeline for annotating microbial genomes.</li>
-<li>Key outputs include GFF (features + coordinates) and FAA (protein
-sequences).</li>
-<li>We run Prokka on <code>contigs.fasta</code> from SPAdes and store
-results in <code>annotation/</code> for downstream analysis.</li>
+<li>Planning your project structure prevents mistakes during multi-step
+analysis.</li>
+<li>Separate raw data, QC results, trimmed reads, assemblies, and
+annotations.</li>
+<li>Metadata prepared early improves reproducibility and keeps analyses
+organized.</li>
+<li>This planning sets the stage for handling FASTQ files starting in
+Episode 7.</li>
 </ul>
 </div>
 </div>
 </div>
-</section></section>
+</section></section><section id="aio-07-background"><p>Content from <a href="07-background.html">Sequence File Formats</a></p>
+<hr>
+<p>Last updated on 2025-12-04 |
+
+        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/07-background.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 50 minutes</p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What are FASTA, FASTQ, and SAM/BAM file formats?</li>
+<li>How are sequence, identifiers, and quality scores stored?</li>
+<li>Why are many sequence files compressed, and what does
+<code>.gz</code> mean?</li>
+<li>How do these formats fit into the microbial genome assembly and
+annotation workflow?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Recognize and describe the structure of FASTA and FASTQ files.</li>
+<li>Understand how quality scores are represented in FASTQ.</li>
+<li>Explain the role of SAM/BAM files in mapping reads to
+references.</li>
+<li>Identify common filename extensions used in microbial genomics.</li>
+<li>Connect file formats to later workflow steps: QC, trimming,
+assembly, and annotation.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>This episode incorporates concepts from the <em>Sequence File
+Formats</em> notes (FASTA, FASTQ, SAM/BAM) and prepares learners to
+interpret the files used in later episodes for QC, assembly, and
+annotation.</p>
+</blockquote>
+<section><h2 class="section-heading" id="overview-of-common-file-types">Overview of common file types<a class="anchor" aria-label="anchor" href="#overview-of-common-file-types"></a>
+</h2>
+<hr class="half-width">
+<p>In microbial genomics, you will frequently encounter:</p>
+<ul>
+<li>
+<strong>FASTA</strong> – sequence and identifier(s) only<br>
+</li>
+<li>
+<strong>FASTQ</strong> – sequence <em>and</em> per-base quality
+scores<br>
+</li>
+<li>
+<strong>SAM/BAM</strong> – alignments of reads to a reference</li>
+</ul>
+<p>File extensions help you keep track:</p>
+<ul>
+<li>
+<code>.fasta</code>, <code>.fa</code>, <code>.fna</code>,
+<code>.faa</code>, <code>.ffn</code>, <code>.frn</code>
+</li>
+<li>
+<code>.fastq</code>, <code>.fq</code>, <code>.fastq.gz</code>
+</li>
+<li>
+<code>.sam</code>, <code>.bam</code>
+</li>
+</ul>
+<div id="plain-text-vs-binary" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="plain-text-vs-binary" class="callout-inner">
+<h3 class="callout-title">Plain text vs binary</h3>
+<div class="callout-content">
+<ul>
+<li>FASTA, FASTQ, and SAM are <strong>plain text</strong> (you can read
+them with <code>less</code>).</li>
+<li>BAM is a <strong>binary</strong> version of SAM (smaller and faster
+to process, not human-readable).</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="fasta-format">FASTA format<a class="anchor" aria-label="anchor" href="#fasta-format"></a>
+</h2>
+<hr class="half-width">
+<p>FASTA files store sequence(s) with headers. From your sequence
+formats notes:</p>
+<ul>
+<li>Header lines start with <code>&gt;</code><br>
+</li>
+<li>The header is followed by one or more lines of sequence</li>
+</ul>
+<p>Example:</p>
+<pre class="text"><code>&gt;gi|212499741|ref|YP_002308549.1| DNA polymerase [Bacteriophage APSE-2]
+MQNLLFCDLETYSDIPINCGTHRYAENAEILLFAYAYNHAPVKVWDVTQDKTMPADLKAYFDDSEILTVW
+HNGGMFDTVILKRVLNIDLPLSRVHDTLVQALAHGLPGALGLLCDIFNVNSDKAKDKEGKALISLLCKPR</code></pre>
+<p>Key points:</p>
+<ul>
+<li>A FASTA file often contains <strong>many</strong> sequences, one
+after another.</li>
+<li>FASTA is used for genomes, contigs, proteins, etc.</li>
+<li>Later, SPAdes assemblies and Prokka annotations will use
+FASTA-formatted files.</li>
+</ul></section><section><h2 class="section-heading" id="fastq-format">FASTQ format<a class="anchor" aria-label="anchor" href="#fastq-format"></a>
+</h2>
+<hr class="half-width">
+<p>FASTQ is a <strong>high-density format for short reads</strong> (≤300
+nt) that stores both sequence and quality.</p>
+<p>Each record has <strong>four lines</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>
+<code>@</code> plus an identifier<br>
+</li>
+<li>the raw sequence<br>
+</li>
+<li>
+<code>+</code> (optionally followed by the identifier)<br>
+</li>
+<li>ASCII-encoded quality string</li>
+</ol>
+<p>Example (adapted from your notes):</p>
+<pre class="text"><code>@DBRHHJN1:387:H89AEADXX:2:1101:1811:1988 1:N:0:TCCTGAGCCTCTCTAT
+GTATTGGATATGTCCTCTATTAAACCTTGTGATGAGGAAGCTGTCTGTCTCTTATACACATCTCCGAGCCCACGAGACTCCTGAGCA
++
+BB@FFFFFHHHHHJJJJJJJJJJJJJJJJIJJJJJJJJJIJJJIJJJIIIJJJJIJIJJJJJJJJIJHIJJJHHFFDDEEEDDCDDD</code></pre>
+<ul>
+<li>Line 1: read name, including run, lane, tile, x/y position,
+etc.</li>
+<li>Line 2: sequence (A/C/G/T/N).</li>
+<li>Line 4: quality scores encoded as ASCII characters.</li>
+</ul>
+<p>These FASTQ files are the <strong>starting point</strong> for QC,
+trimming, and assembly.</p>
+<div id="why-.fastq.gz" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="why-.fastq.gz" class="callout-inner">
+<h3 class="callout-title">Why <code>.fastq.gz</code>?</h3>
+<div class="callout-content">
+<p>FASTQ files are large.<br>
+They are often compressed with <strong>gzip</strong>, resulting in
+<code>.fastq.gz</code> files.</p>
+<p>Most tools (FastQC, trimmers, SPAdes) can read gzipped FASTQ
+directly, so you rarely need to decompress them manually.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="sam-and-bam-formats">SAM and BAM formats<a class="anchor" aria-label="anchor" href="#sam-and-bam-formats"></a>
+</h2>
+<hr class="half-width">
+<p>After assembling or mapping reads to a reference, alignments are
+often stored in <strong>SAM</strong> (text) or <strong>BAM</strong>
+(binary) format.</p>
+<p>A (simplified) SAM snippet from your notes:</p>
+<pre class="text"><code>@HD VN:1.3 SO:coordinate
+@SQ SN:ref LN:45
+r001 163 ref 7 30 8M2I4M1D3M = 37 39 TTAGATAAAGGATACTG *
+r002 0 ref 9 30 3S6M1P1I4M * 0 0 AAAAGATAAGGATA *</code></pre>
+<p>Each line after the header contains:</p>
+<ul>
+<li>read name</li>
+<li>flags</li>
+<li>reference name</li>
+<li>position</li>
+<li>CIGAR string (match/mismatch/insertions/deletions)</li>
+<li>sequence and quality</li>
+</ul>
+<p>Although this workshop focuses on <strong>de novo assembly</strong>
+and annotation, you may still encounter SAM/BAM when evaluating
+assemblies or mapping reads back to contigs.</p>
+</section><section><h2 class="section-heading" id="where-formats-fit-into-the-workflow">Where formats fit into the workflow<a class="anchor" aria-label="anchor" href="#where-formats-fit-into-the-workflow"></a>
+</h2>
+<hr class="half-width">
+<ul>
+<li>
+<strong>FASTQ</strong> – raw reads → input to QC and trimming<br>
+</li>
+<li>
+<strong>FASTQ (trimmed)</strong> – input to SPAdes<br>
+</li>
+<li>
+<strong>FASTA</strong> – contigs/scaffolds from assembly → input to
+annotation (Prokka)<br>
+</li>
+<li>
+<strong>FASTA (proteins, CDS)</strong> – output from Prokka<br>
+</li>
+<li>
+<strong>SAM/BAM</strong> – optional, for read mapping to references
+or assemblies</li>
+</ul>
+<p>Understanding these formats now will make later steps much less
+mysterious.</p>
+<hr></section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
+<div id="exercise-identify-format-by-eye" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-identify-format-by-eye" class="callout-inner">
+<h3 class="callout-title">Exercise: Identify format by eye</h3>
+<div class="callout-content">
+<p>Your instructor will show you several short text snippets (or
+files).<br>
+For each one, decide whether it is:</p>
+<ul>
+<li>FASTA</li>
+<li>FASTQ</li>
+<li>SAM</li>
+</ul>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>What clues tell you the format?</li>
+<li>How many lines per record can you see?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-inspect-a-fastq-file" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-inspect-a-fastq-file" class="callout-inner">
+<h3 class="callout-title">Exercise: Inspect a FASTQ file</h3>
+<div class="callout-content">
+<p>On the server, navigate to where a small sample FASTQ file is stored
+and run:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">zcat</span> sample.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 8</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>How many complete records are shown in 8 lines?</li>
+<li>Which lines are the sequences?</li>
+<li>Which lines are the quality scores?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-inspect-an-assembly-fasta-file" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-inspect-an-assembly-fasta-file" class="callout-inner">
+<h3 class="callout-title">Exercise: Inspect an assembly FASTA file</h3>
+<div class="callout-content">
+<p>Later, after running SPAdes, you will have a scaffolds FASTA
+file.<br>
+Practice on a small example (or instructor-provided file):</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">head</span> scaffolds.fasta</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>What does each header look like?</li>
+<li>Can you tell how many contigs are in the file
+(<code>grep -c '^&gt;' scaffolds.fasta</code>)?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<span class="callout-header">Key Points</span>
+<div class="callout-inner">
+<div class="callout-content">
+<ul>
+<li>FASTA stores sequence(s) with header lines starting with
+<code>&gt;</code>.</li>
+<li>FASTQ stores reads with <strong>four lines per record</strong>,
+including quality scores.</li>
+<li>Many FASTQ files are compressed as <code>.fastq.gz</code> to save
+space.</li>
+<li>SAM/BAM store read alignments to a reference genome or
+assembly.</li>
+<li>Understanding these formats is essential for QC, trimming, assembly,
+and annotation.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section><section id="aio-08-quality-control"><p>Content from <a href="08-quality-control.html">Quality Control of Reads</a></p>
+<hr>
+<p>Last updated on 2025-12-04 |
+
+        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/08-quality-control.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 50 minutes</p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>Why do we perform quality control (QC) on raw sequencing reads?</li>
+<li>What kinds of issues can QC reveal in microbial genomics
+datasets?</li>
+<li>How do we run FastQC on the command line and interpret its basic
+outputs?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain why QC is a critical first step before trimming and
+assembly.</li>
+<li>Run FastQC on compressed FASTQ files using the command line.</li>
+<li>Locate and view FastQC HTML reports.</li>
+<li>Identify major QC metrics: per-base quality, sequence length,
+overrepresented sequences, adapters.</li>
+<li>Connect QC findings to downstream decisions (trimming, filtering,
+assembly).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>This episode incorporates the FastQC step described in the
+<em>Assembling a Microbial Genome</em> activity and connects it to the
+sequence file formats from Episode 7. We focus on command‑line usage and
+interpretation of key metrics, even if full QC is abbreviated in
+class.</p>
+</blockquote>
+<section><h2 class="section-heading" id="why-quality-control">Why quality control?<a class="anchor" aria-label="anchor" href="#why-quality-control"></a>
+</h2>
+<hr class="half-width">
+<p>Raw Illumina reads may contain:</p>
+<ul>
+<li>low‑quality bases at the ends of reads,</li>
+<li>leftover adapter sequences,</li>
+<li>duplicated reads,</li>
+<li>unexpected sequence content.</li>
+</ul>
+<p>These issues can:</p>
+<ul>
+<li>decrease assembly quality,</li>
+<li>increase misassemblies,</li>
+<li>waste computational resources.</li>
+</ul>
+<p>Quality control with tools like <strong>FastQC</strong> helps you
+decide:</p>
+<ul>
+<li>whether trimming is necessary,</li>
+<li>which trimming parameters to use,</li>
+<li>whether your data looks as expected.</li>
+</ul></section><section><h2 class="section-heading" id="fastqc-overview">FastQC overview<a class="anchor" aria-label="anchor" href="#fastqc-overview"></a>
+</h2>
+<hr class="half-width">
+<p>FastQC can be run:</p>
+<ul>
+<li>through a <strong>graphical user interface (GUI)</strong>, or</li>
+<li>on the <strong>command line</strong>.</li>
+</ul>
+<p>For a remote server / cloud workflow, the <strong>command‑line
+approach</strong> is most practical, as described in your assembly
+activity.</p>
+<p>FastQC accepts <strong>FASTQ</strong> (and <code>.fastq.gz</code>)
+files and produces:</p>
+<ul>
+<li>an <code>.html</code> report (interactive)</li>
+<li>a <code>.zip</code> file containing detailed data</li>
+</ul></section><section><h2 class="section-heading" id="running-fastqc-on-the-command-line">Running FastQC on the command line<a class="anchor" aria-label="anchor" href="#running-fastqc-on-the-command-line"></a>
+</h2>
+<hr class="half-width">
+<p>From your assembly exercise, a typical command is:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">fastqc</span> reads/ERR435025_R1.fastq.gz reads/ERR435025_R2.fastq.gz</span></code></pre>
+</div>
+<p>This:</p>
+<ul>
+<li>reads compressed FASTQ files from the <code>reads/</code>
+directory,</li>
+<li>writes HTML and ZIP output files in the current directory.</li>
+</ul>
+<p>You can choose an output directory with <code>-o</code>:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> qc</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc reads/ERR435025_R1.fastq.gz reads/ERR435025_R2.fastq.gz</span></code></pre>
+</div>
+<p>After running, list the QC directory:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ls</span> qc</span></code></pre>
+</div>
+<p>You should see files like:</p>
+<ul>
+<li><code>ERR435025_R1_fastqc.html</code></li>
+<li><code>ERR435025_R2_fastqc.html</code></li>
+<li>matching <code>.zip</code> files</li>
+</ul>
+<div id="viewing-fastqc-reports" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="viewing-fastqc-reports" class="callout-inner">
+<h3 class="callout-title">Viewing FastQC reports</h3>
+<div class="callout-content">
+<p>On a remote server, you have two main options:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Download the HTML files</strong> to your local machine (via
+<code>scp</code>, SFTP, or a client like Cyberduck) and open them in a
+browser.</li>
+<li>If available, open them directly in a remote browser session
+(e.g. <code>firefox</code> or similar), as suggested in your assembly
+notes.</li>
+</ol>
+<p>In most workshops, downloading and viewing locally is simplest.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="key-fastqc-modules">Key FastQC modules<a class="anchor" aria-label="anchor" href="#key-fastqc-modules"></a>
+</h2>
+<hr class="half-width">
+<p>Some important panels in the FastQC HTML report include:</p>
+<ul>
+<li>
+<strong>Per base sequence quality</strong>
+<ul>
+<li>Boxplots of quality at each position in the read.<br>
+</li>
+<li>Low quality at the 3′ end often suggests the need for trimming.</li>
+</ul>
+</li>
+<li>
+<strong>Per sequence quality scores</strong>
+<ul>
+<li>Distribution of average quality per read.</li>
+</ul>
+</li>
+<li>
+<strong>Per base sequence content</strong>
+<ul>
+<li>Proportions of A/C/G/T at each base position.</li>
+</ul>
+</li>
+<li>
+<strong>Per sequence GC content</strong>
+<ul>
+<li>Deviations may indicate contamination.</li>
+</ul>
+</li>
+<li>
+<strong>Overrepresented sequences</strong>
+<ul>
+<li>May reveal adapters or other technical artifacts.</li>
+</ul>
+</li>
+</ul>
+<p>Your goal is not to memorize every module but to recognize:</p>
+<ul>
+<li>whether data quality looks generally <strong>good</strong> or
+<strong>poor</strong>, and</li>
+<li>whether adapters or other contaminants are present.</li>
+</ul></section><section><h2 class="section-heading" id="qc-in-the-genome-assembly-workflow">QC in the genome assembly workflow<a class="anchor" aria-label="anchor" href="#qc-in-the-genome-assembly-workflow"></a>
+</h2>
+<hr class="half-width">
+<p>In the assembly activity, QC is described as an early step, even if
+it is sometimes skipped in class to save time.</p>
+<p>The typical real‑world workflow is:</p>
+<ol style="list-style-type: decimal">
+<li>Run <strong>FastQC</strong> on raw FASTQ files.</li>
+<li>Use the reports to:
+<ul>
+<li>decide on trimming parameters,</li>
+<li>confirm read length and quality.</li>
+</ul>
+</li>
+<li>Perform <strong>trimming</strong> (next episode).</li>
+<li>Optionally, run FastQC again on trimmed reads.</li>
+</ol>
+<p>Even when abbreviated, understanding the QC step helps interpret
+downstream assembly quality and potential problems.</p>
+<hr></section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
+<div id="exercise-run-fastqc-on-one-read-file" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-run-fastqc-on-one-read-file" class="callout-inner">
+<h3 class="callout-title">Exercise: Run FastQC on one read file</h3>
+<div class="callout-content">
+<p>Assuming your raw reads are in <code>raw_reads/</code> or
+<code>reads/</code>, run:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> qc</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc raw_reads/sample01_R1.fastq.gz</span></code></pre>
+</div>
+<p>Then:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">ls</span> qc</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>What output files were created?</li>
+<li>How can you transfer the HTML file to your local machine for
+viewing?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-interpret-a-fastqc-report" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-interpret-a-fastqc-report" class="callout-inner">
+<h3 class="callout-title">Exercise: Interpret a FastQC report</h3>
+<div class="callout-content">
+<p>Working from an instructor‑provided FastQC HTML report:</p>
+<ul>
+<li>Examine the <strong>Per base sequence quality</strong> module.</li>
+<li>Check whether most bases are in the green (high quality) zone.</li>
+<li>Look at the <strong>Overrepresented sequences</strong> module.</li>
+</ul>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Would you recommend trimming this dataset? Why or why not?</li>
+<li>Do you see evidence of adapter contamination?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-connect-qc-to-downstream-steps" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-connect-qc-to-downstream-steps" class="callout-inner">
+<h3 class="callout-title">Exercise: Connect QC to downstream steps</h3>
+<div class="callout-content">
+<p>Discuss with a partner:</p>
+<ol style="list-style-type: decimal">
+<li>How could poor QC (low quality, many adapters) affect:
+<ul>
+<li>genome assembly with SPAdes?</li>
+<li>annotation with Prokka?</li>
+</ul>
+</li>
+<li>How might good QC save time and avoid misleading results?</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<span class="callout-header">Key Points</span>
+<div class="callout-inner">
+<div class="callout-content">
+<ul>
+<li>QC is a critical first step before trimming and assembly in
+microbial genomics.</li>
+<li>FastQC summarizes read quality, sequence content, GC content, and
+overrepresented sequences.</li>
+<li>FastQC can read compressed <code>.fastq.gz</code> files and produces
+HTML reports for review.</li>
+<li>QC results guide trimming choices and help interpret assembly
+quality.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section><section id="aio-09-trimming"><p>Content from <a href="09-trimming.html">Trimming and Cleaning Reads</a></p>
+<hr>
+<p>Last updated on 2025-12-04 |
+
+        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/09-trimming.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 50 minutes</p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>Why do we trim and filter raw reads before assembly?</li>
+<li>What kinds of problems can trimming fix?</li>
+<li>How do we run a typical trimming tool on paired-end FASTQ
+files?</li>
+<li>How do trimmed reads fit into the downstream SPAdes and Prokka
+workflow?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain why adapter and quality trimming are important for microbial
+genome assembly.</li>
+<li>Describe common trimming operations (adapter removal, quality
+trimming, length filtering).</li>
+<li>Run a representative trimming command on paired-end FASTQ
+files.</li>
+<li>Verify that trimmed reads are created and understand where they
+should be stored.</li>
+<li>Connect trimming decisions to FastQC results and assembly
+quality.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>This episode builds on the QC step from Episode 8 and the sequencing
+file formats from Episode 7. While your assembly PDF focuses on QC and
+assembly, trimming is a common intermediate step that improves assembly
+performance and quality, so we discuss it explicitly here.</p>
+</blockquote>
+<section><h2 class="section-heading" id="why-trim-reads">Why trim reads?<a class="anchor" aria-label="anchor" href="#why-trim-reads"></a>
+</h2>
+<hr class="half-width">
+<p>After QC with FastQC, you may discover:</p>
+<ul>
+<li>low-quality bases at the <strong>3′ ends</strong> of reads,</li>
+<li>
+<strong>adapter sequences</strong> still present,</li>
+<li>very short or poor-quality reads.</li>
+</ul>
+<p>Leaving these issues uncorrected can lead to:</p>
+<ul>
+<li>fragmented assemblies,</li>
+<li>misassemblies,</li>
+<li>wasted compute and storage.</li>
+</ul>
+<p>Trimming tools remove or correct problematic parts of reads before
+assembly.</p>
+<p>Common trimming goals:</p>
+<ul>
+<li>remove adapters,</li>
+<li>trim low-quality bases from ends,</li>
+<li>discard reads that become too short.</li>
+</ul></section><section><h2 class="section-heading" id="typical-trimming-workflow">Typical trimming workflow<a class="anchor" aria-label="anchor" href="#typical-trimming-workflow"></a>
+</h2>
+<hr class="half-width">
+<p>A trimming tool will:</p>
+<ul>
+<li>take <strong>paired-end FASTQ</strong> files as input,</li>
+<li>write new <strong>trimmed</strong> FASTQ files to a different
+directory,</li>
+<li>optionally produce a log summarizing how many reads were kept or
+discarded.</li>
+</ul>
+<p>A generic command-line pattern looks like:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">trimmer</span>   <span class="at">-i</span> raw_reads/sample01_R1.fastq.gz   <span class="at">-I</span> raw_reads/sample01_R2.fastq.gz   <span class="at">-o</span> trimmed/sample01_R1.trimmed.fastq.gz   <span class="at">-O</span> trimmed/sample01_R2.trimmed.fastq.gz   <span class="pp">[</span><span class="ss">options...</span><span class="pp">]</span></span></code></pre>
+</div>
+<p>The exact options and flags vary by tool (e.g., Trimmomatic, fastp,
+Cutadapt), but this pattern is common:</p>
+<ul>
+<li>
+<strong>input reads</strong> → raw FASTQ files,</li>
+<li>
+<strong>output reads</strong> → trimmed FASTQ files in a separate
+directory.</li>
+</ul>
+<div id="directory-layout-reminder" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="directory-layout-reminder" class="callout-inner">
+<h3 class="callout-title">Directory layout reminder</h3>
+<div class="callout-content">
+<p>From Episode 6 (Project Planning), trimmed reads should go in a
+dedicated directory, e.g.:</p>
+<pre><code>myproject/
+├── raw_reads/
+├── qc/
+├── trimmed/
+├── assembly/
+└── annotation/</code></pre>
+<p>Never overwrite your raw FASTQ files when trimming.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="connecting-qc-to-trimming-choices">Connecting QC to trimming choices<a class="anchor" aria-label="anchor" href="#connecting-qc-to-trimming-choices"></a>
+</h2>
+<hr class="half-width">
+<p>FastQC reports from Episode 8 help answer:</p>
+<ul>
+<li>Are per-base quality scores dropping sharply at the end of
+reads?</li>
+<li>Do we see clear evidence of adapter contamination?</li>
+<li>Are there overrepresented sequences that look like adapters?</li>
+</ul>
+<p>Based on these findings, you might choose to:</p>
+<ul>
+<li>trim the last <strong>10–20 bases</strong> of each read,</li>
+<li>remove known adapter sequences,</li>
+<li>filter out reads below a certain minimum length.</li>
+</ul>
+<p>You don’t need to memorize specific thresholds, but you should
+understand:</p>
+<ul>
+<li>QC → informs trimming<br>
+</li>
+<li>Trimming → improves assembly input</li>
+</ul></section><section><h2 class="section-heading" id="after-trimming-checking-results">After trimming: checking results<a class="anchor" aria-label="anchor" href="#after-trimming-checking-results"></a>
+</h2>
+<hr class="half-width">
+<p>After trimming, you should:</p>
+<ol style="list-style-type: decimal">
+<li>Confirm that the new files exist:</li>
+</ol>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ls</span> trimmed/</span></code></pre>
+</div>
+<ol start="2" style="list-style-type: decimal">
+<li>Optionally, run FastQC again on the trimmed reads:</li>
+</ol>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc trimmed/sample01_R1.trimmed.fastq.gz trimmed/sample01_R2.trimmed.fastq.gz</span></code></pre>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Compare QC reports <strong>before</strong> and
+<strong>after</strong> trimming:</li>
+</ol>
+<ul>
+<li>Are low-quality tails reduced?</li>
+<li>Are adapter sequences gone or reduced?</li>
+<li>Are length distributions as expected?</li>
+</ul>
+<p>The trimmed FASTQ files will be the inputs to <strong>SPAdes</strong>
+in Episode 10.</p>
+<hr></section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
+<div id="exercise-plan-your-trimming-command" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-plan-your-trimming-command" class="callout-inner">
+<h3 class="callout-title">Exercise: Plan your trimming command</h3>
+<div class="callout-content">
+<p>Working with a partner and based on your FastQC results:</p>
+<ol style="list-style-type: decimal">
+<li>Decide:
+<ul>
+<li>Do you need adapter trimming?</li>
+<li>Do you need to cut low-quality bases from the ends?</li>
+<li>What should your minimum read length be?</li>
+</ul>
+</li>
+<li>Draft a pseudocode command (not necessarily using a specific tool
+yet), e.g.:</li>
+</ol>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">trimmer</span> <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">-i</span> raw_reads/sample01_R1.fastq.gz <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">-I</span> raw_reads/sample01_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">-o</span> trimmed/sample01_R1.trimmed.fastq.gz <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">-O</span> trimmed/sample01_R2.trimmed.fastq.gz <span class="dt">\</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  [quality and adapter options...]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="exercise-check-your-trimmed-files" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-check-your-trimmed-files" class="callout-inner">
+<h3 class="callout-title">Exercise: Check your trimmed files</h3>
+<div class="callout-content">
+<p>After running a trimming tool (demonstrated by the instructor):</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">ls</span> trimmed/</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">zcat</span> trimmed/sample01_R1.trimmed.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 4</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Does the file name clearly indicate that the reads are trimmed?</li>
+<li>Can you see that the sequences have been shortened relative to the
+raw reads?</li>
+<li>How many records remain compared to the original file
+(<code>zgrep -c '^@'</code>)?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-qc-after-trimming" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-qc-after-trimming" class="callout-inner">
+<h3 class="callout-title">Exercise: QC after trimming</h3>
+<div class="callout-content">
+<p>If time permits, run FastQC on the trimmed reads:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-o</span> qc trimmed/sample01_R1.trimmed.fastq.gz trimmed/sample01_R2.trimmed.fastq.gz</span></code></pre>
+</div>
+<p>Compare:</p>
+<ul>
+<li>Per-base quality profiles before vs after trimming.</li>
+<li>Overrepresented sequences in both reports.</li>
+</ul>
+<p><strong>Question:</strong><br>
+Do you think the data are now ready to be used as input to SPAdes?</p>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<span class="callout-header">Key Points</span>
+<div class="callout-inner">
+<div class="callout-content">
+<ul>
+<li>Trimming removes low-quality bases and adapters that can interfere
+with assembly.</li>
+<li>Trimmed reads should be saved in a separate <code>trimmed/</code>
+directory; raw data must not be overwritten.</li>
+<li>QC (FastQC) guides trimming decisions and can be rerun afterward to
+confirm improvements.</li>
+<li>Trimmed FASTQ files will be used as inputs to SPAdes in the genome
+assembly step.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section><section id="aio-10-assembly-spades"><p>Content from <a href="10-assembly-spades.html">Genome Assembly with SPAdes</a></p>
+<hr>
+<p>Last updated on 2025-12-04 |
+
+        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/10-assembly-spades.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 60 minutes</p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>How do we assemble microbial genomes from paired-end reads?</li>
+<li>How do we run SPAdes on the command line?</li>
+<li>What are the key SPAdes options we need to set (input files,
+threads, memory, output directory)?</li>
+<li>What files does SPAdes produce and which ones are most
+important?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Describe the role of de novo assembly in microbial genomics.</li>
+<li>Run SPAdes on paired-end reads using appropriate options.</li>
+<li>Locate SPAdes output files (especially <code>contigs.fasta</code>
+and <code>scaffolds.fasta</code>).</li>
+<li>Perform a basic first inspection of the assembly output.</li>
+<li>Connect assembly results to later annotation with Prokka.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>This episode uses the microbial genome assembly activity you provided
+and adapts the SPAdes workflow for a Carpentries-style lesson. It
+assumes reads have already been organized, QC’d, and optionally trimmed
+in earlier episodes.</p>
+</blockquote>
+<section><h2 class="section-heading" id="what-is-genome-assembly">What is genome assembly?<a class="anchor" aria-label="anchor" href="#what-is-genome-assembly"></a>
+</h2>
+<hr class="half-width">
+<p>In <strong>de novo genome assembly</strong>, we reconstruct a genome
+from many short reads:</p>
+<ul>
+<li>Raw reads (FASTQ) → overlap / k-mer graph → contigs →
+scaffolds.</li>
+<li>For bacterial genomes, final sizes are often <strong>2–6
+Mb</strong>.</li>
+<li>Assemblers like <strong>SPAdes</strong> are optimized for microbial
+genomes.</li>
+</ul>
+<p>Our workflow:</p>
+<ol style="list-style-type: decimal">
+<li>Ensure reads are available in a project directory.</li>
+<li>Run SPAdes with paired-end inputs.</li>
+<li>Inspect key output files (especially the assembly FASTA).</li>
+<li>Filter or post-process the assembly (covered here at a basic
+level).</li>
+</ol></section><section><h2 class="section-heading" id="setting-up-the-assembly-directory">Setting up the assembly directory<a class="anchor" aria-label="anchor" href="#setting-up-the-assembly-directory"></a>
+</h2>
+<hr class="half-width">
+<p>Following the earlier project structure, we will work in the
+<code>assembly/</code> directory:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> myproject</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">cd</span> assembly</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+</div>
+<p>You should see that your <strong>current working directory</strong>
+is <code>.../myproject/assembly</code>.</p>
+<p>Make sure your reads are accessible, for example:</p>
+<ul>
+<li><code>../trimmed/sample01_R1.trimmed.fastq.gz</code></li>
+<li><code>../trimmed/sample01_R2.trimmed.fastq.gz</code></li>
+</ul>
+<p>or, if trimming was skipped in this run:</p>
+<ul>
+<li><code>../raw_reads/sample01_R1.fastq.gz</code></li>
+<li><code>../raw_reads/sample01_R2.fastq.gz</code></li>
+</ul></section><section><h2 class="section-heading" id="running-spades">Running SPAdes<a class="anchor" aria-label="anchor" href="#running-spades"></a>
+</h2>
+<hr class="half-width">
+<p>SPAdes is run with a command that specifies:</p>
+<ul>
+<li>
+<code>-1</code> – path to R1 FASTQ,</li>
+<li>
+<code>-2</code> – path to R2 FASTQ,</li>
+<li>
+<code>--threads</code> – number of CPU cores,</li>
+<li>
+<code>--memory</code> – maximum RAM (in GB),</li>
+<li>
+<code>-k</code> – list of k-mer sizes,</li>
+<li>
+<code>-o</code> – output directory.</li>
+</ul>
+<p>A typical command, adapted from your assembly activity, looks
+like:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">spades.py</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">-1</span> ../raw_reads/ERR435025_R1.fastq.gz <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">-2</span> ../raw_reads/ERR435025_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">--threads</span> 10 <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">--memory</span> 120 <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">-k</span> 21,33,55,77,99,127 <span class="dt">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">-o</span> ERR435025_assembly</span></code></pre>
+</div>
+<p>Adjust:</p>
+<ul>
+<li>input paths (<code>-1</code>, <code>-2</code>) to match your
+dataset,</li>
+<li>
+<code>--threads</code> based on the number of cores available,</li>
+<li>
+<code>--memory</code> based on server limits,</li>
+<li>
+<code>-k</code> if needed (these k-mers are typical for Illumina
+reads).</li>
+</ul>
+<div id="running-spades-in-a-long-session" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="running-spades-in-a-long-session" class="callout-inner">
+<h3 class="callout-title">Running SPAdes in a long session</h3>
+<div class="callout-content">
+<p>Genome assembly can take <strong>many minutes to hours</strong>,
+depending on:</p>
+<ul>
+<li>read depth,</li>
+<li>genome size,</li>
+<li>server load,</li>
+<li>number of threads and memory.</li>
+</ul>
+<p>On shared systems, it is common to run SPAdes inside a session
+manager like <code>screen</code> or <code>tmux</code> so that the
+process keeps running even if your SSH connection drops.</p>
+<p>Your instructor may demonstrate this, or the run may be
+pre-computed.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="inspecting-spades-output">Inspecting SPAdes output<a class="anchor" aria-label="anchor" href="#inspecting-spades-output"></a>
+</h2>
+<hr class="half-width">
+<p>Once SPAdes finishes, you should have an output directory (for
+example <code>ERR435025_assembly/</code>):</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ls</span> ERR435025_assembly</span></code></pre>
+</div>
+<p>Common files and directories include:</p>
+<ul>
+<li>
+<code>contigs.fasta</code> – assembled contigs</li>
+<li>
+<code>scaffolds.fasta</code> – assembled scaffolds (contigs linked
+by paired-end information)</li>
+<li>
+<code>spades.log</code> – log file describing the run</li>
+<li>
+<code>params.txt</code> – parameters used</li>
+<li>other intermediate files and reports</li>
+</ul>
+<p>We will usually use <strong><code>scaffolds.fasta</code></strong> (or
+sometimes <code>contigs.fasta</code>) as the input for downstream
+steps.</p>
+<p>Copy the scaffold file into a convenient location:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">cp</span> ERR435025_assembly/scaffolds.fasta .</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
+</div>
+<p>You should now see <code>scaffolds.fasta</code> in your
+<code>assembly/</code> directory.</p>
+</section><section><h2 class="section-heading" id="first-look-at-the-assembly">First look at the assembly<a class="anchor" aria-label="anchor" href="#first-look-at-the-assembly"></a>
+</h2>
+<hr class="half-width">
+<p>Use commands from earlier Unix episodes to inspect the assembly:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">head</span> scaffolds.fasta</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'^&gt;'</span> scaffolds.fasta</span></code></pre>
+</div>
+<ul>
+<li>
+<code>head</code> shows the first few contigs.</li>
+<li>
+<code>grep -c '^&gt;'</code> counts how many contigs are present
+(each header starts with <code>&gt;</code>).</li>
+</ul>
+<p>If helper scripts are available (as in your assembly notes), you can
+compute stats such as:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">seqstat</span> scaffolds.fasta</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">N50_count.pl</span> scaffolds.fasta</span></code></pre>
+</div>
+<p>These provide:</p>
+<ul>
+<li>total assembly length,</li>
+<li>number of contigs,</li>
+<li>N50 (a measure of contig length distribution).</li>
+</ul>
+<p>Later, you may want to filter contigs by length (for example keeping
+only those ≥ 1,000 bp) before annotation, but the basic SPAdes assembly
+output is already enough to proceed to Prokka.</p>
+<hr></section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
+<div id="exercise-run-spades-or-examine-a-prepared-run" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-run-spades-or-examine-a-prepared-run" class="callout-inner">
+<h3 class="callout-title">Exercise: Run SPAdes (or examine a prepared
+run)</h3>
+<div class="callout-content">
+<p>If computing resources allow, run SPAdes on your sample:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> myproject/assembly</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="ex">spades.py</span> <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">-1</span> ../raw_reads/sample01_R1.fastq.gz <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">-2</span> ../raw_reads/sample01_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">--threads</span> 8 <span class="dt">\</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">--memory</span> 32 <span class="dt">\</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">-k</span> 21,33,55,77,99,127 <span class="dt">\</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="at">-o</span> sample01_assembly</span></code></pre>
+</div>
+<p>If SPAdes has been pre-run for you, skip directly to examining the
+output directory.</p>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>How long did the run take?</li>
+<li>Did SPAdes report any warnings or errors in
+<code>spades.log</code>?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-count-contigs-and-inspect-the-assembly" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-count-contigs-and-inspect-the-assembly" class="callout-inner">
+<h3 class="callout-title">Exercise: Count contigs and inspect the
+assembly</h3>
+<div class="callout-content">
+<p>After SPAdes finishes (or using a provided assembly):</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="bu">cd</span> myproject/assembly</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">cp</span> sample01_assembly/scaffolds.fasta .</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'^&gt;'</span> scaffolds.fasta</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">head</span> scaffolds.fasta</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>How many contigs are present?</li>
+<li>What does the first header line look like?</li>
+<li>How might you identify the length of a specific contig?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-think-ahead-to-annotation" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-think-ahead-to-annotation" class="callout-inner">
+<h3 class="callout-title">Exercise: Think ahead to annotation</h3>
+<div class="callout-content">
+<p>Discuss with a partner:</p>
+<ol style="list-style-type: decimal">
+<li>Why might we want to filter out very short contigs before
+annotation?</li>
+<li>Which file from the SPAdes output will we give to Prokka in the next
+episode?</li>
+<li>What information about the assembly might be important to record in
+your project metadata?</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<span class="callout-header">Key Points</span>
+<div class="callout-inner">
+<div class="callout-content">
+<ul>
+<li>SPAdes performs de novo genome assembly from paired-end reads.</li>
+<li>You must provide paths to R1 and R2 reads, thread count, memory
+limit, and an output directory.</li>
+<li>SPAdes produces many files; <code>contigs.fasta</code> and
+<code>scaffolds.fasta</code> are the most important for downstream
+analysis.</li>
+<li>Basic inspection of the assembly (number of contigs, total size,
+N50) helps assess quality.</li>
+<li>The assembly FASTA file will be the input to Prokka for genome
+annotation.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section><section id="aio-11-annotation-prokka"><p>Content from <a href="11-annotation-prokka.html">Genome Annotation with Prokka</a></p>
+<hr>
+<p>Last updated on 2025-12-04 |
+
+        <a href="https://github.com/jenna-tb-ekwealor/microbial-genomics/edit/main/episodes/11-annotation-prokka.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 60 minutes</p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What is genome annotation, and why do we perform it after
+assembly?</li>
+<li>How do we run Prokka on an assembled microbial genome?</li>
+<li>What Prokka options are most important for typical bacterial
+genomes?</li>
+<li>What kinds of output files does Prokka produce, and how can we use
+them?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain the purpose of genome annotation in microbial genomics.</li>
+<li>Run Prokka on an assembled genome using sensible options.</li>
+<li>Interpret the most important annotation output files (GFF, FAA, FFN,
+GBK, etc.).</li>
+<li>Understand the difference between annotating a single genome, a bin,
+or a metagenome.</li>
+<li>Connect annotation results to downstream analyses (comparative
+genomics, visualization, etc.).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>This episode is based on your Prokka annotation exercise and follows
+directly from the SPAdes assembly in Episode 10. We assume that a
+scaffold FASTA file is available and that contigs have already been
+filtered to a reasonable minimum length.</p>
+</blockquote>
+<section><h2 class="section-heading" id="what-is-genome-annotation">What is genome annotation?<a class="anchor" aria-label="anchor" href="#what-is-genome-annotation"></a>
+</h2>
+<hr class="half-width">
+<p>Genome annotation is the process of:</p>
+<ul>
+<li>finding genes (CDS) and other features (tRNAs, rRNAs),</li>
+<li>predicting their functions,</li>
+<li>assigning standardized names and identifiers.</li>
+</ul>
+<p>For a microbial genome, annotation helps you answer:</p>
+<ul>
+<li>How many protein-coding genes are present?</li>
+<li>Are there plasmids, phage, or mobile elements?</li>
+<li>Which pathways or functions are encoded?</li>
+</ul>
+<p><strong>Prokka</strong> is a widely used tool for <strong>rapid,
+automated annotation</strong> of bacterial and archaeal genomes.</p>
+</section><section><h2 class="section-heading" id="inputs-and-outputs-of-prokka">Inputs and outputs of Prokka<a class="anchor" aria-label="anchor" href="#inputs-and-outputs-of-prokka"></a>
+</h2>
+<hr class="half-width">
+<p>Prokka expects:</p>
+<ul>
+<li>a FASTA file of contigs (e.g. scaffolds from SPAdes),</li>
+<li>basic options describing the run and the organism.</li>
+</ul>
+<p>It produces:</p>
+<ul>
+<li>
+<code>.gff</code> – combined sequence and annotation</li>
+<li>
+<code>.gbk</code> – GenBank-format file</li>
+<li>
+<code>.faa</code> – protein sequences</li>
+<li>
+<code>.ffn</code> – nucleotide sequences of genes</li>
+<li>
+<code>.fna</code> – nucleotide sequences of contigs</li>
+<li>
+<code>.tbl</code> – feature table</li>
+<li>
+<code>.txt</code> – plain-text summary</li>
+<li>other helper files</li>
+</ul>
+<p>These outputs can be loaded into genome browsers, comparative
+genomics tools, or downstream pipelines.</p>
+</section><section><h2 class="section-heading" id="basic-prokka-command">Basic Prokka command<a class="anchor" aria-label="anchor" href="#basic-prokka-command"></a>
+</h2>
+<hr class="half-width">
+<p>From your Prokka exercise, the generic form is:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span> mysequences.fna</span></code></pre>
+</div>
+<p>For a typical genome or metagenome bin, your notes suggest:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">--outdir</span> OUTPUTDIRECTORY <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">--prefix</span> OUTPUTFILE_PREFIX <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">--addgenes</span> <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">--locustag</span> MYGEN <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">--increment</span> 5 <span class="dt">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">--cpus</span> 20 <span class="dt">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">--mincontiglen</span> 1000 <span class="dt">\</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  MYSEQUENCEFILE</span></code></pre>
+</div>
+<p>We will adapt this to our workshop data.</p>
+</section><section><h2 class="section-heading" id="running-prokka-on-a-spades-assembly">Running Prokka on a SPAdes assembly<a class="anchor" aria-label="anchor" href="#running-prokka-on-a-spades-assembly"></a>
+</h2>
+<hr class="half-width">
+<p>Assume you have a scaffold FASTA file from Episode 10, such as:</p>
+<ul>
+<li><code>scaffolds.fasta</code></li>
+<li>or a filtered version with contigs ≥ 1000 bp.</li>
+</ul>
+<p>From your <code>annotation/</code> directory:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">cd</span> myproject/annotation</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">cp</span> ../assembly/scaffolds.fasta sample01.scaffolds.fasta</span></code></pre>
+</div>
+<p>Run Prokka:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">--outdir</span> sample01_prokka <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">--prefix</span> sample01 <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">--addgenes</span> <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">--locustag</span> S01 <span class="dt">\</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">--increment</span> 5 <span class="dt">\</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">--cpus</span> 8 <span class="dt">\</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">--mincontiglen</span> 1000 <span class="dt">\</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  sample01.scaffolds.fasta</span></code></pre>
+</div>
+<p>Adjust:</p>
+<ul>
+<li>
+<code>--cpus</code> for your system,</li>
+<li>
+<code>--locustag</code> and <code>--prefix</code> for your organism
+or project,</li>
+<li>
+<code>--mincontiglen</code> if you want a different minimum contig
+size.</li>
+</ul>
+<div id="prokka-for-metagenomes" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="prokka-for-metagenomes" class="callout-inner">
+<h3 class="callout-title">Prokka for metagenomes</h3>
+<div class="callout-content">
+<p>Your notes distinguish:</p>
+<ul>
+<li>
+<p><strong>Genome or bin</strong> annotation:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="at">--outdir</span> OUT <span class="at">--prefix</span> PREFIX <span class="at">--addgenes</span> <span class="at">--locustag</span> TAG <span class="at">--increment</span> 5 <span class="at">--cpus</span> 20 <span class="at">--mincontiglen</span> 1000 MYSEQUENCEFILE</span></code></pre>
+</div>
+</li>
+<li>
+<p><strong>Entire metagenome</strong> annotation:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="at">--outdir</span> OUT <span class="at">--prefix</span> PREFIX <span class="at">--addgenes</span> <span class="at">--metagenome</span> <span class="at">--locustag</span> TAG <span class="at">--increment</span> 5 <span class="at">--cpus</span> 20 <span class="at">--mincontiglen</span> 1000 MYSEQUENCEFILE</span></code></pre>
+</div>
+</li>
+</ul>
+<p>The <code>--metagenome</code> flag adjusts gene prediction for
+fragmented genomes.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="inspecting-prokka-output">Inspecting Prokka output<a class="anchor" aria-label="anchor" href="#inspecting-prokka-output"></a>
+</h2>
+<hr class="half-width">
+<p>After Prokka finishes, list the output directory:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">ls</span> sample01_prokka</span></code></pre>
+</div>
+<p>Look for:</p>
+<ul>
+<li><code>sample01.gff</code></li>
+<li><code>sample01.gbk</code></li>
+<li><code>sample01.faa</code></li>
+<li><code>sample01.ffn</code></li>
+<li><code>sample01.fna</code></li>
+<li><code>sample01.tbl</code></li>
+<li><code>sample01.txt</code></li>
+</ul>
+<p>You can inspect the summary file:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">less</span> sample01.txt</span></code></pre>
+</div>
+<p>It typically includes:</p>
+<ul>
+<li>number of CDS,</li>
+<li>number of tRNAs and rRNAs,</li>
+<li>contig statistics,</li>
+<li>basic annotation summary.</li>
+</ul>
+<p>View the GFF header:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">head</span> sample01.gff</span></code></pre>
+</div>
+<p>This file is especially useful because it:</p>
+<ul>
+<li>combines sequence,</li>
+<li>feature coordinates,</li>
+<li>annotations,</li>
+</ul>
+<p>in a single standardized format.</p>
+</section><section><h2 class="section-heading" id="using-annotation-results">Using annotation results<a class="anchor" aria-label="anchor" href="#using-annotation-results"></a>
+</h2>
+<hr class="half-width">
+<p>Annotation outputs can be used for:</p>
+<ul>
+<li>
+<strong>exploratory analysis</strong> – counting genes, inspecting
+interesting CDS,</li>
+<li>
+<strong>comparative genomics</strong> – clustering proteins from
+<code>.faa</code> files,</li>
+<li>
+<strong>visualization</strong> – loading <code>.gbk</code> or
+<code>.gff</code> into genome browsers,</li>
+<li>
+<strong>downstream pipelines</strong> – feeding <code>.gff</code>
+and <code>.fna</code> into other tools.</li>
+</ul>
+<p>In this workshop, we focus on:</p>
+<ul>
+<li>understanding what Prokka did,</li>
+<li>identifying key outcome metrics,</li>
+<li>connecting the results back to the assembly used as input.</li>
+</ul>
+<hr></section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
+<div id="exercise-run-prokka-on-your-assembly" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-run-prokka-on-your-assembly" class="callout-inner">
+<h3 class="callout-title">Exercise: Run Prokka on your assembly</h3>
+<div class="callout-content">
+<p>Assuming your assembly FASTA is in <code>assembly/</code>:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">cd</span> myproject/annotation</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">cp</span> ../assembly/scaffolds.fasta sample01.scaffolds.fasta</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="ex">prokka</span> <span class="dt">\</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">--outdir</span> sample01_prokka <span class="dt">\</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="at">--prefix</span> sample01 <span class="dt">\</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="at">--addgenes</span> <span class="dt">\</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  <span class="at">--locustag</span> S01 <span class="dt">\</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="at">--increment</span> 5 <span class="dt">\</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  <span class="at">--cpus</span> 4 <span class="dt">\</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  <span class="at">--mincontiglen</span> 1000 <span class="dt">\</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  sample01.scaffolds.fasta</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Did Prokka complete without errors?</li>
+<li>How long did the run take?</li>
+<li>How many CDS, tRNAs, and rRNAs were predicted (check
+<code>sample01.txt</code>)?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-explore-annotation-files" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-explore-annotation-files" class="callout-inner">
+<h3 class="callout-title">Exercise: Explore annotation files</h3>
+<div class="callout-content">
+<p>From within <code>sample01_prokka</code>:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">head</span> sample01.txt</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">head</span> sample01.gff</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">head</span> sample01.faa</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>What information is summarized in <code>sample01.txt</code>?</li>
+<li>How are features represented in the GFF file?</li>
+<li>What does a typical protein header in <code>sample01.faa</code> look
+like?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-genome-vs-metagenome-mode" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-genome-vs-metagenome-mode" class="callout-inner">
+<h3 class="callout-title">Exercise: Genome vs metagenome mode</h3>
+<div class="callout-content">
+<p>Discuss with a partner:</p>
+<ol style="list-style-type: decimal">
+<li>When would you use <code>--metagenome</code> with Prokka?</li>
+<li>What kinds of datasets (e.g., bins, MAGs, entire metagenomes) might
+benefit from <code>--metagenome</code>?</li>
+<li>For the assembly produced in this workshop, is
+<code>--metagenome</code> appropriate or not?</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<span class="callout-header">Key Points</span>
+<div class="callout-inner">
+<div class="callout-content">
+<ul>
+<li>Prokka performs rapid, automated annotation of bacterial and
+archaeal genomes.</li>
+<li>You must provide an assembly FASTA file and specify sensible options
+(output directory, prefix, locus tag, CPUs, minimum contig length).</li>
+<li>Prokka generates many outputs; the most important include
+<code>.gff</code>, <code>.gbk</code>, <code>.faa</code>,
+<code>.ffn</code>, <code>.fna</code>, and <code>.txt</code>.</li>
+<li>Annotation results summarize genes, rRNAs, tRNAs, and other
+features, and can be used in downstream comparative and visualization
+workflows.</li>
+<li>The annotated genome is the culmination of the QC → trimming →
+assembly → annotation pipeline used in this workshop.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section>
 </div>
     </main>
 </div>
