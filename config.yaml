@@ -2,13 +2,13 @@
 # Values for this lesson.
 #------------------------------------------------------------
 
-# Which carpentry is this (swc, dc, lc, or cp)?
+# Which carpentry is this (swc, dc, lc, cp, incubator, lab)?
 # swc: Software Carpentry
 # dc: Data Carpentry
 # lc: Library Carpentry
 # cp: Carpentries (to use for instructor training for instance)
 # incubator: The Carpentries Incubator
-carpentry: 'dc'
+carpentry: 'incubator'
 
 # Overall title for pages.
 title: 'Microbial Genomics Workshop'
