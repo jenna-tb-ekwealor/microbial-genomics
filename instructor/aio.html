@@ -1681,11 +1681,10 @@ workflows.</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>How should we organize files for a microbial genomics project?</li>
-<li>Why is tidy organization essential for QC, trimming, assembly, and
-annotation workflows?</li>
-<li>What naming conventions and directory structures prevent errors
-later?</li>
+<li>Why does tidy organization matter for microbial genomics?</li>
+<li>How should we structure directories for a full analysis
+workflow?</li>
+<li>How do naming conventions support clarity and reproducibility?</li>
 </ul>
 </div>
 </div>
@@ -1695,141 +1694,164 @@ later?</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Explain the importance of tidy project organization in
-genomics.</li>
-<li>Create a clear directory structure for raw reads, trimmed reads, QC
-outputs, assemblies, and annotations.</li>
-<li>Apply consistent and meaningful file naming conventions.</li>
-<li>Understand how well‑organized projects reduce mistakes in downstream
-commands.</li>
+<li>Organize a microbial genomics project with a clear directory
+structure.</li>
+<li>Apply consistent file‑naming conventions.</li>
+<li>Understand how tidiness supports transparent, reproducible
+analysis.</li>
+<li>Prepare a workspace that will be used for QC, trimming, assembly,
+and annotation.</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </div>
-<blockquote>
-<p>This episode uses best practices from the Unix tutorial and prepares
-for handling large datasets and multi-step genomics workflows in later
-episodes.</p>
-</blockquote>
 <section><h2 class="section-heading" id="why-organization-matters-in-genomics">Why organization matters in genomics<a class="anchor" aria-label="anchor" href="#why-organization-matters-in-genomics"></a>
 </h2>
 <hr class="half-width">
-<p>Microbial genomics projects quickly accumulate many files:</p>
+<p>Microbial genomics projects generate many files:<br>
+raw FASTQ, QC reports, trimmed reads, assemblies, annotations, logs, and
+more.<br>
+Without organization, it becomes easy to:</p>
 <ul>
-<li>raw FASTQ files<br>
-</li>
-<li>QC reports<br>
-</li>
-<li>trimmed reads<br>
-</li>
-<li>assembly outputs<br>
-</li>
-<li>annotation files<br>
-</li>
-<li>logs and scripts</li>
+<li>run tools on the wrong files,</li>
+<li>overwrite or lose important results,</li>
+<li>confuse raw vs processed data,</li>
+<li>make mistakes that compromise downstream steps.</li>
 </ul>
-<p>Without structure, it becomes easy to:</p>
-<ul>
-<li>run tools on the wrong files,<br>
-</li>
-<li>overwrite results,<br>
-</li>
-<li>mix up samples, or<br>
-</li>
-<li>accidentally delete important data.</li>
-</ul>
-<p>A tidy filesystem prevents these mistakes.</p>
-</section><section><h2 class="section-heading" id="recommended-project-structure">Recommended project structure<a class="anchor" aria-label="anchor" href="#recommended-project-structure"></a>
-</h2>
-<hr class="half-width">
-<p>A common layout is:</p>
-<pre><code>project/
-├── raw_reads/
-├── qc_reports/
-├── trimmed/
-├── assembly/
-├── annotation/
-└── scripts/</code></pre>
-<p>As taught in earlier Unix episodes, this structure uses directories
-effectively to keep related files together.</p>
-</section><section><h2 class="section-heading" id="naming-conventions">Naming conventions<a class="anchor" aria-label="anchor" href="#naming-conventions"></a>
-</h2>
-<hr class="half-width">
-<p>Use filenames that are:</p>
+<p>But beyond convenience, tidy organization is essential for
+<strong>reproducibility</strong>.</p>
+<p>Reproducibility means that:</p>
 <ul>
 <li>
-<strong>descriptive</strong><br>
+<em>You</em> can return to your project months later and understand
+every step.<br>
 </li>
 <li>
-<strong>consistent</strong><br>
+<em>Another researcher</em> can recreate your workflow from raw
+reads to final annotations.<br>
 </li>
-<li>
-<strong>machine‑friendly</strong> (no spaces!)</li>
+<li>Files and directories document the workflow clearly and
+transparently.</li>
 </ul>
-<p>Examples:</p>
-<ul>
-<li><code>sample01_R1.fastq.gz</code></li>
-<li><code>sample01_R2.fastq.gz</code></li>
-<li><code>ERR435025_assembly/</code></li>
-<li><code>prokka_sample01/</code></li>
-</ul>
-<p>Avoid:</p>
-<ul>
-<li>
-<code>my file.fastq</code><br>
-</li>
-<li>
-<code>data stuff/</code><br>
-</li>
-<li><code>final_FINAL_reallyfinal.txt</code></li>
-</ul>
-<div id="tip-use-hyphens-or-underscores" class="callout">
+<p>Good structure = good science.</p>
+<div id="naming-conventions-and-reproducibility" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="tip-use-hyphens-or-underscores" class="callout-inner">
-<h3 class="callout-title">Tip: Use hyphens or underscores</h3>
+<div id="naming-conventions-and-reproducibility" class="callout-inner">
+<h3 class="callout-title">Naming conventions and reproducibility</h3>
 <div class="callout-content">
+<p>Consistent, descriptive naming makes your work understandable.</p>
 <p>Good:</p>
 <pre><code>sample01_R1.fastq.gz
-run-2025-reads/</code></pre>
-<p>Bad:</p>
-<pre><code>Sample 1 Reads/</code></pre>
-<p>Spaces break commands unless quoted—dangerous in genomics
-workflows.</p>
+sample01_R2.fastq.gz
+trimmed/sample01_R1.trimmed.fastq.gz
+assembly/sample01_assembly/
+annotation/sample01_prokka/</code></pre>
+<p>Avoid spaces or ambiguous names:</p>
+<pre><code>my file.fastq
+weirdStuff/
+analysis2_final_final/</code></pre>
 </div>
 </div>
 </div>
+</section><section><h2 class="section-heading" id="recommended-project-directory-structure">Recommended project directory structure<a class="anchor" aria-label="anchor" href="#recommended-project-directory-structure"></a>
+</h2>
+<hr class="half-width">
+<p>A clean layout helps separate raw data from processed data:</p>
+<pre><code>myproject/
+├── metadata/
+├── raw_reads/
+├── qc/
+├── trimmed/
+├── assembly/
+├── annotation/
+└── scripts/</code></pre>
+<p>Purpose of each:</p>
+<ul>
+<li>
+<strong>metadata/</strong>: sample sheets, README files<br>
+</li>
+<li>
+<strong>raw_reads/</strong>: original FASTQ (never modified)<br>
+</li>
+<li>
+<strong>qc/</strong>: FastQC reports and summaries<br>
+</li>
+<li>
+<strong>trimmed/</strong>: files after read trimming<br>
+</li>
+<li>
+<strong>assembly/</strong>: SPAdes results and filtered
+scaffolds<br>
+</li>
+<li>
+<strong>annotation/</strong>: Prokka outputs<br>
+</li>
+<li>
+<strong>scripts/</strong>: helper scripts, logs, and workflow
+notes</li>
+</ul>
+<p>This structure mirrors the entire 8‑hour workflow and supports
+transparent, reproducible analysis.</p>
 </section><section><h2 class="section-heading" id="planning-for-downstream-tools">Planning for downstream tools<a class="anchor" aria-label="anchor" href="#planning-for-downstream-tools"></a>
 </h2>
 <hr class="half-width">
-<p>Later episodes will use:</p>
+<p>Many tools assume or benefit from a predictable layout:</p>
 <ul>
-<li>
-<strong>FastQC</strong> → expects clear input filenames<br>
+<li>FastQC outputs can go in <code>qc/</code>
 </li>
-<li>
-<strong>Trimming tools</strong> → produce new FASTQ files<br>
+<li>Trimming outputs go in <code>trimmed/</code>
 </li>
-<li>
-<strong>SPAdes</strong> → creates many output directories<br>
+<li>SPAdes creates an assembly directory inside
+<code>assembly/</code>
 </li>
-<li>
-<strong>Prokka</strong> → generates several annotation files</li>
+<li>Prokka writes annotation files inside <code>annotation/</code>
+</li>
 </ul>
-<p>A well‑organized structure ensures:</p>
+<p>Clear organization ensures:</p>
 <ul>
-<li>safe separation of raw vs processed data<br>
-</li>
-<li>clarity during command execution<br>
-</li>
-<li>easier troubleshooting<br>
-</li>
-<li>reproducible workflows</li>
+<li>raw data stays untouched,</li>
+<li>intermediate steps remain traceable,</li>
+<li>results are easy to locate and interpret,</li>
+<li>collaborators (or future you) can reproduce the workflow.</li>
 </ul>
+<div id="reproducibility-checklist" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="reproducibility-checklist" class="callout-inner">
+<h3 class="callout-title">Reproducibility checklist</h3>
+<div class="callout-content">
+<ul class="task-list">
+<li><label><input type="checkbox">Raw FASTQ lives
+<strong>only</strong> in <code>raw_reads/</code><br></label></li>
+<li><label><input type="checkbox">QC outputs stored in
+<code>qc/</code><br></label></li>
+<li><label><input type="checkbox">Trimmed reads stored in
+<code>trimmed/</code><br></label></li>
+<li><label><input type="checkbox">Assemblies saved in
+<code>assembly/</code><br></label></li>
+<li><label><input type="checkbox">Annotations saved in
+<code>annotation/</code><br></label></li>
+<li><label><input type="checkbox">Scripts, notes, and logs saved in
+<code>scripts/</code><br></label></li>
+<li><label><input type="checkbox">No spaces in filenames<br></label></li>
+<li><label><input type="checkbox">Clear, descriptive naming for all
+samples<br></label></li>
+<li><label><input type="checkbox">README or metadata file explains the
+workflow</label></li>
+</ul>
+</div>
+</div>
+</div>
+</section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
 <div id="exercise-build-your-project-structure" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -1838,41 +1860,58 @@ workflows.</p>
 <div id="exercise-build-your-project-structure" class="callout-inner">
 <h3 class="callout-title">Exercise: Build your project structure</h3>
 <div class="callout-content">
-<p>Create the recommended structure:</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> project/<span class="dt">{raw_reads</span><span class="op">,</span><span class="dt">qc_reports</span><span class="op">,</span><span class="dt">trimmed</span><span class="op">,</span><span class="dt">assembly</span><span class="op">,</span><span class="dt">annotation</span><span class="op">,</span><span class="dt">scripts}</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> myproject/<span class="dt">{metadata</span><span class="op">,</span><span class="dt">raw_reads</span><span class="op">,</span><span class="dt">qc</span><span class="op">,</span><span class="dt">trimmed</span><span class="op">,</span><span class="dt">assembly</span><span class="op">,</span><span class="dt">annotation</span><span class="op">,</span><span class="dt">scripts}</span></span></code></pre>
 </div>
 <p><strong>Questions:</strong></p>
 <ul>
-<li>Which directories will hold input FASTQ files?</li>
-<li>Where will SPAdes results go?</li>
-<li>Where should you store logs or scripts?</li>
+<li>Which directories will hold raw vs processed data?</li>
+<li>Why should raw data be kept untouched?</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="exercise-rename-files-for-tidiness" class="callout discussion">
+<div id="exercise-rename-for-tidiness" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-rename-files-for-tidiness" class="callout-inner">
-<h3 class="callout-title">Exercise: Rename files for tidiness</h3>
+<div id="exercise-rename-for-tidiness" class="callout-inner">
+<h3 class="callout-title">Exercise: Rename for tidiness</h3>
 <div class="callout-content">
-<p>Suppose you have files:</p>
-<pre><code><span><span class="va">read1.fq.gz</span></span>
-<span><span class="va">read2.fq.gz</span></span></code></pre>
-<p>Rename them using a good naming convention:</p>
+<p>Suppose you received files named:</p>
+<pre><code><span><span class="va">reads1.fq.gz</span></span>
+<span><span class="va">reads2.fq.gz</span></span></code></pre>
+<p>Rename them:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">mv</span> read1.fq.gz sample01_R1.fastq.gz</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">mv</span> read2.fq.gz sample01_R2.fastq.gz</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">mv</span> reads1.fq.gz sample01_R1.fastq.gz</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">mv</span> reads2.fq.gz sample01_R2.fastq.gz</span></code></pre>
 </div>
-<p><strong>Question:</strong><br>
-Why is this better for downstream analysis?</p>
+<p><strong>Why is this important?</strong></p>
+</div>
+</div>
+</div>
+<div id="exercise-add-documentation" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-add-documentation" class="callout-inner">
+<h3 class="callout-title">Exercise: Add documentation</h3>
+<div class="callout-content">
+<p>Inside <code>metadata/</code>, create a basic README:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Project: Microbial Genome Workshop</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="st">Sample: sample01</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="st">Notes: Raw reads stored in raw_reads/, workflow steps recorded in scripts/"</span> <span class="op">&gt;</span> metadata/README.txt</span></code></pre>
+</div>
+<p>Why does this improve reproducibility?</p>
 </div>
 </div>
 </div>
@@ -1884,19 +1923,19 @@ Why is this better for downstream analysis?</p>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>Good organization prevents errors in multi-step genomics
+<li>Good organization prevents mistakes in multi‑step genomics
 workflows.</li>
-<li>Use meaningful directory structures: raw reads, QC reports, trimmed
-data, assemblies, annotations.</li>
-<li>Consistent, space‑free filenames make commands easier and
-safer.</li>
-<li>Tidy projects support reproducibility and smooth downstream
-analysis.</li>
+<li>Clean, consistent naming is essential for clarity and
+reproducibility.</li>
+<li>A standard directory layout helps trace raw → QC → trimmed →
+assembly → annotation.</li>
+<li>Documentation (metadata, README, logs) is part of reproducible
+science.</li>
 </ul>
 </div>
 </div>
 </div>
-</section></section><section id="aio-06-project-planning"><p>Content from <a href="06-project-planning.html">Project Planning</a></p>
+</div></section><section id="aio-06-project-planning"><p>Content from <a href="06-project-planning.html">Project Planning</a></p>
 <hr>
 <p>Last updated on 2025-12-04 |
 
@@ -1913,12 +1952,12 @@ analysis.</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>How should I plan a microbial genomics analysis before touching the
+<li>How do we plan a microbial genomics workflow before touching the
 data?</li>
-<li>What directories, files, and metadata should I set up ahead of
-time?</li>
-<li>How do I structure a workflow so QC, trimming, assembly, and
-annotation run smoothly?</li>
+<li>What directories, metadata, and decisions must be made before QC,
+trimming, assembly, and annotation?</li>
+<li>How does thoughtful planning support reproducibility and reduce
+errors?</li>
 </ul>
 </div>
 </div>
@@ -1928,12 +1967,13 @@ annotation run smoothly?</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Anticipate the workflow steps in a microbial genomics project.</li>
-<li>Plan a directory layout suitable for QC, trimming, assembly, and
-annotation workflows.</li>
-<li>Identify metadata you must collect before running tools.</li>
-<li>Understand how planning improves reproducibility and avoids
-downstream errors.</li>
+<li>Anticipate each stage of the microbial genomics workflow.</li>
+<li>Identify what information (metadata) must be collected before
+beginning analysis.</li>
+<li>Create a project structure that supports reproducible, traceable
+computation.</li>
+<li>Understand how planning prevents mistakes and accelerates downstream
+work.</li>
 </ul>
 </div>
 </div>
@@ -1941,55 +1981,57 @@ downstream errors.</li>
 </div>
 </div>
 <blockquote>
-<p>This episode prepares learners for the workflow used in Episodes 7–11
-by building the project plan and directory structure needed for quality
-control, trimming, assembly (SPAdes), and annotation (Prokka).<br>
-It draws on concepts from the Unix tutorial and best practices for
-genome analysis, but does <strong>not</strong> yet introduce FASTQ or
-tool-specific PDF content.</p>
+<p>This episode prepares learners for the complete workflow used in
+Episodes 7–11: sequence formats → QC → trimming → assembly → annotation.
+Good planning prevents downstream confusion and supports transparent,
+reproducible bioinformatics.</p>
 </blockquote>
 <section><h2 class="section-heading" id="why-planning-matters">Why planning matters<a class="anchor" aria-label="anchor" href="#why-planning-matters"></a>
 </h2>
 <hr class="half-width">
-<p>Microbial genomics workflows involve multiple steps:</p>
+<p>Microbial genomics workflows involve many sequential steps:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Quality control</strong> (FastQC)</li>
-<li><strong>Trimming</strong></li>
+<strong>Quality control</strong> (FastQC)<br>
+</li>
 <li>
-<strong>Genome assembly</strong> (SPAdes)</li>
-<li><strong>Assembly evaluation &amp; filtering</strong></li>
+<strong>Trimming</strong> (removing adapters and low-quality
+bases)<br>
+</li>
+<li>
+<strong>Assembly</strong> (SPAdes)<br>
+</li>
+<li>
+<strong>Contig filtering &amp; evaluation</strong><br>
+</li>
 <li>
 <strong>Annotation</strong> (Prokka)</li>
-<li><strong>Archiving results &amp; documenting methods</strong></li>
 </ol>
-<p>Each step produces files, logs, and subdirectories. Without
-planning:</p>
+<p>Each step generates multiple files, and each depends on the previous
+step being correct.</p>
+<p>Good planning ensures that:</p>
 <ul>
-<li>files become scattered across your home directory,</li>
-<li>output overwrites previous results,</li>
-<li>commands reference the wrong paths,</li>
-<li>reproducibility becomes impossible.</li>
+<li>raw data stays untouched,</li>
+<li>workflows are traceable and reproducible,</li>
+<li>directories and filenames are predictable,</li>
+<li>you avoid wasting compute time on mis‑labeled or misplaced
+files.</li>
 </ul>
-<p>A simple, thoughtful plan prevents all of this.</p>
-</section><section><h2 class="section-heading" id="anticipating-the-workflow">Anticipating the workflow<a class="anchor" aria-label="anchor" href="#anticipating-the-workflow"></a>
+<p>Reproducibility begins <strong>before</strong> you run your first
+command.</p>
+</section><section><h2 class="section-heading" id="planning-your-project-structure">Planning your project structure<a class="anchor" aria-label="anchor" href="#planning-your-project-structure"></a>
 </h2>
 <hr class="half-width">
-<p>Before analyzing data, ask:</p>
+<p>You created a tidy project layout in Episode 5.<br>
+Now we expand the rationale behind it.</p>
+<p>A clean directory layout enables:</p>
 <ul>
-<li>Where will I store raw FASTQ files?</li>
-<li>Where will QC reports go?</li>
-<li>Where will trimmed reads go?</li>
-<li>Where should the SPAdes assembly output live?</li>
-<li>Where should I store annotation results?</li>
-<li>Where will scripts or notes be kept?</li>
+<li>clear separation of raw vs processed data,</li>
+<li>predictable paths for running tools,</li>
+<li>easy troubleshooting when something fails,</li>
+<li>transparency for collaborators or future you.</li>
 </ul>
-<p>This planning mirrors the Unix skills covered in Episodes
-1–5—especially filesystem navigation and working with files.</p>
-</section><section><h2 class="section-heading" id="recommended-directory-skeleton">Recommended directory skeleton<a class="anchor" aria-label="anchor" href="#recommended-directory-skeleton"></a>
-</h2>
-<hr class="half-width">
-<p>You can create a clean starting layout:</p>
+<p>A typical workflow structure:</p>
 <pre><code>myproject/
 ├── metadata/
 ├── raw_reads/
@@ -1998,123 +2040,152 @@ planning:</p>
 ├── assembly/
 ├── annotation/
 └── scripts/</code></pre>
-<p>Purpose of each:</p>
+</section><section><h2 class="section-heading" id="what-metadata-do-you-need">What metadata do you need?<a class="anchor" aria-label="anchor" href="#what-metadata-do-you-need"></a>
+</h2>
+<hr class="half-width">
+<p>Before analysis begins, record:</p>
 <ul>
 <li>
-<strong>metadata/</strong>: sample sheets, run notes<br>
+<strong>sample IDs</strong><br>
 </li>
 <li>
-<strong>raw_reads/</strong>: original FASTQ files<br>
+<strong>R1 and R2 filenames</strong><br>
 </li>
 <li>
-<strong>qc/</strong>: FastQC or other QC outputs<br>
+<strong>sequencing platform</strong><br>
 </li>
 <li>
-<strong>trimmed/</strong>: files after trimming<br>
+<strong>expected genome size</strong><br>
 </li>
 <li>
-<strong>assembly/</strong>: SPAdes output folders<br>
+<strong>notes about conditions or treatments</strong><br>
 </li>
-<li>
-<strong>annotation/</strong>: Prokka output<br>
-</li>
-<li>
-<strong>scripts/</strong>: shell scripts, helper commands</li>
+<li><strong>date of sequencing and provider</strong></li>
 </ul>
-<p>This structure mirrors the layout used throughout the workshop and is
-consistent with good practice in microbial genomics research.</p>
-<div id="planning-tip" class="callout">
+<p>Place metadata in a file inside your project:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="bu">cd</span> myproject/metadata</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-e</span> <span class="st">"sample_id	read1	read2</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="st">sample01	sample01_R1.fastq.gz	sample01_R2.fastq.gz"</span> <span class="op">&gt;</span> samples.tsv</span></code></pre>
+</div>
+<p>Metadata supports:</p>
+<ul>
+<li>reproducibility,</li>
+<li>automation,</li>
+<li>correct input selection,</li>
+<li>downstream interpretation of assembly and annotation.</li>
+</ul>
+<div id="good-planning-reduces-errors" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="planning-tip" class="callout-inner">
-<h3 class="callout-title">Planning tip</h3>
+<div id="good-planning-reduces-errors" class="callout-inner">
+<h3 class="callout-title">Good planning reduces errors</h3>
 <div class="callout-content">
-<p>Never mix <strong>raw data</strong> with <strong>processed
-data</strong>.<br>
-Raw FASTQ files should remain untouched and stored in their own
-directory.<br>
-All processing steps should write outputs into new directories.</p>
+<p>Most failures in QC, trimming, SPAdes, and Prokka come from: - wrong
+file paths, - inconsistent sample names, - missing metadata, - unclear
+project structure.</p>
+<p>Planning ahead prevents these issues and saves significant time.</p>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="metadata-planning">Metadata planning<a class="anchor" aria-label="anchor" href="#metadata-planning"></a>
+</section><section><h2 class="section-heading" id="thinking-ahead-to-qc-trimming-and-assembly">Thinking ahead to QC, trimming, and assembly<a class="anchor" aria-label="anchor" href="#thinking-ahead-to-qc-trimming-and-assembly"></a>
 </h2>
 <hr class="half-width">
-<p>Before running any tool, you should prepare:</p>
+<p>Before beginning analysis, confirm:</p>
 <ul>
-<li>sample names<br>
+<li>Are your raw FASTQ names consistent
+(<code>sample01_R1.fastq.gz</code>,
+<code>sample01_R2.fastq.gz</code>)?<br>
 </li>
-<li>read file names (R1, R2)<br>
+<li>Do you know where FastQC outputs will go (<code>qc/</code>)?<br>
 </li>
-<li>sequencing platform<br>
+<li>Will trimmed reads be written to (<code>trimmed/</code>)?<br>
 </li>
-<li>expected genome size (helps anticipate memory needs)<br>
+<li>Do you have enough disk space for SPAdes output?<br>
 </li>
-<li>notes on experimental conditions</li>
+<li>Where will Prokka results be saved (<code>annotation/</code>)?</li>
 </ul>
-<p>A simple spreadsheet often works best.<br>
-This metadata informs file naming and makes SPAdes/Prokka outputs easier
-to interpret.</p>
-</section><section><h2 class="section-heading" id="planning-for-tool-inputs-outputs">Planning for tool inputs &amp; outputs<a class="anchor" aria-label="anchor" href="#planning-for-tool-inputs-outputs"></a>
+<p>These decisions prevent workflow bottlenecks and unexpected errors
+mid‑analysis.</p>
+</section><section><h2 class="section-heading" id="planning-for-reproducibility">Planning for reproducibility<a class="anchor" aria-label="anchor" href="#planning-for-reproducibility"></a>
 </h2>
 <hr class="half-width">
-<p>This episode does <strong>not</strong> invoke SPAdes or Prokka
-directly, but prepares for their behavior:</p>
+<p>A reproducible project includes:</p>
 <ul>
-<li>SPAdes produces an output directory with many files (logs, contigs,
-scaffolds, temporary files).</li>
-<li>Prokka outputs multiple files (<code>.gff</code>, <code>.faa</code>,
-<code>.ffn</code>, <code>.tbl</code>, etc.).</li>
+<li>a clear directory tree,</li>
+<li>a metadata file,</li>
+<li>saved scripts or command logs,</li>
+<li>documented decisions (e.g., trimming parameters, SPAdes
+settings),</li>
+<li>no overwritten raw data,</li>
+<li>version information for tools (FastQC, SPAdes, Prokka).</li>
 </ul>
-<p>Ensuring you already have dedicated directories avoids clutter and
-accidental overwriting.</p>
-<div id="exercise-create-your-project-layout" class="callout discussion">
+<p>This ensures others can verify, repeat, or extend your analysis.</p>
+</section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
+<div id="exercise-build-a-planning-checklist" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-create-your-project-layout" class="callout-inner">
-<h3 class="callout-title">Exercise: Create your project layout</h3>
+<div id="exercise-build-a-planning-checklist" class="callout-inner">
+<h3 class="callout-title">Exercise: Build a planning checklist</h3>
 <div class="callout-content">
-<p>Make the directory skeleton:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> myproject/<span class="dt">{metadata</span><span class="op">,</span><span class="dt">raw_reads</span><span class="op">,</span><span class="dt">qc</span><span class="op">,</span><span class="dt">trimmed</span><span class="op">,</span><span class="dt">assembly</span><span class="op">,</span><span class="dt">annotation</span><span class="op">,</span><span class="dt">scripts}</span></span></code></pre>
-</div>
-<p><strong>Questions:</strong></p>
+<p>Make a short checklist for your project:</p>
 <ul>
-<li>Which folder will contain raw FASTQ files?</li>
-<li>Where will SPAdes output go?</li>
-<li>Where should your Prokka annotation end up?</li>
+<li>What directories will you need?</li>
+<li>What metadata must be recorded?</li>
+<li>What filenames will you use?</li>
+<li>Where will QC, trimming, assembly, and annotation outputs go?</li>
 </ul>
+<p>Compare with a partner.</p>
 </div>
 </div>
 </div>
-<div id="exercise-plan-metadata-for-one-sample" class="callout discussion">
+<div id="exercise-create-or-update-your-metadata-file" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-plan-metadata-for-one-sample" class="callout-inner">
-<h3 class="callout-title">Exercise: Plan metadata for one sample</h3>
+<div id="exercise-create-or-update-your-metadata-file" class="callout-inner">
+<h3 class="callout-title">Exercise: Create or update your metadata
+file</h3>
 <div class="callout-content">
-<p>Create a text file in the <code>metadata/</code> directory:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-e</span> <span class="st">"sample_id\tread1\tread2\nsample01\tsample01_R1.fastq.gz\tsample01_R2.fastq.gz"</span> <span class="op">&gt;</span> metadata/samples.tsv</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">cd</span> myproject/metadata</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-e</span> <span class="st">"sample_id	read1	read2</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="st">sample01	sample01_R1.fastq.gz	sample01_R2.fastq.gz"</span> <span class="op">&gt;</span> samples.tsv</span></code></pre>
 </div>
-<p>Then inspect it:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">cat</span> metadata/samples.tsv</span></code></pre>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>What additional fields might help future users of this dataset?</li>
+<li>How could you document SPAdes or Prokka parameters here?</li>
+</ul>
 </div>
-<p><strong>Question:</strong><br>
-Why is it helpful to prepare metadata before running analysis tools?</p>
+</div>
+</div>
+<div id="exercise-anticipate-downstream-needs" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-anticipate-downstream-needs" class="callout-inner">
+<h3 class="callout-title">Exercise: Anticipate downstream needs</h3>
+<div class="callout-content">
+<p>Discuss:</p>
+<ul>
+<li>What problems might arise if trimmed reads overwrite raw reads?</li>
+<li>Why do we avoid storing large SPAdes outputs inside random
+directories?</li>
+<li>How does planning help when teaching or collaborating?</li>
+</ul>
 </div>
 </div>
 </div>
@@ -2126,19 +2197,18 @@ Why is it helpful to prepare metadata before running analysis tools?</p>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>Planning your project structure prevents mistakes during multi-step
-analysis.</li>
-<li>Separate raw data, QC results, trimmed reads, assemblies, and
-annotations.</li>
-<li>Metadata prepared early improves reproducibility and keeps analyses
-organized.</li>
-<li>This planning sets the stage for handling FASTQ files starting in
-Episode 7.</li>
+<li>Good planning prevents errors and supports reproducibility across
+the workflow.</li>
+<li>Metadata is essential for tracking sample names, files, and
+decisions.</li>
+<li>A consistent directory structure allows QC → trimming → assembly →
+annotation to progress smoothly.</li>
+<li>Reproducible science begins before data processing starts.</li>
 </ul>
 </div>
 </div>
 </div>
-</section></section><section id="aio-07-background"><p>Content from <a href="07-background.html">Sequence File Formats</a></p>
+</div></section><section id="aio-07-background"><p>Content from <a href="07-background.html">Sequence File Formats</a></p>
 <hr>
 <p>Last updated on 2025-12-04 |
 
