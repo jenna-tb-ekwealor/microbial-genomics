@@ -532,16 +532,18 @@ annotation.</li>
 </ul></section><section id="10-assembly-spades"><h2 class="section-heading"><a href="10-assembly-spades.html">Genome Assembly with SPAdesExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>
-<li>SPAdes performs de novo genome assembly from paired-end reads.</li>
-<li>You must provide paths to R1 and R2 reads, thread count, memory
-limit, and an output directory.</li>
-<li>SPAdes produces many files; <code>contigs.fasta</code> and
-<code>scaffolds.fasta</code> are the most important for downstream
-analysis.</li>
-<li>Basic inspection of the assembly (number of contigs, total size,
-N50) helps assess quality.</li>
-<li>The assembly FASTA file will be the input to Prokka for genome
-annotation.</li>
+<li>
+<em>De novo</em> assembly reconstructs a genome from overlapping
+reads, producing contigs and scaffolds.</li>
+<li>SPAdes uses paired-end trimmed reads as input and writes outputs to
+an assembly directory.</li>
+<li>
+<code>contigs.fasta</code> is the key file for downstream annotation
+with Prokka.</li>
+<li>Simple statistics (number of contigs, total length, max length) help
+assess assembly quality.</li>
+<li>Keeping assembly outputs in a dedicated <code>assembly/</code>
+directory supports a tidy, reproducible workflow.</li>
 </ul></section><section id="11-annotation-prokka"><h2 class="section-heading"><a href="11-annotation-prokka.html">Genome Annotation with ProkkaExercises<a class="anchor" aria-label="anchor" href="#exercises"></a></a></h2>
 <hr class="half-width">
 <ul>

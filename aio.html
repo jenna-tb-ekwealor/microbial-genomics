@@ -3024,12 +3024,14 @@ annotation.</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>How do we assemble microbial genomes from paired-end reads?</li>
-<li>How do we run SPAdes on the command line?</li>
-<li>What are the key SPAdes options we need to set (input files,
-threads, memory, output directory)?</li>
-<li>What files does SPAdes produce and which ones are most
-important?</li>
+<li>What does <em>de novo</em> genome assembly do with our trimmed
+reads?</li>
+<li>How do we run SPAdes on a remote server using paired-end Illumina
+data?</li>
+<li>Where does SPAdes write its outputs, and which files matter for
+downstream analysis?</li>
+<li>How can we read basic assembly statistics (number of contigs, total
+length, N50)?</li>
 </ul>
 </div>
 </div>
@@ -3039,12 +3041,14 @@ important?</li>
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Describe the role of de novo assembly in microbial genomics.</li>
-<li>Run SPAdes on paired-end reads using appropriate options.</li>
-<li>Locate SPAdes output files (especially <code>contigs.fasta</code>
-and <code>scaffolds.fasta</code>).</li>
-<li>Perform a basic first inspection of the assembly output.</li>
-<li>Connect assembly results to later annotation with Prokka.</li>
+<li>Explain at a high level how <em>de novo</em> assembly reconstructs a
+genome from reads.</li>
+<li>Run SPAdes on trimmed paired-end reads in a reproducible project
+structure.</li>
+<li>Locate and interpret key SPAdes output files (logs,
+<code>contigs.fasta</code>, <code>scaffolds.fasta</code>).</li>
+<li>Extract and interpret simple assembly metrics that will inform
+annotation with Prokka.</li>
 </ul>
 </div>
 </div>
@@ -3052,271 +3056,337 @@ and <code>scaffolds.fasta</code>).</li>
 </div>
 </div>
 <blockquote>
-<p>This episode uses the microbial genome assembly activity you provided
-and adapts the SPAdes workflow for a Carpentries-style lesson. It
-assumes reads have already been organized, QC’d, and optionally trimmed
-in earlier episodes.</p>
+<p>This episode is adapted from the SPAdes assembly workflow materials
+and the genome assembly lecture, with a focus on running a small <em>de
+novo</em> assembly on a shared server.</p>
 </blockquote>
-<section><h2 class="section-heading" id="what-is-genome-assembly">What is genome assembly?<a class="anchor" aria-label="anchor" href="#what-is-genome-assembly"></a>
+<section><h2 class="section-heading" id="what-is-de-novo-assembly">What is <em>de novo</em> assembly?<a class="anchor" aria-label="anchor" href="#what-is-de-novo-assembly"></a>
 </h2>
 <hr class="half-width">
-<p>In <strong>de novo genome assembly</strong>, we reconstruct a genome
-from many short reads:</p>
+<p>In this workshop we <strong>do not</strong> map reads to a reference
+genome.<br>
+Instead, we run a <em>de novo</em> assembly:</p>
 <ul>
-<li>Raw reads (FASTQ) → overlap / k-mer graph → contigs →
-scaffolds.</li>
-<li>For bacterial genomes, final sizes are often <strong>2–6
-Mb</strong>.</li>
-<li>Assemblers like <strong>SPAdes</strong> are optimized for microbial
-genomes.</li>
+<li>Reads are broken into <strong>k-mers</strong> (short overlapping
+words).</li>
+<li>A <strong>graph</strong> is built that represents how k-mers
+connect.</li>
+<li>The assembler walks the graph to reconstruct
+<strong>contigs</strong> (continuous sequences).</li>
+<li>Contigs may then be linked into <strong>scaffolds</strong> when
+paired-end information supports it.</li>
 </ul>
-<p>Our workflow:</p>
-<ol style="list-style-type: decimal">
-<li>Ensure reads are available in a project directory.</li>
-<li>Run SPAdes with paired-end inputs.</li>
-<li>Inspect key output files (especially the assembly FASTA).</li>
-<li>Filter or post-process the assembly (covered here at a basic
-level).</li>
-</ol></section><section><h2 class="section-heading" id="setting-up-the-assembly-directory">Setting up the assembly directory<a class="anchor" aria-label="anchor" href="#setting-up-the-assembly-directory"></a>
+<p>Key terms:</p>
+<ul>
+<li>
+<strong>Contig</strong> – a continuous assembled sequence with no
+gaps (Ns).</li>
+<li>
+<strong>Scaffold</strong> – a sequence that may contain gaps (Ns)
+where contigs are linked.</li>
+<li>
+<strong>Coverage</strong> – average number of reads covering each
+base.</li>
+<li>
+<strong>N50</strong> – a length such that 50% of the assembled bases
+are in contigs of this length or longer.</li>
+</ul>
+<p>We will assemble our <strong>trimmed reads</strong> from Episode 9
+into contigs using SPAdes.</p>
+</section><section><h2 class="section-heading" id="inputs-and-outputs-for-spades">Inputs and outputs for SPAdes<a class="anchor" aria-label="anchor" href="#inputs-and-outputs-for-spades"></a>
 </h2>
 <hr class="half-width">
-<p>Following the earlier project structure, we will work in the
-<code>assembly/</code> directory:</p>
-<div class="codewrapper sourceCode" id="cb1">
+<p>We assume the following project structure from earlier episodes:</p>
+<pre class="text"><code>myproject/
+├── metadata/
+├── raw_reads/
+├── qc/
+├── trimmed/
+├── assembly/
+├── annotation/
+└── scripts/</code></pre>
+<p>For a single sample (<code>sample01</code>), you should have trimmed
+reads in:</p>
+<pre class="text"><code><span><span class="va">trimmed</span><span class="op">/</span><span class="va">sample01_R1.trimmed.fastq.gz</span></span>
+<span><span class="va">trimmed</span><span class="op">/</span><span class="va">sample01_R2.trimmed.fastq.gz</span></span></code></pre>
+<p>SPAdes will create a <strong>new directory</strong> inside
+<code>assembly/</code>, for example:</p>
+<pre class="text"><code>assembly/sample01_spades/</code></pre>
+<p>This contains:</p>
+<ul>
+<li>
+<code>contigs.fasta</code> – assembled contigs (main file we will
+use for annotation)</li>
+<li>
+<code>scaffolds.fasta</code> – scaffolds; may contain Ns</li>
+<li>
+<code>assembly_graph.fastg</code> – graph representation of the
+assembly</li>
+<li>
+<code>spades.log</code> – log file with parameters and progress</li>
+<li>
+<code>params.txt</code> – summary of command-line options used</li>
+</ul>
+<p>Keeping the output in <code>assembly/</code> helps maintain a tidy,
+reproducible project.</p>
+</section><section><h2 class="section-heading" id="running-spades">Running SPAdes<a class="anchor" aria-label="anchor" href="#running-spades"></a>
+</h2>
+<hr class="half-width">
+<p>Change into your project directory:</p>
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> myproject</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">cd</span> assembly</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">cd</span> ~/myproject</span></code></pre>
 </div>
-<p>You should see that your <strong>current working directory</strong>
-is <code>.../myproject/assembly</code>.</p>
-<p>Make sure your reads are accessible, for example:</p>
-<ul>
-<li><code>../trimmed/sample01_R1.trimmed.fastq.gz</code></li>
-<li><code>../trimmed/sample01_R2.trimmed.fastq.gz</code></li>
-</ul>
-<p>or, if trimming was skipped in this run:</p>
-<ul>
-<li><code>../raw_reads/sample01_R1.fastq.gz</code></li>
-<li><code>../raw_reads/sample01_R2.fastq.gz</code></li>
-</ul></section><section><h2 class="section-heading" id="running-spades">Running SPAdes<a class="anchor" aria-label="anchor" href="#running-spades"></a>
-</h2>
-<hr class="half-width">
-<p>SPAdes is run with a command that specifies:</p>
-<ul>
-<li>
-<code>-1</code> – path to R1 FASTQ,</li>
-<li>
-<code>-2</code> – path to R2 FASTQ,</li>
-<li>
-<code>--threads</code> – number of CPU cores,</li>
-<li>
-<code>--memory</code> – maximum RAM (in GB),</li>
-<li>
-<code>-k</code> – list of k-mer sizes,</li>
-<li>
-<code>-o</code> – output directory.</li>
-</ul>
-<p>A typical command, adapted from your assembly activity, looks
-like:</p>
-<div class="codewrapper sourceCode" id="cb2">
+<p>Create an output directory name (SPAdes will create it):</p>
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">spades.py</span> <span class="dt">\</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">-1</span> ../raw_reads/ERR435025_R1.fastq.gz <span class="dt">\</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">-2</span> ../raw_reads/ERR435025_R2.fastq.gz <span class="dt">\</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">--threads</span> 10 <span class="dt">\</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">--memory</span> 120 <span class="dt">\</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">-k</span> 21,33,55,77,99,127 <span class="dt">\</span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">-o</span> ERR435025_assembly</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> assembly</span></code></pre>
 </div>
-<p>Adjust:</p>
+<p>Run SPAdes with paired-end trimmed reads:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">spades.py</span>   <span class="at">-1</span> trimmed/sample01_R1.trimmed.fastq.gz   <span class="at">-2</span> trimmed/sample01_R2.trimmed.fastq.gz   <span class="at">-o</span> assembly/sample01_spades   <span class="at">--threads</span> 4   <span class="at">--memory</span> 16</span></code></pre>
+</div>
+<p>Options:</p>
 <ul>
-<li>input paths (<code>-1</code>, <code>-2</code>) to match your
-dataset,</li>
 <li>
-<code>--threads</code> based on the number of cores available,</li>
+<code>-1</code>, <code>-2</code> – forward and reverse reads</li>
 <li>
-<code>--memory</code> based on server limits,</li>
+<code>-o</code> – output directory</li>
 <li>
-<code>-k</code> if needed (these k-mers are typical for Illumina
-reads).</li>
+<code>--threads</code> – number of CPU threads to use</li>
+<li>
+<code>--memory</code> – maximum RAM (in GB) to use</li>
 </ul>
-<div id="running-spades-in-a-long-session" class="callout">
+<p>Ask your instructor how many threads and how much memory are
+appropriate for your server.</p>
+<div id="running-spades-takes-time" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="running-spades-in-a-long-session" class="callout-inner">
-<h3 class="callout-title">Running SPAdes in a long session</h3>
+<div id="running-spades-takes-time" class="callout-inner">
+<h3 class="callout-title">Running SPAdes takes time</h3>
 <div class="callout-content">
-<p>Genome assembly can take <strong>many minutes to hours</strong>,
-depending on:</p>
+<p>Even on a small dataset, SPAdes can take <strong>several
+minutes</strong>.<br>
+On larger genomes, or with many samples, assemblies may take
+<strong>hours</strong>.</p>
 <ul>
-<li>read depth,</li>
-<li>genome size,</li>
-<li>server load,</li>
-<li>number of threads and memory.</li>
+<li>Do <strong>not</strong> run SPAdes on a login node if your system
+uses a scheduler.</li>
+<li>Make sure you understand where outputs are going before you
+start.</li>
 </ul>
-<p>On shared systems, it is common to run SPAdes inside a session
-manager like <code>screen</code> or <code>tmux</code> so that the
-process keeps running even if your SSH connection drops.</p>
-<p>Your instructor may demonstrate this, or the run may be
-pre-computed.</p>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="inspecting-spades-output">Inspecting SPAdes output<a class="anchor" aria-label="anchor" href="#inspecting-spades-output"></a>
+</section><section><h2 class="section-heading" id="inspecting-the-spades-output">Inspecting the SPAdes output<a class="anchor" aria-label="anchor" href="#inspecting-the-spades-output"></a>
 </h2>
 <hr class="half-width">
-<p>Once SPAdes finishes, you should have an output directory (for
-example <code>ERR435025_assembly/</code>):</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">ls</span> ERR435025_assembly</span></code></pre>
-</div>
-<p>Common files and directories include:</p>
-<ul>
-<li>
-<code>contigs.fasta</code> – assembled contigs</li>
-<li>
-<code>scaffolds.fasta</code> – assembled scaffolds (contigs linked
-by paired-end information)</li>
-<li>
-<code>spades.log</code> – log file describing the run</li>
-<li>
-<code>params.txt</code> – parameters used</li>
-<li>other intermediate files and reports</li>
-</ul>
-<p>We will usually use <strong><code>scaffolds.fasta</code></strong> (or
-sometimes <code>contigs.fasta</code>) as the input for downstream
-steps.</p>
-<p>Copy the scaffold file into a convenient location:</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">cp</span> ERR435025_assembly/scaffolds.fasta .</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">ls</span></span></code></pre>
-</div>
-<p>You should now see <code>scaffolds.fasta</code> in your
-<code>assembly/</code> directory.</p>
-</section><section><h2 class="section-heading" id="first-look-at-the-assembly">First look at the assembly<a class="anchor" aria-label="anchor" href="#first-look-at-the-assembly"></a>
-</h2>
-<hr class="half-width">
-<p>Use commands from earlier Unix episodes to inspect the assembly:</p>
-<div class="codewrapper sourceCode" id="cb5">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">head</span> scaffolds.fasta</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'^&gt;'</span> scaffolds.fasta</span></code></pre>
-</div>
-<ul>
-<li>
-<code>head</code> shows the first few contigs.</li>
-<li>
-<code>grep -c '^&gt;'</code> counts how many contigs are present
-(each header starts with <code>&gt;</code>).</li>
-</ul>
-<p>If helper scripts are available (as in your assembly notes), you can
-compute stats such as:</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">seqstat</span> scaffolds.fasta</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">N50_count.pl</span> scaffolds.fasta</span></code></pre>
-</div>
-<p>These provide:</p>
-<ul>
-<li>total assembly length,</li>
-<li>number of contigs,</li>
-<li>N50 (a measure of contig length distribution).</li>
-</ul>
-<p>Later, you may want to filter contigs by length (for example keeping
-only those ≥ 1,000 bp) before annotation, but the basic SPAdes assembly
-output is already enough to proceed to Prokka.</p>
-<hr></section><div class="section level1">
-<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
-</h1>
-<div id="exercise-run-spades-or-examine-a-prepared-run" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-run-spades-or-examine-a-prepared-run" class="callout-inner">
-<h3 class="callout-title">Exercise: Run SPAdes (or examine a prepared
-run)</h3>
-<div class="callout-content">
-<p>If computing resources allow, run SPAdes on your sample:</p>
+<p>When SPAdes finishes, list the output directory:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> myproject/assembly</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="ex">spades.py</span> <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">-1</span> ../raw_reads/sample01_R1.fastq.gz <span class="dt">\</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">-2</span> ../raw_reads/sample01_R2.fastq.gz <span class="dt">\</span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">--threads</span> 8 <span class="dt">\</span></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">--memory</span> 32 <span class="dt">\</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">-k</span> 21,33,55,77,99,127 <span class="dt">\</span></span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="at">-o</span> sample01_assembly</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">ls</span> assembly/sample01_spades</span></code></pre>
 </div>
-<p>If SPAdes has been pre-run for you, skip directly to examining the
-output directory.</p>
-<p><strong>Questions:</strong></p>
+<p>You should see files including:</p>
 <ul>
-<li>How long did the run take?</li>
-<li>Did SPAdes report any warnings or errors in
-<code>spades.log</code>?</li>
+<li><code>contigs.fasta</code></li>
+<li><code>scaffolds.fasta</code></li>
+<li><code>spades.log</code></li>
+<li><code>params.txt</code></li>
 </ul>
-</div>
-</div>
-</div>
-<div id="exercise-count-contigs-and-inspect-the-assembly" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
-<div id="exercise-count-contigs-and-inspect-the-assembly" class="callout-inner">
-<h3 class="callout-title">Exercise: Count contigs and inspect the
-assembly</h3>
-<div class="callout-content">
-<p>After SPAdes finishes (or using a provided assembly):</p>
+<p>The main file we will use for annotation is:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="bu">cd</span> myproject/assembly</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">cp</span> sample01_assembly/scaffolds.fasta .</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'^&gt;'</span> scaffolds.fasta</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">head</span> scaffolds.fasta</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">assembly/sample01_spades/contigs.fasta</span></span></code></pre>
 </div>
-<p><strong>Questions:</strong></p>
+<p>We can quickly inspect it:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">head</span> assembly/sample01_spades/contigs.fasta</span></code></pre>
+</div>
+<p>Each contig starts with a header line:</p>
+<pre class="text"><code>&gt;NODE_1_length_48231_cov_38.7</code></pre>
+<p>This contains:</p>
 <ul>
-<li>How many contigs are present?</li>
-<li>What does the first header line look like?</li>
-<li>How might you identify the length of a specific contig?</li>
+<li>a contig ID (<code>NODE_1</code>)</li>
+<li>its length in base pairs (<code>length_48231</code>)</li>
+<li>estimated coverage (<code>cov_38.7</code>)</li>
+</ul></section><section><h2 class="section-heading" id="simple-assembly-statistics">Simple assembly statistics<a class="anchor" aria-label="anchor" href="#simple-assembly-statistics"></a>
+</h2>
+<hr class="half-width">
+<p>We can get basic stats from the contigs file.</p>
+<p>Count contigs:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"^&gt;"</span> assembly/sample01_spades/contigs.fasta</span></code></pre>
+</div>
+<p>Estimate total assembly length (requires <code>seqkit</code>):</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="ex">seqkit</span> stats assembly/sample01_spades/contigs.fasta</span></code></pre>
+</div>
+<p>Example output might include:</p>
+<pre class="text"><code>file                              format  type  num_seqs  sum_len  min_len  avg_len  max_len
+assembly/sample01_spades/contigs.fasta  FASTA  DNA      143     4.8e6    500      33706    182431</code></pre>
+<p>This tells you:</p>
+<ul>
+<li>
+<strong>num_seqs</strong> – number of contigs</li>
+<li>
+<strong>sum_len</strong> – total assembled length (approx genome
+size)</li>
+<li>
+<strong>max_len</strong> – length of the longest contig</li>
 </ul>
+<p>N50 is also reported in some tools or logs, but even these three
+numbers already give a sense of assembly quality.</p>
+<div id="interpreting-assembly-quality" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="interpreting-assembly-quality" class="callout-inner">
+<h3 class="callout-title">Interpreting assembly quality</h3>
+<div class="callout-content">
+<p>Very roughly:</p>
+<ul>
+<li>If total length is close to the expected genome size → good
+coverage.</li>
+<li>If there are <em>very many</em> short contigs → assembly may be
+fragmented.</li>
+<li>A few long contigs with reasonable coverage values → more contiguous
+assembly.</li>
+</ul>
+<p>We will not perfect the assembly in this workshop, but we will
+generate a reasonable draft for annotation.</p>
 </div>
 </div>
 </div>
-<div id="exercise-think-ahead-to-annotation" class="callout discussion">
+</section><section><h2 class="section-heading" id="preparing-for-annotation">Preparing for annotation<a class="anchor" aria-label="anchor" href="#preparing-for-annotation"></a>
+</h2>
+<hr class="half-width">
+<p>Prokka (Episode 11) will take the assembled contigs as input.<br>
+For example:</p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="ex">prokka</span> <span class="at">--outdir</span> annotation/sample01_prokka        <span class="at">--prefix</span> sample01        assembly/sample01_spades/contigs.fasta</span></code></pre>
+</div>
+<p>So the <strong>main output</strong> of SPAdes to remember is:</p>
+<pre class="text"><code><span><span class="va">assembly</span><span class="op">/</span><span class="va">sample01_spades</span><span class="op">/</span><span class="va">contigs.fasta</span></span></code></pre>
+<p>Make sure you know:</p>
+<ul>
+<li>where it lives,</li>
+<li>how large it is,</li>
+<li>how many contigs it contains.</li>
+</ul>
+<p>These details will be useful when interpreting annotation
+results.</p>
+<hr></section><div class="section level1">
+<h1 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h1>
+<div id="exercise-identify-inputs-and-outputs-for-spades" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <span class="callout-header">Discussion</span>
-<div id="exercise-think-ahead-to-annotation" class="callout-inner">
-<h3 class="callout-title">Exercise: Think ahead to annotation</h3>
+<div id="exercise-identify-inputs-and-outputs-for-spades" class="callout-inner">
+<h3 class="callout-title">Exercise: Identify inputs and outputs for
+SPAdes</h3>
 <div class="callout-content">
-<p>Discuss with a partner:</p>
-<ol style="list-style-type: decimal">
-<li>Why might we want to filter out very short contigs before
-annotation?</li>
-<li>Which file from the SPAdes output will we give to Prokka in the next
-episode?</li>
-<li>What information about the assembly might be important to record in
-your project metadata?</li>
-</ol>
+<p>From your project directory, run:</p>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">ls</span> trimmed</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">ls</span> assembly</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Which files in <code>trimmed/</code> should be used as SPAdes
+inputs?</li>
+<li>What will the SPAdes output directory be called for
+<code>sample01</code>?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-construct-a-spades-command" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-construct-a-spades-command" class="callout-inner">
+<h3 class="callout-title">Exercise: Construct a SPAdes command</h3>
+<div class="callout-content">
+<p>Write down a complete SPAdes command using:</p>
+<ul>
+<li><code>trimmed/sample01_R1.trimmed.fastq.gz</code></li>
+<li><code>trimmed/sample01_R2.trimmed.fastq.gz</code></li>
+<li>output directory <code>assembly/sample01_spades</code>
+</li>
+<li>4 threads and 16 GB of memory</li>
+</ul>
+<p>Compare your command with a neighbor or with the instructor’s
+example.</p>
+</div>
+</div>
+</div>
+<div id="exercise-explore-the-assembly-directory" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-explore-the-assembly-directory" class="callout-inner">
+<h3 class="callout-title">Exercise: Explore the assembly directory</h3>
+<div class="callout-content">
+<p>After SPAdes has finished (or using a pre-computed result):</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">ls</span> assembly/sample01_spades</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>Which files look most important for downstream analysis?</li>
+<li>Where is the <code>contigs.fasta</code> file located?</li>
+<li>What other information is captured in <code>spades.log</code> or
+<code>params.txt</code>?</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="exercise-basic-assembly-stats" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-basic-assembly-stats" class="callout-inner">
+<h3 class="callout-title">Exercise: Basic assembly stats</h3>
+<div class="callout-content">
+<p>Using the assembled contigs:</p>
+<div class="codewrapper sourceCode" id="cb18">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"^&gt;"</span> assembly/sample01_spades/contigs.fasta</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="ex">seqkit</span> stats assembly/sample01_spades/contigs.fasta</span></code></pre>
+</div>
+<p><strong>Questions:</strong></p>
+<ul>
+<li>How many contigs are there?</li>
+<li>What is the total assembled length?</li>
+<li>How does this compare to the expected genome size?</li>
+</ul>
 </div>
 </div>
 </div>
@@ -3328,16 +3398,18 @@ your project metadata?</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>SPAdes performs de novo genome assembly from paired-end reads.</li>
-<li>You must provide paths to R1 and R2 reads, thread count, memory
-limit, and an output directory.</li>
-<li>SPAdes produces many files; <code>contigs.fasta</code> and
-<code>scaffolds.fasta</code> are the most important for downstream
-analysis.</li>
-<li>Basic inspection of the assembly (number of contigs, total size,
-N50) helps assess quality.</li>
-<li>The assembly FASTA file will be the input to Prokka for genome
-annotation.</li>
+<li>
+<em>De novo</em> assembly reconstructs a genome from overlapping
+reads, producing contigs and scaffolds.</li>
+<li>SPAdes uses paired-end trimmed reads as input and writes outputs to
+an assembly directory.</li>
+<li>
+<code>contigs.fasta</code> is the key file for downstream annotation
+with Prokka.</li>
+<li>Simple statistics (number of contigs, total length, max length) help
+assess assembly quality.</li>
+<li>Keeping assembly outputs in a dedicated <code>assembly/</code>
+directory supports a tidy, reproducible workflow.</li>
 </ul>
 </div>
 </div>
