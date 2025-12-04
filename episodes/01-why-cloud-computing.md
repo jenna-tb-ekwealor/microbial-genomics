@@ -28,7 +28,7 @@ exercises: 10
 
 Microbial genomics data are large:
 
-- Illumina paired-end datasets can be large, exceeding even **20 GB**.
+- Illumina paired-end datasets can be large, even exceeding **20 GB**.
 - Each FASTQ file may contain **millions of reads**.
 - Assembly tools like **SPAdes** can require more than **16 GB of RAM**.
 - Annotation tools like **Prokka** load large databases into memory (RAM).
