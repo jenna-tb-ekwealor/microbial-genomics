@@ -22,7 +22,7 @@ exercises: 20
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> Episode 12 extends the microbial genomics workflow by adding
+> In this final episode, learners extend the microbial genomics workflow by adding
 > **taxonomic classification** of the assembled genome using the Genome Taxonomy Database (GTDB).
 
 ## What is GTDB?
