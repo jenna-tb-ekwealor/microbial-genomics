@@ -23,7 +23,7 @@ exercises: 20
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-> In this episode, learners annotate the genome assembled in Episode 10.
+> In Episode 11, learners annotate the genome assembled in Episode 10.
 > Prokka identifies coding sequences (CDS), rRNAs, tRNAs, and other features, producing files
 > suitable for exploration, visualization, or comparative genomics.
 
